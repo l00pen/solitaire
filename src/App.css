@@ -31,13 +31,21 @@ html {
   margin: 0.5em 0;
   display: flex;
   font-size: 5em;
-  color: black;
   justify-content: space-between;
   width: 90%;
 }
 
-.App-suite-hearts,
-.App-suite-diamonds {
+.Card {
+  color: blue;
+}
+
+.Card-suite-spades,
+.Card-suite-clubs {
+  color: black;
+}
+
+.Card-suite-hearts,
+.Card-suite-diamonds {
   color: red;
 }
 

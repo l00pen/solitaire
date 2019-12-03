@@ -1,5 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
+
+const cardBack = '🂠';
+
+const Card = ({ value, suite }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const toggleVisibility = () => {
+    setIsVisible(!isVisible);
+  }
+
+  if (isVisible) {
+    return <div className={`Card Card-suite-${suite}`} onClick={toggleVisibility}>{value}</div>;
+  }
+  return <div className={`Card`} onClick={toggleVisibility}>{cardBack}</div>;
+}
 
 const spades = {
   id: 'spades',
@@ -29,9 +43,14 @@ function App() {
     <div className="App">
       <header className="App-header">
         {deck.map(({id, suite}) => (
-          <ul key={id} className={`App-suite App-suite-${id}`}>
+          <ul key={id} className={`App-suite`}>
             {suite.map((card) => (
-              <li className='App-card' key={card}>{card}</li>
+              <li className='App-card' key={card}>
+                <Card
+                  value={card}
+                  suite={id}
+                />
+              </li>
             ))}
           </ul>
         ))}
