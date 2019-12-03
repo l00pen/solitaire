@@ -1,23 +1,40 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+
+const spades = {
+  id: 'spades',
+  suite: ['🂡','🂮','🂭','🂫','🂪','🂩','🂨','🂧','🂦','🂥','🂤','🂣','🂢'],
+};
+
+const hearts = {
+  id: 'hearts',
+  suite: ['🂱','🂾','🂽','🂻','🂺','🂹','🂸','🂷','🂶','🂵','🂴','🂳','🂲'],
+};
+
+const diamonds = {
+  id: 'diamonds',
+  suite: ['🃁','🃎','🃍','🃋','🃊','🃉','🃈','🃇','🃆','🃅','🃄','🃃','🃂'],
+};
+
+const clubs = {
+  id: 'clubs',
+  suite: ['🃑', '🃞', '🃝', '🃛', '🃚', '🃙', '🃘', '🃗', '🃖', '🃕', '🃔', '🃓', '🃒'],
+};
+
+
+const deck = [spades, hearts, diamonds, clubs];
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        {deck.map(({id, suite}) => (
+          <ul key={id} className={`App-suite App-suite-${id}`}>
+            {suite.map((card) => (
+              <li className='App-card' key={card}>{card}</li>
+            ))}
+          </ul>
+        ))}
       </header>
     </div>
   );
