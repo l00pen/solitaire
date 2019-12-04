@@ -1,0 +1,19 @@
+.Waste-card {
+  position: absolute;
+}
+
+.Waste-pile {
+  width: 3.5em;
+  height: 6.17em;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.Waste-pile {
+  position: relative;
+}
+
+.Waste-pile.empty {
+  border: 1px solid aliceblue;
+}

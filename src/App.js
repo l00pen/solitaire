@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import { deck } from './utils/';
 import CardTableau from './CardTableau';
+import { CardFaceDown } from './Card';
+import PileWaste from './PileWaste';
 
 import './App.css';
 
@@ -75,6 +77,25 @@ function App() {
     }
   }
 
+  const stockPileCardClickHandler = (cardIndex) => {
+    const newStock = [...game.stock];
+    const newWaste = [...game.waste];
+
+    if (cardIndex === newStock.length - 1) {
+      const wasteCard = newStock.splice(cardIndex, 1);
+      newWaste.push({
+        ...wasteCard[0],
+        isFaceUp: true,
+      });
+
+      setGame({
+        ...game,
+        waste: newWaste,
+        stock: newStock,
+      })
+    }
+  }
+
   return (
     <div className="App App-header">
       <section className='Game-top'>
@@ -91,19 +112,13 @@ function App() {
         </section>
         <div className='Game-stockAndWaste'>
           <section className='Waste'>
-            <ul className={`Waste-pile ${getEmptyClass(game.waste)}`}>
-              {game.waste.map((card) => (
-                <li className='App-card Waste-card' key={card.id}>
-                  <CardTableau {...card} />
-                </li>
-              ))}
-            </ul>
+            <PileWaste pile={game.waste} />
           </section>
           <section className='Stock'>
             <ul className={`Stock-pile ${getEmptyClass(game.stock)}`}>
-              {game.stock.map((card) => (
+              {game.stock.map((card, cardIndex) => (
                 <li className='App-card Stock-card' key={card.id}>
-                  <CardTableau {...card} />
+                  <CardFaceDown {...card} onClick={() => { stockPileCardClickHandler(cardIndex) }} />
                 </li>
               ))}
             </ul>
