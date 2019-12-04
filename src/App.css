@@ -46,24 +46,9 @@ html {
   width: 90%;
 }
 
-.Card {
-  color: blue;
-}
-
-.Card-suite-spades,
-.Card-suite-clubs {
-  color: black;
-}
-
-.Card-suite-hearts,
-.Card-suite-diamonds {
-  color: red;
-}
-
+.Tableau-card,
 .App-card {
   list-style: none;
-  background-color: #fff;
-  font-size: 5em;
 }
 
 .Tableau {
@@ -108,4 +93,8 @@ html {
 .Stock-pile.empty,
 .Tableau-pile.empty {
   border: 1px solid aliceblue;
+}
+
+.Tableau-card {
+  
 }

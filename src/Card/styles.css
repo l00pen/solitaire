@@ -1,0 +1,15 @@
+.Card {
+  color: blue;
+  background-color: #fff;
+  font-size: 5em;
+}
+
+.Card-suite-spades,
+.Card-suite-clubs {
+  color: black;
+}
+
+.Card-suite-hearts,
+.Card-suite-diamonds {
+  color: red;
+}
