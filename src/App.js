@@ -56,10 +56,14 @@ function App() {
 
     const firstPile = [...game.tableau[0]];
     const firstPileLastCard = firstPile[firstPile.length - 1];
-    if (firstPileLastCard.value < card.value) {
+    if (firstPileLastCard.color !== card.color && firstPileLastCard.value === card.value - 1) {
       const oldPile = [...game.tableau[pileIndex]];
       const movingPile = oldPile.splice(cardIndex, game.tableau.length);
       firstPile.push(...movingPile);
+      oldPile[oldPile.length - 1] = {
+        ...oldPile[oldPile.length - 1],
+        isFaceUp: true,
+      }
 
       const newTableau = [...game.tableau];
       newTableau[0] = firstPile;
@@ -75,10 +79,10 @@ function App() {
     <div className="App App-header">
       <section className='Game-top'>
         <section className='Foundation'>
-          {game.foundation.map((pile) => (
-            <ul className={`Foundation-pile ${getEmptyClass(pile)}`}>
+          {game.foundation.map((pile, pileIndex) => (
+            <ul className={`Foundation-pile ${getEmptyClass(pile)}`} key={`foundation-${pileIndex}`}>
               {pile.map((card) => (
-                <li className='App-card' key={card.value}>
+                <li className='App-card' key={card.id}>
                   <CardTableau {...card} />
                 </li>
               ))}
@@ -89,7 +93,7 @@ function App() {
           <section className='Waste'>
             <ul className={`Waste-pile ${getEmptyClass(game.waste)}`}>
               {game.waste.map((card) => (
-                <li className='App-card Waste-card' key={card.value}>
+                <li className='App-card Waste-card' key={card.id}>
                   <CardTableau {...card} />
                 </li>
               ))}
@@ -98,7 +102,7 @@ function App() {
           <section className='Stock'>
             <ul className={`Stock-pile ${getEmptyClass(game.stock)}`}>
               {game.stock.map((card) => (
-                <li className='App-card Stock-card' key={card.value}>
+                <li className='App-card Stock-card' key={card.id}>
                   <CardTableau {...card} />
                 </li>
               ))}
@@ -108,9 +112,9 @@ function App() {
       </section>
       <section className='Tableau'>
         {game.tableau.map((pile, pileIndex) => (
-          <ul className={`Tableau-pile ${getEmptyClass(pile)}`} >
+          <ul className={`Tableau-pile ${getEmptyClass(pile)}`} key={`tableau-${pileIndex}`}>
             {pile.map((card, cardIndex) => (
-              <li className='Tableau-card' key={card.value}>
+              <li className='Tableau-card' key={card.id + pileIndex}>
                 <CardTableau {...card} onClick={() => { tableauCardClickHandler(card, cardIndex, pileIndex) } } />
               </li>
             ))}
