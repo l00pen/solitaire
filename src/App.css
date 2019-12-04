@@ -4,14 +4,14 @@ html {
 
 .App {
   text-align: center;
+  background-color: #282c34;
 }
 
 .App-logo {
   height: 40vmin;
 }
 
-.App-header {
-  background-color: #282c34;
+/*.App-header {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -19,13 +19,24 @@ html {
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-}
+}*/
 
 .App-link {
   color: #09d3ac;
 }
 
-.App-suite {
+.Game-top {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin-bottom: 3em;
+}
+
+.Game-stockAndWaste {
+  display: flex;
+}
+
+.App-deck {
   list-style: none;
   padding: 0;
   margin: 0.5em 0;
@@ -52,4 +63,49 @@ html {
 .App-card {
   list-style: none;
   background-color: #fff;
+  font-size: 5em;
+}
+
+.Tableau {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+}
+
+.Tableau-pile {
+  list-style: none;
+  padding: 0;
+  margin: 1em 0;
+}
+
+.Foundation {
+  display: flex;
+}
+
+.Stock-card,
+.Waste-card {
+  position: absolute;
+}
+
+.Foundation-pile,
+.Waste-pile,
+.Stock-pile,
+.Tableau-pile {
+  width: 3.5em;
+  height: 6.17em;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.Waste-pile,
+.Stock-pile {
+  position: relative;
+}
+
+.Foundation-pile.empty,
+.Waste-pile.empty,
+.Stock-pile.empty,
+.Tableau-pile.empty {
+  border: 1px solid aliceblue;
 }
