@@ -75,7 +75,6 @@ html {
 .Stock-pile,
 .Tableau-pile {
   width: 3.5em;
-  height: 6.17em;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -89,6 +88,7 @@ html {
 .Stock-pile.empty,
 .Tableau-pile.empty {
   border: 1px solid aliceblue;
+    height: 4.17em;
 }
 
 .Tableau-card {
