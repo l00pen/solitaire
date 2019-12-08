@@ -4,8 +4,8 @@ import './styles.css';
 
 const cardBack = '🂠';
 
-const CardFaceUp = ({ label, suite, onClick }) => (
-  <div className={`Card Card-suite-${suite}`} onClick={onClick}>
+const CardFaceUp = ({ label, suite, onClick, ...props }) => (
+  <div className={`Card Card-suite-${suite}`} onClick={onClick} {...props}>
     {label}
   </div>
 )

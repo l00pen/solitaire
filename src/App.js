@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { deck } from './utils/';
 import CardTableau from './CardTableau';
@@ -97,21 +96,20 @@ function App() {
     }
   }
 
-  const moveToPile = (card, type, id) => {
-    switch(type) {
+  const moveToPile = (card, pileType, pileId) => {
+    switch(pileType) {
       case 'tableau':
       case 'foundation':
         const newTableau = [...game.tableau];
-        const newTableauPile = [...newTableau[id]];
+        const newTableauPile = [...newTableau[pileId]];
         newTableauPile.push(card);
-        newTableau[id] = newTableauPile;
+        newTableau[pileId] = newTableauPile;
         return newTableau;
       default:
-        const newPile = [...game[type]];
+        const newPile = [...game[pileType]];
         newPile.push(card);
         return newPile;
     }
-
   }
 
   const moveFromPile = (cardSourceIndex, pileType, pileId) => {
@@ -130,55 +128,60 @@ function App() {
     }
   }
 
-  const getCardFromSource = (cardSourceIndex, type, id) => {
-    switch(type) {
-      case 'tableau':
-      case 'foundation':
-        return game[type][id].findIndex(sC => sC.id === cardSourceIndex);
-      default:
-        return game[type].findIndex(sC => sC.id === cardSourceIndex);
-    }
-  }
+  // const getCardFromSource = (cardSourceIndex, type, id) => {
+  //   switch(type) {
+  //     case 'tableau':
+  //     case 'foundation':
+  //       return game[type][id].findIndex(sC => sC.id === cardSourceIndex);
+  //     default:
+  //       return game[type].findIndex(sC => sC.id === cardSourceIndex);
+  //   }
+  // }
 
-  const getCardIndexFromSource = (cardSourceIndex, type, id) => {
-    switch(type) {
-      case 'tableau':
-      case 'foundation':
-        return game[type][id].find(sC => sC.id === cardSourceIndex);
-      default:
-        return game[type].find(sC => sC.id === cardSourceIndex);
-    }
-  }
+  // const getCardIndexFromSource = (cardSourceIndex, type, id) => {
+  //   switch(type) {
+  //     case 'tableau':
+  //     case 'foundation':
+  //       return game[type][id].find(sC => sC.id === cardSourceIndex);
+  //     default:
+  //       return game[type].find(sC => sC.id === cardSourceIndex);
+  //   }
+  // }
 
-  const onDragEnd = result => {
-    const { draggableId, source, destination } = result;
+  const onDrop = (ev, { destinationPile, destinationPileId }) => {
+    ev.preventDefault();
+    const data = ev.dataTransfer.getData("text");
+    const {
+      card,
+      cardIndexInPile,
+      sourcePile,
+      sourcePileId,
+    } = JSON.parse(data);
+    const newDestination = moveToPile(card, destinationPile, destinationPileId);
+    const newSource = moveFromPile(cardIndexInPile, sourcePile, sourcePileId);
 
-    if (!destination) {
-      return;
-    }
-
-    if (source.droppableId === destination.droppableId) {
-      return false;
-    } else {
-      console.log(draggableId, source)
-      const [sourceType, sourceId] = source.droppableId.split('-');
-      const [destType, destId] = destination.droppableId.split('-');
-      const card = getCardFromSource(draggableId, sourceType, sourceId);
-      const cardIndex = getCardIndexFromSource(draggableId, sourceType, sourceId);
-      const newDestination = moveToPile(card, destType, destId);
-      const newSource = moveFromPile(cardIndex, sourceType, sourceId);
-      const tmp = {
+    if (destinationPile === 'tableau' && destinationPile === sourcePile) {
+      const newTableau = [...game.tableau];
+      newTableau[destinationPileId] = newDestination[destinationPileId]
+      newTableau[sourcePileId] = newSource[sourcePileId]
+      setGame({
         ...game,
-        [sourceType]: newSource,
-        [destType]: newDestination,
-      }
-      setGame(tmp)
+        tableau: newTableau,
+      })
     }
-  };
+  }
+
+  const allowDrop = (ev) => {
+    console.log('allowDrop')
+    ev.preventDefault();
+  }
+
+  const onDragStart = (ev, card) => {
+    ev.dataTransfer.setData("text", JSON.stringify(card));
+  }
 
   return (
     <div className="App App-header">
-      <DragDropContext onDragEnd={onDragEnd}>
         <section className='Game-top'>
           <section className='Foundation'>
             {game.foundation.map((pile, pileIndex) => (
@@ -193,18 +196,7 @@ function App() {
           </section>
           <div className='Game-stockAndWaste'>
             <section className='Waste'>
-              <Droppable droppableId="waste-0">
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    style={{ backgroundColor: snapshot.isDraggingOver ? 'blue' : 'grey' }}
-                    {...provided.droppableProps}
-                  >
-                    <PileWaste pile={game.waste} />
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
+              <PileWaste pile={game.waste} />
             </section>
             <section className='Stock'>
               <ul className={`Stock-pile ${getEmptyClass(game.stock)}`}>
@@ -223,30 +215,24 @@ function App() {
               {pile.map((card, cardIndex) => {
                 if (cardIndex === pile.length - 1) {
                   return (
-                    <li className='Tableau-card' key={card.id + pileIndex}>
-                      <Droppable droppableId={`tableau-${pileIndex}`}>
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          style={{ backgroundColor: snapshot.isDraggingOver ? 'blue' : 'grey' }}
-                          {...provided.droppableProps}
-                        >
-                          <Draggable draggableId={card.id} index={cardIndex}>
-                            {(provided, snapshot) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                              >
-                                <CardTableau {...card} onClick={() => { tableauCardClickHandler(card, cardIndex, pileIndex) } } />
-                              </div>
-                            )}
-                          </Draggable>
-                          {provided.placeholder}
-                        </div>
-                      )}
-                    </Droppable>
-                  </li>
+                    <li
+                      className='Tableau-card'
+                      key={card.id + pileIndex}
+                      onDrop={(event) => onDrop(event, { destinationPile: 'tableau', destinationPileId: pileIndex})}
+                      onDragOver={allowDrop}
+                    >
+                      <CardTableau
+                        {...card}
+                        // onClick={() => { tableauCardClickHandler(card, cardIndex, pileIndex) } }
+                        onDragStart={(event) => onDragStart(event, {
+                          card,
+                          cardIndexInPile: cardIndex,
+                          sourcePile: 'tableau',
+                          sourcePileId: pileIndex
+                        })}
+                        draggable="true"
+                      />
+                    </li>
                   );
                 }
                 return (
@@ -258,7 +244,6 @@ function App() {
             </ul>
           ))}
         </section>
-      </DragDropContext>
     </div>
   );
 }

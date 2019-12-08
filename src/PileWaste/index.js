@@ -1,5 +1,4 @@
 import React from 'react';
-import { Draggable } from 'react-beautiful-dnd';
 
 import CardTableau from '../CardTableau';
 
@@ -16,17 +15,7 @@ const PileWaste = ({ pile }) => {
         if (i === pile.length - 1) {
           return (
             <li className='App-card Waste-card' key={card.id}>
-              <Draggable draggableId={card.id} index={i}>
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                  >
-                    <CardTableau {...card} />
-                  </div>
-                )}
-              </Draggable>
+              <CardTableau {...card} />
             </li>
           );
         }

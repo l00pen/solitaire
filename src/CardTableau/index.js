@@ -4,9 +4,9 @@ import { CardFaceUp, CardFaceDown } from '../Card';
 
 import './styles.css';
 
-const CardTableau = ({ label, suite, isFaceUp, onClick }) => {
+const CardTableau = ({ label, suite, isFaceUp, onClick, ...props }) => {
   if (isFaceUp) {
-    return <CardFaceUp suite={suite} label={label} onClick={onClick} />;
+    return <CardFaceUp suite={suite} label={label} onClick={onClick} {...props} />;
   }
   return <CardFaceDown />;
 }
