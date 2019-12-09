@@ -35,21 +35,20 @@ const initGame = {
     [],
     [],
   ],
-  tableau: [
-    setLastIsFaceUp(deck.slice(0, 1)),
-    setLastIsFaceUp(deck.slice(1, 3)),
-    setLastIsFaceUp(deck.slice(3, 6)),
-    setLastIsFaceUp(deck.slice(6, 10)),
-    setLastIsFaceUp(deck.slice(10, 15)),
-    setLastIsFaceUp(deck.slice(15, 21)),
-    setLastIsFaceUp(deck.slice(21, 28)),
-  ],
+  tableau0: setLastIsFaceUp(deck.slice(0, 1)),
+  tableau1: setLastIsFaceUp(deck.slice(1, 3)),
+  tableau2: setLastIsFaceUp(deck.slice(3, 6)),
+  tableau3: setLastIsFaceUp(deck.slice(6, 10)),
+  tableau4: setLastIsFaceUp(deck.slice(10, 15)),
+  tableau5: setLastIsFaceUp(deck.slice(15, 21)),
+  tableau6: setLastIsFaceUp(deck.slice(21, 28)),
   stock: deck.slice(28),
   waste: [],
 }
 
 function App() {
   const [ game, setGame ] = useState(initGame);
+  const tableauPilesKeys = Object.keys(game).filter(entry => RegExp('tableau').test(entry));
 
   const tableauCardClickHandler = (card, cardIndex, pileIndex) => {
     if (pileIndex === 0) {
@@ -96,15 +95,12 @@ function App() {
     }
   }
 
-  const moveToPile = (card, pileType, pileId) => {
+  const moveToPile = (card, pileType) => {
+    console.log(card, pileType)
     switch(pileType) {
-      case 'tableau':
       case 'foundation':
-        const newTableau = [...game.tableau];
-        const newTableauPile = [...newTableau[pileId]];
-        newTableauPile.push(card);
-        newTableau[pileId] = newTableauPile;
-        return newTableau;
+        console.log('not fixed')
+        return [];
       default:
         const newPile = [...game[pileType]];
         newPile.push(card);
@@ -112,15 +108,11 @@ function App() {
     }
   }
 
-  const moveFromPile = (cardSourceIndex, pileType, pileId) => {
+  const moveFromPile = (cardSourceIndex, pileType) => {
     switch(pileType) {
-      case 'tableau':
       case 'foundation':
-        const newTableau = [...game.tableau];
-        const newTableauPile = [...newTableau[pileId]];
-        newTableauPile.splice(cardSourceIndex);
-        newTableau[pileId] = newTableauPile;
-        return newTableau;
+        console.log('not fixed')
+        return [];
       default:
         const newPile = [...game[pileType]];
         newPile.splice(cardSourceIndex);
@@ -148,27 +140,23 @@ function App() {
   //   }
   // }
 
-  const onDrop = (ev, { destinationPile, destinationPileId }) => {
+  const onDrop = (ev, { destinationPile }) => {
     ev.preventDefault();
     const data = ev.dataTransfer.getData("text");
     const {
       card,
       cardIndexInPile,
       sourcePile,
-      sourcePileId,
     } = JSON.parse(data);
-    const newDestination = moveToPile(card, destinationPile, destinationPileId);
-    const newSource = moveFromPile(cardIndexInPile, sourcePile, sourcePileId);
+    
+    const newDestination = moveToPile(card, destinationPile);
+    const newSource = moveFromPile(cardIndexInPile, sourcePile);
 
-    if (destinationPile === 'tableau' && destinationPile === sourcePile) {
-      const newTableau = [...game.tableau];
-      newTableau[destinationPileId] = newDestination[destinationPileId]
-      newTableau[sourcePileId] = newSource[sourcePileId]
-      setGame({
-        ...game,
-        tableau: newTableau,
-      })
-    }
+    setGame({
+      ...game,
+      [destinationPile]: newDestination,
+      [sourcePile]: newSource,
+    })
   }
 
   const allowDrop = (ev) => {
@@ -176,8 +164,8 @@ function App() {
     ev.preventDefault();
   }
 
-  const onDragStart = (ev, card) => {
-    ev.dataTransfer.setData("text", JSON.stringify(card));
+  const onDragStart = (ev, { card, cardIndexInPile, sourcePile }) => {
+    ev.dataTransfer.setData("text/plain", JSON.stringify({ card, cardIndexInPile, sourcePile }));
   }
 
   return (
@@ -210,39 +198,41 @@ function App() {
           </div>
         </section>
         <section className='Tableau'>
-          {game.tableau.map((pile, pileIndex) => (
-            <ul className={`Tableau-pile ${getEmptyClass(pile)}`} key={`tableau-${pileIndex}`}>
-              {pile.map((card, cardIndex) => {
-                if (cardIndex === pile.length - 1) {
+          {tableauPilesKeys.map((pileKey) => {
+            const pile = game[pileKey];
+            return (
+              <ul className={`Tableau-pile ${getEmptyClass(pile)}`} key={pileKey}>
+                {pile.map((card, cardIndex) => {
+                  if (cardIndex === pile.length - 1) {
+                    return (
+                      <li
+                        className='Tableau-card'
+                        key={card.id + pileKey}
+                        onDrop={(event) => onDrop(event, { destinationPile: pileKey })}
+                        onDragOver={allowDrop}
+                      >
+                        <CardTableau
+                          {...card}
+                          // onClick={() => { tableauCardClickHandler(card, cardIndex, pileIndex) } }
+                          onDragStart={(event) => onDragStart(event, {
+                            card,
+                            cardIndexInPile: cardIndex,
+                            sourcePile: pileKey
+                          })}
+                          draggable="true"
+                        />
+                      </li>
+                    );
+                  }
                   return (
-                    <li
-                      className='Tableau-card'
-                      key={card.id + pileIndex}
-                      onDrop={(event) => onDrop(event, { destinationPile: 'tableau', destinationPileId: pileIndex})}
-                      onDragOver={allowDrop}
-                    >
-                      <CardTableau
-                        {...card}
-                        // onClick={() => { tableauCardClickHandler(card, cardIndex, pileIndex) } }
-                        onDragStart={(event) => onDragStart(event, {
-                          card,
-                          cardIndexInPile: cardIndex,
-                          sourcePile: 'tableau',
-                          sourcePileId: pileIndex
-                        })}
-                        draggable="true"
-                      />
+                    <li className='Tableau-card' key={card.id + pileKey}>
+                      <CardTableau {...card} onClick={() => { tableauCardClickHandler(card, cardIndex, pileKey) } } />
                     </li>
-                  );
-                }
-                return (
-                  <li className='Tableau-card' key={card.id + pileIndex}>
-                    <CardTableau {...card} onClick={() => { tableauCardClickHandler(card, cardIndex, pileIndex) } } />
-                  </li>
-                )
-              })}
-            </ul>
-          ))}
+                  )
+                })}
+              </ul>
+            )
+          })}
         </section>
     </div>
   );
