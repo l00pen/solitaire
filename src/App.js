@@ -50,60 +50,14 @@ function App() {
   const [ game, setGame ] = useState(initGame);
   const tableauPilesKeys = Object.keys(game).filter(entry => RegExp('tableau').test(entry));
 
-  const tableauCardClickHandler = (card, cardIndex, pileIndex) => {
-    if (pileIndex === 0) {
-      return;
-    }
-
-    const firstPile = [...game.tableau[0]];
-    const firstPileLastCard = firstPile[firstPile.length - 1];
-    if (firstPileLastCard.color !== card.color && firstPileLastCard.value === card.value - 1) {
-      const oldPile = [...game.tableau[pileIndex]];
-      const movingPile = oldPile.splice(cardIndex, game.tableau.length);
-      firstPile.push(...movingPile);
-      oldPile[oldPile.length - 1] = {
-        ...oldPile[oldPile.length - 1],
-        isFaceUp: true,
-      }
-
-      const newTableau = [...game.tableau];
-      newTableau[0] = firstPile;
-      newTableau[pileIndex] = oldPile;
-      setGame({
-        ...game,
-        tableau: newTableau
-      })
-    }
-  }
-
-  const stockPileCardClickHandler = (cardIndex) => {
-    const newStock = [...game.stock];
-    const newWaste = [...game.waste];
-
-    if (cardIndex === newStock.length - 1) {
-      const wasteCard = newStock.splice(cardIndex, 1);
-      newWaste.push({
-        ...wasteCard[0],
-        isFaceUp: true,
-      });
-
-      setGame({
-        ...game,
-        waste: newWaste,
-        stock: newStock,
-      })
-    }
-  }
-
-  const moveToPile = (card, pileType) => {
-    console.log(card, pileType)
+  const moveToPile = (cards, pileType) => {
+    console.log('moveToPile', cards, pileType)
     switch(pileType) {
       case 'foundation':
         console.log('not fixed')
         return [];
       default:
-        const newPile = [...game[pileType]];
-        newPile.push(card);
+        const newPile = [...game[pileType]].concat(cards);
         return newPile;
     }
   }
@@ -115,41 +69,31 @@ function App() {
         return [];
       default:
         const newPile = [...game[pileType]];
-        newPile.splice(cardSourceIndex);
+        newPile.splice(cardSourceIndex, newPile.length);
         return newPile;
     }
   }
 
-  // const getCardFromSource = (cardSourceIndex, type, id) => {
-  //   switch(type) {
-  //     case 'tableau':
-  //     case 'foundation':
-  //       return game[type][id].findIndex(sC => sC.id === cardSourceIndex);
-  //     default:
-  //       return game[type].findIndex(sC => sC.id === cardSourceIndex);
-  //   }
-  // }
-
-  // const getCardIndexFromSource = (cardSourceIndex, type, id) => {
-  //   switch(type) {
-  //     case 'tableau':
-  //     case 'foundation':
-  //       return game[type][id].find(sC => sC.id === cardSourceIndex);
-  //     default:
-  //       return game[type].find(sC => sC.id === cardSourceIndex);
-  //   }
-  // }
+  const grabCardsToBeMoved = (cardSourceIndex, pileType) => {
+    switch(pileType) {
+      case 'foundation':
+        console.log('not fixed')
+        return [];
+      default:
+        return game[pileType].slice(cardSourceIndex, game[pileType].length);
+    }
+  }
 
   const onDrop = (ev, { destinationPile }) => {
     ev.preventDefault();
     const data = ev.dataTransfer.getData("text");
     const {
-      card,
       cardIndexInPile,
       sourcePile,
     } = JSON.parse(data);
     
-    const newDestination = moveToPile(card, destinationPile);
+    const cardsToBeMoved = grabCardsToBeMoved(cardIndexInPile, sourcePile);
+    const newDestination = moveToPile(cardsToBeMoved, destinationPile);
     const newSource = moveFromPile(cardIndexInPile, sourcePile);
 
     setGame({
@@ -190,7 +134,7 @@ function App() {
               <ul className={`Stock-pile ${getEmptyClass(game.stock)}`}>
                 {game.stock.map((card, cardIndex) => (
                   <li className='App-card Stock-card' key={card.id}>
-                    <CardFaceDown {...card} onClick={() => { stockPileCardClickHandler(cardIndex) }} />
+                    <CardFaceDown {...card} onClick={() => { }} />
                   </li>
                 ))}
               </ul>
@@ -203,32 +147,24 @@ function App() {
             return (
               <ul className={`Tableau-pile ${getEmptyClass(pile)}`} key={pileKey}>
                 {pile.map((card, cardIndex) => {
-                  if (cardIndex === pile.length - 1) {
-                    return (
-                      <li
-                        className='Tableau-card'
-                        key={card.id + pileKey}
-                        onDrop={(event) => onDrop(event, { destinationPile: pileKey })}
-                        onDragOver={allowDrop}
-                      >
-                        <CardTableau
-                          {...card}
-                          // onClick={() => { tableauCardClickHandler(card, cardIndex, pileIndex) } }
-                          onDragStart={(event) => onDragStart(event, {
-                            card,
-                            cardIndexInPile: cardIndex,
-                            sourcePile: pileKey
-                          })}
-                          draggable="true"
-                        />
-                      </li>
-                    );
-                  }
                   return (
-                    <li className='Tableau-card' key={card.id + pileKey}>
-                      <CardTableau {...card} onClick={() => { tableauCardClickHandler(card, cardIndex, pileKey) } } />
+                    <li
+                      className='Tableau-card'
+                      key={card.id + pileKey}
+                      onDrop={(event) => onDrop(event, { destinationPile: pileKey })}
+                      onDragOver={(cardIndex === pile.length - 1) ? allowDrop : null}
+                    >
+                      <CardTableau
+                        {...card}
+                        onDragStart={(event) => onDragStart(event, {
+                          card,
+                          cardIndexInPile: cardIndex,
+                          sourcePile: pileKey
+                        })}
+                        draggable={!!card.isFaceUp}
+                      />
                     </li>
-                  )
+                  );
                 })}
               </ul>
             )
