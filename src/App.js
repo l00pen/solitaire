@@ -7,13 +7,15 @@ import PileWaste from './PileWaste';
 
 import './App.css';
 
-// const CardWaste
-// const CardStock
-// const CardFoundation
-
 const getEmptyClass = (list) => {
   return list.length === 0 ? 'empty' : '';
-}; 
+};
+
+const getLastCardInPile = (cards) => {
+  const reverseCards = [...cards];
+  const [last, ...rest] = reverseCards.reverse();
+  return last;
+} 
 
 const setLastIsFaceUp = (cards) => {
   const reverseCards = [...cards];
@@ -50,7 +52,6 @@ function App() {
   const foundationPilesKeys = Object.keys(game).filter(entry => RegExp('foundation').test(entry));
 
   const moveToPile = (cards, pileType) => {
-    console.log('moveToPile', cards, pileType)
     const newPile = [...game[pileType]].concat(cards);
     return newPile;
   }
@@ -58,22 +59,27 @@ function App() {
   const moveFromPile = (cardSourceIndex, pileType) => {
     const newPile = [...game[pileType]];
     newPile.splice(cardSourceIndex, newPile.length);
-    return newPile.map((card, index) => {
-      if (index === newPile.length - 1) {
-        return {
-          ...card,
-          isFaceUp: true,
-        }
-      }
-      return card;
-    });
+    return setLastIsFaceUp(newPile);
   }
 
   const grabCardsToBeMoved = (cardSourceIndex, pileType) => {
     return game[pileType].slice(cardSourceIndex, game[pileType].length);
   }
 
-  const onDrop = (ev, { card: destCard, cardIndex: destCardIndex, destinationPile }) => {
+  const allowDropTableau = (cardsToBeMoved, destCardIndex, destinationPile, destCard) => {
+    if (game[destinationPile].length === 0) {
+      return true;
+    }
+
+    const firstCardToBeMoved = cardsToBeMoved[0];
+    const lastCardInPile = destCardIndex === game[destinationPile].length - 1;
+    const isOppositeColor = destCard.color !== firstCardToBeMoved.color;
+    const isRightValue = destCard.value === firstCardToBeMoved.value + 1;
+
+    return destCard.isFaceUp && lastCardInPile && isOppositeColor && isRightValue;
+  };
+
+  const onDropTableau = (ev, { card: destCard, cardIndex: destCardIndex, destinationPile }) => {
     ev.preventDefault();
     const data = ev.dataTransfer.getData("pip");
     const {
@@ -83,12 +89,7 @@ function App() {
     
     const cardsToBeMoved = grabCardsToBeMoved(cardIndexInPile, sourcePile);
 
-    const firstCardToBeMoved = cardsToBeMoved[0];
-    const lastCardInPile = destCardIndex === game[destinationPile].length - 1;
-    const isOppositeColor = destCard.color !== firstCardToBeMoved.color;
-    const isRightValue = destCard.value === firstCardToBeMoved.value + 1;
-
-    if (destCard.isFaceUp && lastCardInPile && isOppositeColor && isRightValue) {
+    if (allowDropTableau(cardsToBeMoved, destCardIndex, destinationPile, destCard)) {
       const newDestination = moveToPile(cardsToBeMoved, destinationPile);
       const newSource = moveFromPile(cardIndexInPile, sourcePile);
     
@@ -100,12 +101,80 @@ function App() {
     }
   }
 
-  const allowDropTableau = (ev, card, cardIndex, pile) => {
+  const onDropFoundation = (ev, { destinationPile }) => {
+    ev.preventDefault();
+    const data = ev.dataTransfer.getData("pip");
+    const {
+      cardIndexInPile,
+      sourcePile,
+    } = JSON.parse(data);
+
+    const cardsToBeMoved = grabCardsToBeMoved(cardIndexInPile, sourcePile);
+    if (cardsToBeMoved.length > 1) {
+      return;
+    }
+
+    const destPile = game[destinationPile];
+    const cardToBeMoved = cardsToBeMoved[0];
+    
+    if (cardToBeMoved.value === 1 && !destPile.length) {
+      const newDestination = moveToPile(cardsToBeMoved, destinationPile);
+      const newSource = moveFromPile(cardIndexInPile, sourcePile);
+    
+      setGame({
+        ...game,
+        [destinationPile]: newDestination,
+        [sourcePile]: newSource,
+      });
+
+      return;
+    }
+
+    if (destPile.length) {
+      const lastCardInPile = getLastCardInPile(destPile);
+
+      const isSameSuite = lastCardInPile.suite === cardToBeMoved.suite;
+      const isRightValue = lastCardInPile.value === (cardToBeMoved.value - 1);
+      console.log('foundation',
+        lastCardInPile,
+        isSameSuite,
+        isRightValue,
+        cardToBeMoved.value,
+        lastCardInPile.value,
+      )
+      if (isSameSuite && isRightValue) {
+        const newDestination = moveToPile(cardsToBeMoved, destinationPile);
+        const newSource = moveFromPile(cardIndexInPile, sourcePile);
+      
+        setGame({
+          ...game,
+          [destinationPile]: newDestination,
+          [sourcePile]: newSource,
+        });
+
+        return;
+      }
+    }
+  }
+
+  const allowDrop = (ev) => {
     ev.preventDefault();
   }
 
   const onDragStart = (ev, { card, cardIndexInPile, sourcePile }) => {
     ev.dataTransfer.setData("pip", JSON.stringify({ card, cardIndexInPile, sourcePile }));
+  }
+
+  const onStockClickHandler = (ev, { card }) => {
+    const newCard = { ...card, isFaceUp: true };
+    const newDestination = moveToPile([newCard], 'waste');
+    const newSource = moveFromPile(game.stock.length - 1, 'stock');
+  
+    setGame({
+      ...game,
+      waste: newDestination,
+      stock: newSource,
+    });
   }
 
   return (
@@ -115,9 +184,15 @@ function App() {
             {foundationPilesKeys.map((pileKey) => {
               const pile = game[pileKey];
               return (
-                <ul className={`Foundation-pile ${getEmptyClass(pile)}`} key={`foundation-${pileKey}`}>
-                  {pile.map((card) => (
-                    <li className='App-card' key={card.id}>
+                <ul className={`Foundation-pile ${getEmptyClass(pile)}`} key={pileKey}
+                  onDrop={(event) => onDropFoundation(event, { destinationPile: pileKey })}
+                  onDragOver={allowDrop}
+                >
+                  {pile.map((card, cardIndex) => (
+                    <li
+                      className='App-card'
+                      key={card.id}
+                    >
                       <CardTableau {...card} />
                     </li>
                   ))}
@@ -127,13 +202,37 @@ function App() {
           </section>
           <div className='Game-stockAndWaste'>
             <section className='Waste'>
-              <PileWaste pile={game.waste} />
+              <ul className={`Waste-pile ${getEmptyClass(game.waste)}`}>
+                {!!game.waste.length && game.waste.map((card, i) => {
+                  if (i === game.waste.length - 1) {
+                    return (
+                      <li className='App-card Waste-card' key={card.id}>
+                        <CardTableau
+                          {...card}
+                          onDragStart={(event) => onDragStart(event, {
+                            card,
+                            cardIndexInPile: i,
+                            sourcePile: 'waste',
+                          })}
+                          draggable={!!card.isFaceUp}
+                        />
+                      </li>
+                    );
+                  } else {                 
+                    return (
+                      <li className='App-card Waste-card' key={card.id}>
+                        <CardTableau {...card} />
+                      </li>
+                    )
+                  }
+                })}
+              </ul>
             </section>
             <section className='Stock'>
               <ul className={`Stock-pile ${getEmptyClass(game.stock)}`}>
                 {game.stock.map((card, cardIndex) => (
                   <li className='App-card Stock-card' key={card.id}>
-                    <CardFaceDown {...card} onClick={() => { }} />
+                    <CardFaceDown {...card} onClick={(event) => onStockClickHandler(event, { card })} />
                   </li>
                 ))}
               </ul>
@@ -150,8 +249,8 @@ function App() {
                     <li
                       className='Tableau-card'
                       key={card.id + pileKey}
-                      onDrop={(event) => onDrop(event, { card, cardIndex, destinationPile: pileKey })}
-                      onDragOver={(event) => allowDropTableau(event, card, cardIndex, pile)}
+                      onDrop={(event) => onDropTableau(event, { card, cardIndex, destinationPile: pileKey })}
+                      onDragOver={allowDrop}
                     >
                       <CardTableau
                         {...card}
