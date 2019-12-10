@@ -1,7 +1,9 @@
+.Foundation-card,
 .Waste-card {
   position: absolute;
 }
 
+.Foundation-pile,
 .Waste-pile {
   width: 3.5em;
   height: 6.17em;
@@ -10,10 +12,12 @@
   margin: 0;
 }
 
+.Foundation-pile,
 .Waste-pile {
   position: relative;
 }
 
+.Foundation-pile.empty,
 .Waste-pile.empty {
   border: 1px solid aliceblue;
 }

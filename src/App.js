@@ -101,6 +101,32 @@ function App() {
     }
   }
 
+  const allowFoundationDrop = (cardsToBeMoved, destPile) => {
+    const cardToBeMoved = cardsToBeMoved[0];
+
+    if (cardsToBeMoved.length > 1) {
+      return false;
+    }
+
+    if(cardToBeMoved.value === 1 && !destPile.length) {
+      return true;
+    }
+
+    if (destPile.length) {
+      const lastCardInPile = getLastCardInPile(destPile);
+
+      const isSameSuite = lastCardInPile.suite === cardToBeMoved.suite;
+      const isRightValue = lastCardInPile.value === (cardToBeMoved.value - 1);
+
+      if(isSameSuite && isRightValue ) {
+        return true;
+      };
+    }
+
+
+    return false;
+  }
+
   const onDropFoundation = (ev, { destinationPile }) => {
     ev.preventDefault();
     const data = ev.dataTransfer.getData("pip");
@@ -109,15 +135,10 @@ function App() {
       sourcePile,
     } = JSON.parse(data);
 
-    const cardsToBeMoved = grabCardsToBeMoved(cardIndexInPile, sourcePile);
-    if (cardsToBeMoved.length > 1) {
-      return;
-    }
-
     const destPile = game[destinationPile];
-    const cardToBeMoved = cardsToBeMoved[0];
+    const cardsToBeMoved = grabCardsToBeMoved(cardIndexInPile, sourcePile);
     
-    if (cardToBeMoved.value === 1 && !destPile.length) {
+    if (allowFoundationDrop(cardsToBeMoved, destPile)) {
       const newDestination = moveToPile(cardsToBeMoved, destinationPile);
       const newSource = moveFromPile(cardIndexInPile, sourcePile);
     
@@ -126,34 +147,6 @@ function App() {
         [destinationPile]: newDestination,
         [sourcePile]: newSource,
       });
-
-      return;
-    }
-
-    if (destPile.length) {
-      const lastCardInPile = getLastCardInPile(destPile);
-
-      const isSameSuite = lastCardInPile.suite === cardToBeMoved.suite;
-      const isRightValue = lastCardInPile.value === (cardToBeMoved.value - 1);
-      console.log('foundation',
-        lastCardInPile,
-        isSameSuite,
-        isRightValue,
-        cardToBeMoved.value,
-        lastCardInPile.value,
-      )
-      if (isSameSuite && isRightValue) {
-        const newDestination = moveToPile(cardsToBeMoved, destinationPile);
-        const newSource = moveFromPile(cardIndexInPile, sourcePile);
-      
-        setGame({
-          ...game,
-          [destinationPile]: newDestination,
-          [sourcePile]: newSource,
-        });
-
-        return;
-      }
     }
   }
 
@@ -190,7 +183,7 @@ function App() {
                 >
                   {pile.map((card, cardIndex) => (
                     <li
-                      className='App-card'
+                      className='App-card Foundation-card'
                       key={card.id}
                     >
                       <CardTableau {...card} />
