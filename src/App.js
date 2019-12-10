@@ -29,12 +29,10 @@ const setLastIsFaceUp = (cards) => {
 }
 
 const initGame = {
-  foundation: [
-    [],
-    [],
-    [],
-    [],
-  ],
+  foundation0: [],
+  foundation1: [],
+  foundation2: [],
+  foundation3: [],
   tableau0: setLastIsFaceUp(deck.slice(0, 1)),
   tableau1: setLastIsFaceUp(deck.slice(1, 3)),
   tableau2: setLastIsFaceUp(deck.slice(3, 6)),
@@ -49,82 +47,83 @@ const initGame = {
 function App() {
   const [ game, setGame ] = useState(initGame);
   const tableauPilesKeys = Object.keys(game).filter(entry => RegExp('tableau').test(entry));
+  const foundationPilesKeys = Object.keys(game).filter(entry => RegExp('foundation').test(entry));
 
   const moveToPile = (cards, pileType) => {
     console.log('moveToPile', cards, pileType)
-    switch(pileType) {
-      case 'foundation':
-        console.log('not fixed')
-        return [];
-      default:
-        const newPile = [...game[pileType]].concat(cards);
-        return newPile;
-    }
+    const newPile = [...game[pileType]].concat(cards);
+    return newPile;
   }
 
   const moveFromPile = (cardSourceIndex, pileType) => {
-    switch(pileType) {
-      case 'foundation':
-        console.log('not fixed')
-        return [];
-      default:
-        const newPile = [...game[pileType]];
-        newPile.splice(cardSourceIndex, newPile.length);
-        return newPile;
-    }
+    const newPile = [...game[pileType]];
+    newPile.splice(cardSourceIndex, newPile.length);
+    return newPile.map((card, index) => {
+      if (index === newPile.length - 1) {
+        return {
+          ...card,
+          isFaceUp: true,
+        }
+      }
+      return card;
+    });
   }
 
   const grabCardsToBeMoved = (cardSourceIndex, pileType) => {
-    switch(pileType) {
-      case 'foundation':
-        console.log('not fixed')
-        return [];
-      default:
-        return game[pileType].slice(cardSourceIndex, game[pileType].length);
-    }
+    return game[pileType].slice(cardSourceIndex, game[pileType].length);
   }
 
-  const onDrop = (ev, { destinationPile }) => {
+  const onDrop = (ev, { card: destCard, cardIndex: destCardIndex, destinationPile }) => {
     ev.preventDefault();
-    const data = ev.dataTransfer.getData("text");
+    const data = ev.dataTransfer.getData("pip");
     const {
       cardIndexInPile,
       sourcePile,
     } = JSON.parse(data);
     
     const cardsToBeMoved = grabCardsToBeMoved(cardIndexInPile, sourcePile);
-    const newDestination = moveToPile(cardsToBeMoved, destinationPile);
-    const newSource = moveFromPile(cardIndexInPile, sourcePile);
 
-    setGame({
-      ...game,
-      [destinationPile]: newDestination,
-      [sourcePile]: newSource,
-    })
+    const firstCardToBeMoved = cardsToBeMoved[0];
+    const lastCardInPile = destCardIndex === game[destinationPile].length - 1;
+    const isOppositeColor = destCard.color !== firstCardToBeMoved.color;
+    const isRightValue = destCard.value === firstCardToBeMoved.value + 1;
+
+    if (destCard.isFaceUp && lastCardInPile && isOppositeColor && isRightValue) {
+      const newDestination = moveToPile(cardsToBeMoved, destinationPile);
+      const newSource = moveFromPile(cardIndexInPile, sourcePile);
+    
+      setGame({
+        ...game,
+        [destinationPile]: newDestination,
+        [sourcePile]: newSource,
+      })
+    }
   }
 
-  const allowDrop = (ev) => {
-    console.log('allowDrop')
+  const allowDropTableau = (ev, card, cardIndex, pile) => {
     ev.preventDefault();
   }
 
   const onDragStart = (ev, { card, cardIndexInPile, sourcePile }) => {
-    ev.dataTransfer.setData("text/plain", JSON.stringify({ card, cardIndexInPile, sourcePile }));
+    ev.dataTransfer.setData("pip", JSON.stringify({ card, cardIndexInPile, sourcePile }));
   }
 
   return (
     <div className="App App-header">
         <section className='Game-top'>
           <section className='Foundation'>
-            {game.foundation.map((pile, pileIndex) => (
-              <ul className={`Foundation-pile ${getEmptyClass(pile)}`} key={`foundation-${pileIndex}`}>
-                {pile.map((card) => (
-                  <li className='App-card' key={card.id}>
-                    <CardTableau {...card} />
-                  </li>
-                ))}
-              </ul>
-            ))}
+            {foundationPilesKeys.map((pileKey) => {
+              const pile = game[pileKey];
+              return (
+                <ul className={`Foundation-pile ${getEmptyClass(pile)}`} key={`foundation-${pileKey}`}>
+                  {pile.map((card) => (
+                    <li className='App-card' key={card.id}>
+                      <CardTableau {...card} />
+                    </li>
+                  ))}
+                </ul>
+              )
+            })}
           </section>
           <div className='Game-stockAndWaste'>
             <section className='Waste'>
@@ -151,8 +150,8 @@ function App() {
                     <li
                       className='Tableau-card'
                       key={card.id + pileKey}
-                      onDrop={(event) => onDrop(event, { destinationPile: pileKey })}
-                      onDragOver={(cardIndex === pile.length - 1) ? allowDrop : null}
+                      onDrop={(event) => onDrop(event, { card, cardIndex, destinationPile: pileKey })}
+                      onDragOver={(event) => allowDropTableau(event, card, cardIndex, pile)}
                     >
                       <CardTableau
                         {...card}
