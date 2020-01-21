@@ -1,31 +1,32 @@
 import React from 'react';
 
 import CardTableau from '../CardTableau';
+import Pile, { PileEmpty } from '../Pile';
 
 import './styles.css';
 
-const getEmptyClass = (list) => {
-  return list.length === 0 ? 'empty' : '';
-};
-
-const PileWaste = ({ pile }) => {
+const PileWaste = ({ pile, onDragStart }) => {
+  if (pile.length === 0) {
+    return <PileEmpty />
+  }
   return (
-    <ul className={`Waste-pile ${getEmptyClass(pile)}`}>
+    <Pile>
       {pile.map((card, i) => {
-        if (i === pile.length - 1) {
-          return (
-            <li className='App-card Waste-card' key={card.id}>
-              <CardTableau {...card} />
-            </li>
-          );
-        }
         return (
           <li className='App-card Waste-card' key={card.id}>
-            <CardTableau {...card} />
+            <CardTableau
+              {...card}
+              onDragStart={(event) => onDragStart(event, {
+                card,
+                cardIndexInPile: i,
+                sourcePile: 'waste',
+              })}
+              draggable={!!card.isFaceUp}
+            />
           </li>
-        )
+        );
       })}
-    </ul>
+    </Pile>
   );
 }
 

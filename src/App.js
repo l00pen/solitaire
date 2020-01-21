@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 
 import { deck } from './utils/';
 import CardTableau from './CardTableau';
-import { CardFaceDown, CardEmpty } from './Card';
 import PileWaste from './PileWaste';
+import PileStock from './PileStock';
+import PileFoundation from './PileFoundation';
+import PileTableau from './PileTableau';
 
 import './App.css';
 
@@ -164,6 +166,7 @@ function App() {
   }
 
   const onStockClickHandler = (ev, { card }) => {
+    console.log('onStockClickHandler', card)
     const newCard = { ...card, isFaceUp: true };
     const newDestination = moveToPile([newCard], 'waste');
     const newSource = moveFromPile(game.stock.length - 1, 'stock');
@@ -182,120 +185,43 @@ function App() {
             {foundationPilesKeys.map((pileKey) => {
               const pile = game[pileKey];
               return (
-                <ul className={`Foundation-pile ${getEmptyClass(pile)}`} key={pileKey}
-                  onDrop={(event) => onDropFoundation(event, { destinationPile: pileKey })}
-                  onDragOver={allowDrop}
-                >
-                  {pile.map((card, cardIndex) => (
-                    <li
-                      className='App-card Foundation-card'
-                      key={card.id}
-                    >
-                      <CardTableau {...card} />
-                    </li>
-                  ))}
-                </ul>
+                <PileFoundation
+                  key={pileKey}
+                  pile={pile}
+                  pileId={pileKey}
+                  onDropFoundation={onDropFoundation}
+                  allowDrop={allowDrop}
+                />
               )
             })}
           </section>
           <div className='Game-stockAndWaste'>
             <section className='Waste'>
-              <ul className={`Waste-pile ${getEmptyClass(game.waste)}`}>
-                {!!game.waste.length && game.waste.map((card, i) => {
-                  if (i === game.waste.length - 1) {
-                    return (
-                      <li className='App-card Waste-card' key={card.id}>
-                        <CardTableau
-                          {...card}
-                          onDragStart={(event) => onDragStart(event, {
-                            card,
-                            cardIndexInPile: i,
-                            sourcePile: 'waste',
-                          })}
-                          draggable={!!card.isFaceUp}
-                        />
-                      </li>
-                    );
-                  } else {                 
-                    return (
-                      <li className='App-card Waste-card' key={card.id}>
-                        <CardTableau {...card} />
-                      </li>
-                    )
-                  }
-                })}
-              </ul>
+              <PileWaste
+                pile={game.waste}
+                onDragStart={onDragStart} 
+              />
             </section>
             <section className='Stock'>
-              <ul className={`Stock-pile ${getEmptyClass(game.stock)}`}>
-                {game.stock.map((card, cardIndex) => (
-                  <li className='App-card Stock-card' key={card.id}>
-                    <CardFaceDown {...card} onClick={(event) => onStockClickHandler(event, { card })} />
-                  </li>
-                ))}
-              </ul>
+              <PileStock
+                onClick={onStockClickHandler}
+                pile={game.stock}
+              />
             </section>
           </div>
         </section>
         <section className='Tableau'>
           {tableauPilesKeys.map((pileKey) => {
             const pile = game[pileKey];
-            // if (pile.length === 0) {
-            //   return (
-            //     <ul
-            //       className={`Tableau-pile empty}`}
-            //       key={pileKey}
-            //       style={{ position: 'relative' }}
-            //     >
-            //       <li
-            //         className='Tableau-card'
-            //         key={0 + pileKey}
-            //         onDrop={(event) => onDropTableau(event, { card: {}, cardIndex: 0, destinationPile: pileKey })}
-            //         onDragOver={allowDrop}
-            //         style={{
-            //           position: 'absolute',
-            //           width: '50px',
-            //         }}
-            //       >
-            //         <CardEmpty />
-            //       </li>
-            //     </ul>
-            //   );
-            // }
             return (
-              <ul
-                className={`Tableau-pile ${getEmptyClass(pile)}`}
+              <PileTableau
                 key={pileKey}
-                style={{ position: 'relative' }}
-                onDrop={(event) => onDropTableau(event, { card: {}, cardIndex: 0, destinationPile: pileKey })}
-                onDragOver={allowDrop}
-              >
-                {pile.map((card, cardIndex) => {
-                  return (
-                    <li
-                      className='Tableau-card'
-                      key={card.id + pileKey}
-                      onDrop={(event) => onDropTableau(event, { card, cardIndex, destinationPile: pileKey })}
-                      onDragOver={allowDrop}
-                      style={{
-                        position: 'absolute',
-                        width: '50px',
-                        top: `${cardIndex * 10}px`,
-                      }}
-                    >
-                      <CardTableau
-                        {...card}
-                        onDragStart={(event) => onDragStart(event, {
-                          card,
-                          cardIndexInPile: cardIndex,
-                          sourcePile: pileKey
-                        })}
-                        draggable={!!card.isFaceUp}
-                      />
-                    </li>
-                  );
-                })}
-              </ul>
+                pile={pile}
+                pileKey={pileKey}
+                allowDrop={allowDrop}
+                onDropTableau={onDropTableau}
+                onDragStart={onDragStart}
+              />
             )
           })}
         </section>

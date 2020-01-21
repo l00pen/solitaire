@@ -68,12 +68,9 @@ html {
   display: flex;
 }
 
-.Stock-card {
-  position: absolute;
-}
-
 .Foundation-pile,
 .Stock-pile,
+.Empty-pile,
 .Tableau-pile {
   width: 3.5em;
   list-style: none;
@@ -89,7 +86,7 @@ html {
 .Stock-pile.empty,
 .Tableau-pile.empty {
   border: 1px solid aliceblue;
-    height: 4.17em;
+  height: 4.17em;
 }
 
 .Tableau-card {
