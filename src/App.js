@@ -236,7 +236,11 @@ function App() {
           {tableauPilesKeys.map((pileKey) => {
             const pile = game[pileKey];
             return (
-              <ul className={`Tableau-pile ${getEmptyClass(pile)}`} key={pileKey}>
+              <ul
+                className={`Tableau-pile ${getEmptyClass(pile)}`}
+                key={pileKey}
+                style={{ position: 'relative' }}
+              >
                 {pile.map((card, cardIndex) => {
                   return (
                     <li
@@ -244,6 +248,11 @@ function App() {
                       key={card.id + pileKey}
                       onDrop={(event) => onDropTableau(event, { card, cardIndex, destinationPile: pileKey })}
                       onDragOver={allowDrop}
+                      style={{
+                        position: 'absolute',
+                        width: '50px',
+                        top: `${cardIndex * 10}px`,
+                      }}
                     >
                       <CardTableau
                         {...card}

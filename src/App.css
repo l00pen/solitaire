@@ -55,6 +55,7 @@ html {
   display: flex;
   justify-content: space-between;
   width: 80%;
+  height: 100vh;
 }
 
 .Tableau-pile {
@@ -92,5 +93,4 @@ html {
 }
 
 .Tableau-card {
-
 }
