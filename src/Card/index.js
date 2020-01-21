@@ -10,7 +10,7 @@ function importAll(r) {
 
 const images = importAll(require.context('./images/cards', false, /\.(png|jpe?g|svg)$/));
 
-const CardFaceUp = ({ id, label, suite, onClick, ...props }) => { 
+const CardFaceUp = ({ id, label, suite, onClick, ...props }) => {
   const newId = id.match(/[a-z]+|[^a-z]+/gi);
   const idSuite = newId[0].toUpperCase();
   let idValue = newId[1];
@@ -29,7 +29,6 @@ const CardFaceUp = ({ id, label, suite, onClick, ...props }) => {
   if (idValue === '11') {
     idValue = 'J';
   }
-  console.log('hej', id, newId, idValue)
 
   return(
     <div className={`Card Card-suite-${suite}`} onClick={onClick} {...props}>
@@ -43,7 +42,14 @@ const CardFaceDown = ({ onClick }) => (
   </div>
 );
 
+const CardEmpty = () => (
+  <div className={`Card`}>
+    <img src={images['purple_back.png']} alt='card background' />
+  </div>
+);
+
 export {
   CardFaceUp,
-  CardFaceDown
+  CardFaceDown,
+  CardEmpty
 };

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { deck } from './utils/';
 import CardTableau from './CardTableau';
-import { CardFaceDown } from './Card';
+import { CardFaceDown, CardEmpty } from './Card';
 import PileWaste from './PileWaste';
 
 import './App.css';
@@ -18,6 +18,10 @@ const getLastCardInPile = (cards) => {
 } 
 
 const setLastIsFaceUp = (cards) => {
+  if (cards.length === 0) {
+    return cards;
+  }
+
   const reverseCards = [...cards];
   const [last, ...allCards] = reverseCards.reverse();
 
@@ -59,6 +63,9 @@ function App() {
   const moveFromPile = (cardSourceIndex, pileType) => {
     const newPile = [...game[pileType]];
     newPile.splice(cardSourceIndex, newPile.length);
+    if (newPile.length > 0 && newPile[cardSourceIndex - 1].isFaceUp) {
+      return newPile;
+    }
     return setLastIsFaceUp(newPile);
   }
 
@@ -92,7 +99,6 @@ function App() {
     if (allowDropTableau(cardsToBeMoved, destCardIndex, destinationPile, destCard)) {
       const newDestination = moveToPile(cardsToBeMoved, destinationPile);
       const newSource = moveFromPile(cardIndexInPile, sourcePile);
-    
       setGame({
         ...game,
         [destinationPile]: newDestination,
@@ -141,7 +147,6 @@ function App() {
     if (allowFoundationDrop(cardsToBeMoved, destPile)) {
       const newDestination = moveToPile(cardsToBeMoved, destinationPile);
       const newSource = moveFromPile(cardIndexInPile, sourcePile);
-    
       setGame({
         ...game,
         [destinationPile]: newDestination,
@@ -235,11 +240,35 @@ function App() {
         <section className='Tableau'>
           {tableauPilesKeys.map((pileKey) => {
             const pile = game[pileKey];
+            // if (pile.length === 0) {
+            //   return (
+            //     <ul
+            //       className={`Tableau-pile empty}`}
+            //       key={pileKey}
+            //       style={{ position: 'relative' }}
+            //     >
+            //       <li
+            //         className='Tableau-card'
+            //         key={0 + pileKey}
+            //         onDrop={(event) => onDropTableau(event, { card: {}, cardIndex: 0, destinationPile: pileKey })}
+            //         onDragOver={allowDrop}
+            //         style={{
+            //           position: 'absolute',
+            //           width: '50px',
+            //         }}
+            //       >
+            //         <CardEmpty />
+            //       </li>
+            //     </ul>
+            //   );
+            // }
             return (
               <ul
                 className={`Tableau-pile ${getEmptyClass(pile)}`}
                 key={pileKey}
                 style={{ position: 'relative' }}
+                onDrop={(event) => onDropTableau(event, { card: {}, cardIndex: 0, destinationPile: pileKey })}
+                onDragOver={allowDrop}
               >
                 {pile.map((card, cardIndex) => {
                   return (
