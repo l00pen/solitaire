@@ -1,17 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
+import useUndo from 'use-undo';
 
 import { deck } from './utils/';
-import CardTableau from './CardTableau';
 import PileWaste from './PileWaste';
 import PileStock from './PileStock';
 import PileFoundation from './PileFoundation';
 import PileTableau from './PileTableau';
 
 import './App.css';
-
-const getEmptyClass = (list) => {
-  return list.length === 0 ? 'empty' : '';
-};
 
 const getLastCardInPile = (cards) => {
   const reverseCards = [...cards];
@@ -53,7 +49,8 @@ const initGame = {
 }
 
 function App() {
-  const [ game, setGame ] = useState(initGame);
+  const [ gameState, { set: setGame, undo } ] = useUndo(initGame);
+  const { present: game } = gameState;
   const tableauPilesKeys = Object.keys(game).filter(entry => RegExp('tableau').test(entry));
   const foundationPilesKeys = Object.keys(game).filter(entry => RegExp('foundation').test(entry));
 
@@ -166,7 +163,6 @@ function App() {
   }
 
   const onStockClickHandler = (ev, { card }) => {
-    console.log('onStockClickHandler', card)
     const newCard = { ...card, isFaceUp: true };
     const newDestination = moveToPile([newCard], 'waste');
     const newSource = moveFromPile(game.stock.length - 1, 'stock');
@@ -180,51 +176,52 @@ function App() {
 
   return (
     <div className="Game">
-        <section className='Game-top'>
-          <section className='Game-Foundation'>
-            {foundationPilesKeys.map((pileKey) => {
-              const pile = game[pileKey];
-              return (
-                <PileFoundation
-                  key={pileKey}
-                  pile={pile}
-                  pileId={pileKey}
-                  onDropFoundation={onDropFoundation}
-                  allowDrop={allowDrop}
-                />
-              )
-            })}
-          </section>
-          <div className='Game-stockAndWaste'>
-            <section className='Game-Waste'>
-              <PileWaste
-                pile={game.waste}
-                onDragStart={onDragStart} 
-              />
-            </section>
-            <section className='Game-Stock'>
-              <PileStock
-                onClick={onStockClickHandler}
-                pile={game.stock}
-              />
-            </section>
-          </div>
-        </section>
-        <section className='Game-Tableau'>
-          {tableauPilesKeys.map((pileKey) => {
+      <button onClick={undo}>UNDO</button>
+      <section className='Game-top'>
+        <section className='Game-Foundation'>
+          {foundationPilesKeys.map((pileKey) => {
             const pile = game[pileKey];
             return (
-              <PileTableau
+              <PileFoundation
                 key={pileKey}
                 pile={pile}
-                pileKey={pileKey}
+                pileId={pileKey}
+                onDropFoundation={onDropFoundation}
                 allowDrop={allowDrop}
-                onDropTableau={onDropTableau}
-                onDragStart={onDragStart}
               />
             )
           })}
         </section>
+        <div className='Game-stockAndWaste'>
+          <section className='Game-Waste'>
+            <PileWaste
+              pile={game.waste}
+              onDragStart={onDragStart} 
+            />
+          </section>
+          <section className='Game-Stock'>
+            <PileStock
+              onClick={onStockClickHandler}
+              pile={game.stock}
+            />
+          </section>
+        </div>
+      </section>
+      <section className='Game-Tableau'>
+        {tableauPilesKeys.map((pileKey) => {
+          const pile = game[pileKey];
+          return (
+            <PileTableau
+              key={pileKey}
+              pile={pile}
+              pileKey={pileKey}
+              allowDrop={allowDrop}
+              onDropTableau={onDropTableau}
+              onDragStart={onDragStart}
+            />
+          )
+        })}
+      </section>
     </div>
   );
 }
