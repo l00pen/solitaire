@@ -2,6 +2,7 @@ import React from 'react';
 
 import CardTableau from '../CardTableau';
 import Pile, { PileEmpty } from '../Pile';
+// import { CardAsListItem } from '../Card';
 
 import './styles.css';
 
@@ -19,7 +20,6 @@ const PileTableau = ({ pile, pileKey, allowDrop, onDropTableau, onDragStart }) =
       {pile.map((card, cardIndex) => {
         return (
           <li
-            className='Tableau-card'
             key={card.id + pileKey}
             onDrop={(event) => onDropTableau(event, { card, cardIndex, destinationPile: pileKey })}
             onDragOver={allowDrop}

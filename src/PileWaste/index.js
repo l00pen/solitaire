@@ -13,7 +13,7 @@ const PileWaste = ({ pile, onDragStart }) => {
     <Pile>
       {pile.map((card, i) => {
         return (
-          <li className='App-card Waste-card' key={card.id}>
+          <li className='Waste-card' key={card.id}>
             <CardTableau
               {...card}
               onDragStart={(event) => onDragStart(event, {

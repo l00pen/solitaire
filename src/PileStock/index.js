@@ -12,7 +12,7 @@ const PileStock = ({ pile, onClick }) => {
   return (
     <Pile>
       {pile.map((card, cardIndex) => (
-        <li className='App-card Stock-card' key={card.id}>
+        <li className='Stock-card' key={card.id}>
           <CardFaceDown {...card} onClick={(event) => onClick(event, { card })} />
         </li>
       ))}

@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 import './styles.css';
 
@@ -9,6 +10,8 @@ function importAll(r) {
 }
 
 const images = importAll(require.context('./images/cards', false, /\.(png|jpe?g|svg)$/));
+
+const CardAsListItem = styled.li``;
 
 const CardFaceUp = ({ id, label, suite, onClick, ...props }) => {
   const newId = id.match(/[a-z]+|[^a-z]+/gi);
@@ -51,5 +54,6 @@ const CardEmpty = () => (
 export {
   CardFaceUp,
   CardFaceDown,
-  CardEmpty
+  CardEmpty,
+  CardAsListItem
 };

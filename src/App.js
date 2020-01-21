@@ -179,9 +179,9 @@ function App() {
   }
 
   return (
-    <div className="App App-header">
+    <div className="Game">
         <section className='Game-top'>
-          <section className='Foundation'>
+          <section className='Game-Foundation'>
             {foundationPilesKeys.map((pileKey) => {
               const pile = game[pileKey];
               return (
@@ -196,13 +196,13 @@ function App() {
             })}
           </section>
           <div className='Game-stockAndWaste'>
-            <section className='Waste'>
+            <section className='Game-Waste'>
               <PileWaste
                 pile={game.waste}
                 onDragStart={onDragStart} 
               />
             </section>
-            <section className='Stock'>
+            <section className='Game-Stock'>
               <PileStock
                 onClick={onStockClickHandler}
                 pile={game.stock}
@@ -210,7 +210,7 @@ function App() {
             </section>
           </div>
         </section>
-        <section className='Tableau'>
+        <section className='Game-Tableau'>
           {tableauPilesKeys.map((pileKey) => {
             const pile = game[pileKey];
             return (

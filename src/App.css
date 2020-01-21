@@ -2,27 +2,9 @@ html {
   font-size: 16px;
 }
 
-.App {
+.Game {
   text-align: center;
   background-color: #282c34;
-}
-
-.App-logo {
-  height: 40vmin;
-}
-
-/*.App-header {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}*/
-
-.App-link {
-  color: #09d3ac;
 }
 
 .Game-top {
@@ -36,58 +18,13 @@ html {
   display: flex;
 }
 
-.App-deck {
-  list-style: none;
-  padding: 0;
-  margin: 0.5em 0;
+.Game-Foundation {
   display: flex;
-  font-size: 5em;
-  justify-content: space-between;
-  width: 90%;
 }
 
-.Tableau-card,
-.App-card {
-  list-style: none;
-}
-
-.Tableau {
+.Game-Tableau {
   display: flex;
   justify-content: space-between;
   width: 80%;
   height: 100vh;
-}
-
-.Tableau-pile {
-  list-style: none;
-  padding: 0;
-  margin: 1em 0;
-}
-
-.Foundation {
-  display: flex;
-}
-
-.Foundation-pile,
-.Stock-pile,
-.Empty-pile,
-.Tableau-pile {
-  width: 3.5em;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.Stock-pile {
-  position: relative;
-}
-
-.Foundation-pile.empty,
-.Stock-pile.empty,
-.Tableau-pile.empty {
-  border: 1px solid aliceblue;
-  height: 4.17em;
-}
-
-.Tableau-card {
 }

@@ -22,7 +22,7 @@ const PileFoundation = ({ pile, pileId, onDropFoundation, allowDrop }) => {
     >
       {pile.map((card, cardIndex) => (
         <li
-          className='App-card Foundation-card'
+          className='Foundation-card'
           key={card.id}
         >
           <CardTableau {...card} />
