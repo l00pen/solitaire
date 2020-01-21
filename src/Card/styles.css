@@ -1,7 +1,9 @@
 .Card {
-  color: blue;
-  background-color: #fff;
-  font-size: 5em;
+  width: 50px;
+}
+
+.Card img {
+  width: 100%;
 }
 
 .Card-suite-spades,
