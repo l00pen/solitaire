@@ -1,7 +1,13 @@
 import React from 'react';
 import useUndo from 'use-undo';
 
-import { klondike, foundationDropHandler, tableauDropHandler, stockClickHandler } from './utils/klondike';
+import {
+  klondike,
+  foundationDropHandler,
+  tableauDropHandler,
+  stockClickHandler,
+  reRunDeckHandler,
+} from './utils/klondike';
 import { allowDrop, draggable } from './utils/';
 import PileWaste from './PileWaste';
 import PileStock from './PileStock';
@@ -29,6 +35,10 @@ function App() {
 
   const onStockClick = (ev, clickData) => {
     setGame(stockClickHandler(ev, game, clickData));
+  }
+
+  const onReRunDeck = () => {
+    setGame(reRunDeckHandler(game));
   }
 
   return (
@@ -60,6 +70,7 @@ function App() {
             <PileStock
               onClick={onStockClick}
               pile={game.stock}
+              reRunDeck={onReRunDeck}
             />
           </section>
         </div>

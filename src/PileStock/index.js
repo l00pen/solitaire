@@ -6,9 +6,9 @@ import { CardStacked } from '../Card';
 
 import './styles.css';
 
-const PileStock = ({ pile, onClick }) => {
+const PileStock = ({ pile, onClick, reRunDeck }) => {
   if (pile.length === 0) {
-    return <PileEmpty />
+    return <PileEmpty onClick={reRunDeck} />
   }
   return (
     <Pile>

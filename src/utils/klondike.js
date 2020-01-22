@@ -142,6 +142,15 @@ const stockClickHandler = (ev, game, { card }) => {
   };
 }
 
+const reRunDeckHandler = (game) => {
+  const newStock = [...game.waste].reverse();
+  return {
+    ...game,
+    waste: [],
+    stock: newStock,
+  }
+}
+
 const klondike = {
   foundation0: [],
   foundation1: [],
@@ -179,4 +188,5 @@ export {
   foundationDropHandler,
   tableauDropHandler,
   stockClickHandler,
+  reRunDeckHandler,
 }
