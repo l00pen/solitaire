@@ -1,7 +1,5 @@
 import { shuffleArray, clubs, diamonds, hearts, spades } from './index';
 
-const deck = shuffleArray([clubs, diamonds, hearts, spades].flat());
-
 const setLastIsFaceUp = (cards) => {
   if (cards.length === 0) {
     return cards;
@@ -151,42 +149,46 @@ const reRunDeckHandler = (game) => {
   }
 }
 
-const klondike = {
-  foundation0: [],
-  foundation1: [],
-  foundation2: [],
-  foundation3: [],
-  tableau0: setLastIsFaceUp(deck.slice(0, 1)),
-  tableau1: setLastIsFaceUp(deck.slice(1, 3)),
-  tableau2: setLastIsFaceUp(deck.slice(3, 6)),
-  tableau3: setLastIsFaceUp(deck.slice(6, 10)),
-  tableau4: setLastIsFaceUp(deck.slice(10, 15)),
-  tableau5: setLastIsFaceUp(deck.slice(15, 21)),
-  tableau6: setLastIsFaceUp(deck.slice(21, 28)),
-  stock: deck.slice(28),
-  waste: [],
+const init = () => {
+  const deck = shuffleArray([clubs, diamonds, hearts, spades].flat());
 
-  tableauPilesKeys: [
-    'tableau0',
-    'tableau1',
-    'tableau2',
-    'tableau3',
-    'tableau4',
-    'tableau5',
-    'tableau6',
-  ],
-  foundationPilesKeys: [
-    'foundation0',
-    'foundation1',
-    'foundation2',
-    'foundation3',
-  ],
+  return {
+    foundation0: [],
+    foundation1: [],
+    foundation2: [],
+    foundation3: [],
+    tableau0: setLastIsFaceUp(deck.slice(0, 1)),
+    tableau1: setLastIsFaceUp(deck.slice(1, 3)),
+    tableau2: setLastIsFaceUp(deck.slice(3, 6)),
+    tableau3: setLastIsFaceUp(deck.slice(6, 10)),
+    tableau4: setLastIsFaceUp(deck.slice(10, 15)),
+    tableau5: setLastIsFaceUp(deck.slice(15, 21)),
+    tableau6: setLastIsFaceUp(deck.slice(21, 28)),
+    stock: deck.slice(28),
+    waste: [],
+
+    tableauPilesKeys: [
+      'tableau0',
+      'tableau1',
+      'tableau2',
+      'tableau3',
+      'tableau4',
+      'tableau5',
+      'tableau6',
+    ],
+    foundationPilesKeys: [
+      'foundation0',
+      'foundation1',
+      'foundation2',
+      'foundation3',
+    ],
+  };
 }
 
 export {
-  klondike,
   foundationDropHandler,
   tableauDropHandler,
   stockClickHandler,
   reRunDeckHandler,
+  init
 }

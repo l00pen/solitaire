@@ -2,7 +2,7 @@ import React from 'react';
 import useUndo from 'use-undo';
 
 import {
-  klondike,
+  init,
   foundationDropHandler,
   tableauDropHandler,
   stockClickHandler,
@@ -17,7 +17,7 @@ import PileTableau from './PileTableau';
 import './App.css';
 
 function App() {
-  const initGame = klondike;
+  const initGame = init();
   const [ gameState, { set: setGame, undo } ] = useUndo(initGame);
   const { present: game } = gameState;
 
@@ -41,9 +41,14 @@ function App() {
     setGame(reRunDeckHandler(game));
   }
 
+  const redeal = () => {
+    setGame(init())
+  }
+
   return (
     <div className="Game">
-      <button onClick={undo}>UNDO</button>
+      <button onClick={undo}>Undo</button>
+      <button onClick={redeal}>New Deal</button>
       <section className='Game-top'>
         <section className='Game-Foundation'>
           {foundationPilesKeys.map((pileKey) => {
