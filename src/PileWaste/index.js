@@ -2,6 +2,7 @@ import React from 'react';
 
 import CardTableau from '../CardTableau';
 import Pile, { PileEmpty } from '../Pile';
+import { CardStacked } from '../Card';
 
 import './styles.css';
 
@@ -13,7 +14,7 @@ const PileWaste = ({ pile, onDragStart }) => {
     <Pile>
       {pile.map((card, i) => {
         return (
-          <li className='Waste-card' key={card.id}>
+          <CardStacked key={card.id}>
             <CardTableau
               {...card}
               onDragStart={(event) => onDragStart(event, {
@@ -23,7 +24,7 @@ const PileWaste = ({ pile, onDragStart }) => {
               })}
               draggable={!!card.isFaceUp}
             />
-          </li>
+          </CardStacked>
         );
       })}
     </Pile>

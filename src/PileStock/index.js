@@ -2,6 +2,7 @@ import React from 'react';
 
 import { CardFaceDown } from '../Card';
 import Pile, { PileEmpty } from '../Pile';
+import { CardStacked } from '../Card';
 
 import './styles.css';
 
@@ -12,9 +13,9 @@ const PileStock = ({ pile, onClick }) => {
   return (
     <Pile>
       {pile.map((card, cardIndex) => (
-        <li className='Stock-card' key={card.id}>
+        <CardStacked key={card.id}>
           <CardFaceDown {...card} onClick={(event) => onClick(event, { card })} />
-        </li>
+        </CardStacked>
       ))}
     </Pile>
   );

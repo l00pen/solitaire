@@ -11,8 +11,6 @@ function importAll(r) {
 
 const images = importAll(require.context('./images/cards', false, /\.(png|jpe?g|svg)$/));
 
-const CardAsListItem = styled.li``;
-
 const CardFaceUp = ({ id, label, suite, onClick, ...props }) => {
   const newId = id.match(/[a-z]+|[^a-z]+/gi);
   const idSuite = newId[0].toUpperCase();
@@ -51,9 +49,51 @@ const CardEmpty = () => (
   </div>
 );
 
+const CardStacked = styled.li`
+  position: absolute;
+`;
+
+const CardFan = styled.li`
+  position: absolute;
+  width: 50px;
+  top: ${(props) => (props.cardIndex * 10)}px;
+`;
+
+const CardDroppable = ({ children, data, dropHandler }) => {
+  const props = {
+    onDragOver: (ev) => {
+      ev.preventDefault();
+    },
+    onDrop: (ev) => {
+      ev.preventDefault();
+      const dataFromTransfer = ev.dataTransfer.getData("pip");
+
+      dropHandler(data, JSON.parse(dataFromTransfer))
+    },
+  };
+
+  const tmp = React.cloneElement(children, props);
+  return tmp;
+};
+
+const CardDraggable = ({ children, data, draggable }) => {
+  const props = {
+    onDragStart: (ev) => {
+      ev.dataTransfer.setData("pip", JSON.stringify(data));
+    },
+    draggable,
+  };
+
+  const tmp = React.cloneElement(children, props);
+  return tmp;
+};
+
 export {
   CardFaceUp,
   CardFaceDown,
   CardEmpty,
-  CardAsListItem
+  CardFan,
+  CardStacked,
+  CardDroppable,
+  CardDraggable
 };

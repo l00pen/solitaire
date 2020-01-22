@@ -2,33 +2,35 @@ import React from 'react';
 
 import CardTableau from '../CardTableau';
 import Pile, { PileEmpty } from '../Pile';
+import { CardStacked, CardDroppable } from '../Card';
 
 import './styles.css';
 
-const PileFoundation = ({ pile, pileId, onDropFoundation, allowDrop }) => {
+const PileFoundation = ({ pile, pileId, onDrop }) => {
   if (pile.length === 0) {
     return (
-      <PileEmpty
-        onDrop={(event) => onDropFoundation(event, { destinationPile: pileId })}
-        onDragOver={allowDrop}
-      />
+      <CardDroppable
+        data={{ destinationPile: pileId }}
+        dropHandler={onDrop}
+      >
+        <PileEmpty />
+      </CardDroppable>
     )
   }
 
   return (
-    <Pile
-      onDrop={(event) => onDropFoundation(event, { destinationPile: pileId })}
-      onDragOver={allowDrop}
+    <CardDroppable
+      data={{ destinationPile: pileId }}
+      dropHandler={onDrop}
     >
-      {pile.map((card, cardIndex) => (
-        <li
-          className='Foundation-card'
-          key={card.id}
-        >
-          <CardTableau {...card} />
-        </li>
-      ))}
-    </Pile>
+      <Pile>
+        {pile.map((card, cardIndex) => (
+          <CardStacked key={card.id}>
+            <CardTableau {...card} />
+          </CardStacked>
+        ))}
+      </Pile>
+    </CardDroppable>
   )
 }
 

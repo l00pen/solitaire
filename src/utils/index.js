@@ -17,6 +17,22 @@ const shuffleArray = (array) => {
   return array;
 }
 
+const allowDrop = (ev) => {
+  ev.preventDefault();
+}
+
+const droppable = (dropData, state, handler) => {
+  const newState = handler(
+    state,
+    dropData
+  );
+  return newState;
+}
+
+const draggable = (ev, { card, cardIndexInPile, sourcePile }) => {
+  ev.dataTransfer.setData("pip", JSON.stringify({ card, cardIndexInPile, sourcePile }));
+}
+
 const spades = [
 { 
   id: 's1',
@@ -450,4 +466,11 @@ const deck = shuffleArray([clubs, diamonds, hearts, spades].flat());
 export {
   shuffleArray,
   deck,
+  clubs,
+  spades,
+  diamonds,
+  hearts,
+  allowDrop,
+  draggable,
+  droppable
 };

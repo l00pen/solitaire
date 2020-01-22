@@ -10,8 +10,10 @@ html {
 .Game-top {
   display: flex;
   justify-content: space-between;
-  width: 80%;
+  width: 50%;
+    margin: 0 auto;
   margin-bottom: 3em;
+  height: 20vh;
 }
 
 .Game-stockAndWaste {
@@ -25,6 +27,7 @@ html {
 .Game-Tableau {
   display: flex;
   justify-content: space-between;
-  width: 80%;
-  height: 100vh;
+  width: 50%;
+  height: 80vh;
+  margin: 0 auto;
 }
