@@ -9,7 +9,7 @@ import PileTableau from './PileTableau';
 
 import './App.css';
 
-function App({ game, undo, redeal, reRunDeck, stockClickHandler, foundationDropHandler, tableauDropHandler, tableauClickHandler }) {
+function App({ game, undo, redeal, reRunDeck, stockClickHandler, foundationDropHandler, tableauDropHandler, tableauClickHandler, wasteClickHandler }) {
   const { tableauPilesKeys, foundationPilesKeys } = game;
 
   const onDropTableau = (dropData, dragData) => {
@@ -48,7 +48,7 @@ function App({ game, undo, redeal, reRunDeck, stockClickHandler, foundationDropH
         </section>
         <div className='Game-stockAndWaste'>
           <section className='Game-Waste'>
-            <PileWaste pile={game.waste} />
+            <PileWaste pile={game.waste} onClick={wasteClickHandler} />
           </section>
           <section className='Game-Stock'>
             <PileStock
@@ -87,6 +87,7 @@ const mapDispatchToProps = dispatch => ({
   reRunDeck: () => dispatch({ type: 'RE_RUN_DECK'}),
   stockClickHandler: (payload) => dispatch({ type: 'CLICK_STOCK', payload }),
   tableauClickHandler: (payload) => dispatch({ type: 'CLICK_TABLEAU', payload }),
+  wasteClickHandler: (payload) => dispatch({ type: 'CLICK_WASTE', payload }),
   foundationDropHandler: (payload) => dispatch({ type: 'DROP_FOUNDATION', payload }),
   tableauDropHandler: (payload) => dispatch({ type: 'DROP_TABLEAU', payload }),
 })
