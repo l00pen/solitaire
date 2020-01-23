@@ -37,8 +37,8 @@ const CardFaceUp = ({ id, label, suite, onClick, ...props }) => {
     </div>
   )}
 
-const CardFaceDown = ({ onClick }) => (
-  <div className={`Card`} onClick={() => onClick ? onClick() : null}>
+const CardFaceDown = (props) => (
+  <div className={`Card`} {...props}>
     <img src={images['green_back.png']} alt='card background' />
   </div>
 );
@@ -88,6 +88,13 @@ const CardDraggable = ({ children, data, draggable }) => {
   return tmp;
 };
 
+const CardToggleFaceUp = ({ label, suite, isFaceUp, onClick, ...props }) => {
+  if (isFaceUp) {
+    return <CardFaceUp suite={suite} label={label} onClick={onClick} {...props} />;
+  }
+  return <CardFaceDown />;
+}
+
 export {
   CardFaceUp,
   CardFaceDown,
@@ -95,5 +102,6 @@ export {
   CardFan,
   CardStacked,
   CardDroppable,
-  CardDraggable
+  CardDraggable,
+  CardToggleFaceUp
 };

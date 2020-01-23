@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CardTableau from '../CardTableau';
+import { CardFaceUp } from '../Card';
 import Pile, { PileEmpty } from '../Pile';
 import { CardStacked, CardDroppable } from '../Card';
 
@@ -26,7 +26,7 @@ const PileFoundation = ({ pile, pileId, onDrop }) => {
       <Pile>
         {pile.map((card, cardIndex) => (
           <CardStacked key={card.id}>
-            <CardTableau {...card} />
+            <CardFaceUp id={card.id} label={card.label} suite={card.suite} />
           </CardStacked>
         ))}
       </Pile>

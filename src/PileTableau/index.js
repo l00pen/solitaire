@@ -1,8 +1,7 @@
 import React from 'react';
 
-import CardTableau from '../CardTableau';
 import Pile, { PileEmpty } from '../Pile';
-import { CardFan, CardDroppable, CardDraggable } from '../Card';
+import { CardFan, CardDroppable, CardDraggable, CardToggleFaceUp } from '../Card';
 
 import './styles.css';
 
@@ -31,7 +30,7 @@ const PileTableau = ({ pile, pileKey, onDrop }) => {
                 data={{ card, cardIndexInPile: cardIndex, sourcePile: pileKey }}
                 draggable={!!card.isFaceUp}
               >
-                <CardTableau {...card} />
+                <CardToggleFaceUp {...card} />
               </CardDraggable>
             </CardFan>
           </CardDroppable>

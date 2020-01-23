@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CardTableau from '../CardTableau';
+import { CardFaceUp } from '../Card';
 import Pile, { PileEmpty } from '../Pile';
 import { CardStacked, CardDraggable } from '../Card';
 
@@ -20,7 +20,7 @@ const PileWaste = ({ pile }) => {
             draggable={!!card.isFaceUp}
           >
             <CardStacked>
-              <CardTableau {...card} />
+              <CardFaceUp id={card.id} label={card.label} suite={card.suite} />
             </CardStacked>
           </CardDraggable>
         );
