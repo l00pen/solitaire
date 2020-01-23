@@ -17,22 +17,6 @@ const shuffleArray = (array) => {
   return array;
 }
 
-const allowDrop = (ev) => {
-  ev.preventDefault();
-}
-
-const droppable = (dropData, state, handler) => {
-  const newState = handler(
-    state,
-    dropData
-  );
-  return newState;
-}
-
-const draggable = (ev, { card, cardIndexInPile, sourcePile }) => {
-  ev.dataTransfer.setData("pip", JSON.stringify({ card, cardIndexInPile, sourcePile }));
-}
-
 const spades = [
 { 
   id: 's1',
@@ -461,6 +445,47 @@ const clubs = [
   }
 ];
 
+const setLastIsFaceUp = (cards) => {
+  if (cards.length === 0) {
+    return cards;
+  }
+
+  const reverseCards = [...cards];
+  const [last, ...allCards] = reverseCards.reverse();
+
+  return [
+    ...allCards,
+    {
+      ...last,
+      isFaceUp: true,
+    }
+  ];
+}
+
+const moveToPile = (cards, pile) => {
+  const newPile = [...pile].concat(cards);
+  return newPile;
+}
+
+const moveFromPile = (cardSourceIndex, pile) => {
+  const newPile = [...pile];
+  newPile.splice(cardSourceIndex, newPile.length);
+  if (newPile.length > 0 && newPile[cardSourceIndex - 1].isFaceUp) {
+    return newPile;
+  }
+  return setLastIsFaceUp(newPile);
+}
+
+const grabCardsToBeMoved = (cardSourceIndex, pile) => {
+  return pile.slice(cardSourceIndex, pile.length);
+}
+
+const getLastCardInPile = (cards) => {
+  const reverseCards = [...cards];
+  const [last, ] = reverseCards.reverse();
+  return last;
+}
+
 const deck = shuffleArray([clubs, diamonds, hearts, spades].flat());
 
 export {
@@ -470,7 +495,9 @@ export {
   spades,
   diamonds,
   hearts,
-  allowDrop,
-  draggable,
-  droppable
+  setLastIsFaceUp,
+  moveToPile,
+  moveFromPile,
+  grabCardsToBeMoved,
+  getLastCardInPile,
 };

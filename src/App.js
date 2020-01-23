@@ -1,14 +1,7 @@
 import React from 'react';
-import useUndo from 'use-undo';
+import { connect } from 'react-redux'
 
-import {
-  init,
-  foundationDropHandler,
-  tableauDropHandler,
-  stockClickHandler,
-  reRunDeckHandler,
-} from './utils/klondike';
-import { allowDrop, draggable } from './utils/';
+
 import PileWaste from './PileWaste';
 import PileStock from './PileStock';
 import PileFoundation from './PileFoundation';
@@ -16,33 +9,19 @@ import PileTableau from './PileTableau';
 
 import './App.css';
 
-function App() {
-  const initGame = init();
-  const [ gameState, { set: setGame, undo } ] = useUndo(initGame);
-  const { present: game } = gameState;
-
-  const { tableauPilesKeys, foundationPilesKeys } = initGame;
+function App({ game, undo, redeal, reRunDeck, stockClickHandler, foundationDropHandler, tableauDropHandler }) {
+  const { tableauPilesKeys, foundationPilesKeys } = game;
 
   const onDropTableau = (dropData, dragData) => {
-    const newGameState = tableauDropHandler(game, dropData, dragData);
-    setGame(newGameState)
+    tableauDropHandler({ dropData, dragData });
   }
 
   const onDropFoundation = (dropData, dragData) => {
-    const newGameState = foundationDropHandler(game, dropData, dragData)
-    setGame(newGameState)
+    foundationDropHandler({ dropData, dragData })
   }
 
   const onStockClick = (ev, clickData) => {
-    setGame(stockClickHandler(ev, game, clickData));
-  }
-
-  const onReRunDeck = () => {
-    setGame(reRunDeckHandler(game));
-  }
-
-  const redeal = () => {
-    setGame(init())
+    stockClickHandler(clickData);
   }
 
   return (
@@ -59,23 +38,19 @@ function App() {
                 pile={pile}
                 pileId={pileKey}
                 onDrop={onDropFoundation}
-                allowDrop={allowDrop}
               />
             )
           })}
         </section>
         <div className='Game-stockAndWaste'>
           <section className='Game-Waste'>
-            <PileWaste
-              pile={game.waste}
-              onDragStart={draggable} 
-            />
+            <PileWaste pile={game.waste} />
           </section>
           <section className='Game-Stock'>
             <PileStock
               onClick={onStockClick}
               pile={game.stock}
-              reRunDeck={onReRunDeck}
+              reRunDeck={reRunDeck}
             />
           </section>
         </div>
@@ -97,4 +72,20 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = state => ({
+  game: state.klondike.present,
+})
+
+const mapDispatchToProps = dispatch => ({
+  undo: () => dispatch({ type: 'UNDO' }),
+  redeal: () => dispatch({ type: 'RE_DEAL' }),
+  reRunDeck: () => dispatch({ type: 'RE_RUN_DECK'}),
+  stockClickHandler: (payload) => dispatch({ type: 'CLICK_STOCK', payload }),
+  foundationDropHandler: (payload) => dispatch({ type: 'DROP_FOUNDATION', payload }),
+  tableauDropHandler: (payload) => dispatch({ type: 'DROP_TABLEAU', payload }),
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)
