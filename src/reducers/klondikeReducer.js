@@ -60,6 +60,21 @@ const stockClickHandler = (game, { card }) => {
   };
 }
 
+const tableauClickHandler = (state, { card, cardIndexInPile, sourcePile, }) => {
+  const allowedFoundationDropOn1 = allowFoundationDrop([card], state['foundation0']);
+  if (allowedFoundationDropOn1) {
+    const cardsToBeMoved = grabCardsToBeMoved(cardIndexInPile, state[sourcePile])
+    const newDestination = moveToPile(cardsToBeMoved, state['foundation0']);
+    const newSource = moveFromPile(cardIndexInPile, state[sourcePile]);
+    return {
+      ...state,
+      foundation0: newDestination,
+      [sourcePile]: newSource,
+    };
+  }
+  return state;
+}
+
 const allowFoundationDrop = (cardsToBeMoved, destPile) => {
   const cardToBeMoved = cardsToBeMoved[0];
 
@@ -154,6 +169,9 @@ const klondikeReducer = (state = init(), action) => {
       }
     case 'CLICK_STOCK':
       return stockClickHandler(state, action.payload)
+    case 'CLICK_TABLEAU':
+      console.log('CLICK_TABLEAU', action)
+      return tableauClickHandler(state, action.payload)
     case 'DROP_FOUNDATION':
       return foundationDropHandler(state, action.payload.dropData, action.payload.dragData, )
     case 'DROP_TABLEAU':

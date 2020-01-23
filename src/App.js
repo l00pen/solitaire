@@ -9,7 +9,7 @@ import PileTableau from './PileTableau';
 
 import './App.css';
 
-function App({ game, undo, redeal, reRunDeck, stockClickHandler, foundationDropHandler, tableauDropHandler }) {
+function App({ game, undo, redeal, reRunDeck, stockClickHandler, foundationDropHandler, tableauDropHandler, tableauClickHandler }) {
   const { tableauPilesKeys, foundationPilesKeys } = game;
 
   const onDropTableau = (dropData, dragData) => {
@@ -20,8 +20,12 @@ function App({ game, undo, redeal, reRunDeck, stockClickHandler, foundationDropH
     foundationDropHandler({ dropData, dragData })
   }
 
-  const onStockClick = (ev, clickData) => {
+  const onStockClick = (clickData) => {
     stockClickHandler(clickData);
+  }
+
+  const onClickTableau = (clickData) => {
+    tableauClickHandler(clickData);
   }
 
   return (
@@ -64,6 +68,7 @@ function App({ game, undo, redeal, reRunDeck, stockClickHandler, foundationDropH
               pile={pile}
               pileKey={pileKey}
               onDrop={onDropTableau}
+              onClick={onClickTableau}
             />
           )
         })}
@@ -81,6 +86,7 @@ const mapDispatchToProps = dispatch => ({
   redeal: () => dispatch({ type: 'RE_DEAL' }),
   reRunDeck: () => dispatch({ type: 'RE_RUN_DECK'}),
   stockClickHandler: (payload) => dispatch({ type: 'CLICK_STOCK', payload }),
+  tableauClickHandler: (payload) => dispatch({ type: 'CLICK_TABLEAU', payload }),
   foundationDropHandler: (payload) => dispatch({ type: 'DROP_FOUNDATION', payload }),
   tableauDropHandler: (payload) => dispatch({ type: 'DROP_TABLEAU', payload }),
 })

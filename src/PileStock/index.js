@@ -14,7 +14,7 @@ const PileStock = ({ pile, onClick, reRunDeck }) => {
     <Pile>
       {pile.map((card, cardIndex) => (
         <CardStacked key={card.id}>
-          <CardFaceDown onClick={(event) => onClick(event, { card })} />
+          <CardFaceDown onClick={() => onClick({ card })} />
         </CardStacked>
       ))}
     </Pile>

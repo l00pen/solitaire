@@ -5,7 +5,7 @@ import { CardFan, CardDroppable, CardDraggable, CardToggleFaceUp } from '../Card
 
 import './styles.css';
 
-const PileTableau = ({ pile, pileKey, onDrop }) => {
+const PileTableau = ({ pile, pileKey, onDrop, onClick }) => {
   if (pile.length === 0) {
     return (
       <CardDroppable
@@ -30,7 +30,7 @@ const PileTableau = ({ pile, pileKey, onDrop }) => {
                 data={{ card, cardIndexInPile: cardIndex, sourcePile: pileKey }}
                 draggable={!!card.isFaceUp}
               >
-                <CardToggleFaceUp {...card} />
+                <CardToggleFaceUp {...card} onClick={() => onClick({ card, cardIndexInPile: cardIndex, sourcePile: pileKey })} />
               </CardDraggable>
             </CardFan>
           </CardDroppable>
