@@ -7,11 +7,22 @@ html {
   background-color: #282c34;
 }
 
+.Game__dashboard {
+  display: flex;
+  min-height: 20vh;
+  width: 50%;
+  margin: 0 auto;
+}
+
+.Game__section {
+  min-height: 80vh;
+}
+
 .Game-top {
   display: flex;
   justify-content: space-between;
   width: 50%;
-    margin: 0 auto;
+  margin: 0 auto;
   margin-bottom: 3em;
   height: 20vh;
 }
