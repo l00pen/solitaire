@@ -12,6 +12,8 @@ import {
   createEmptyPiles,
   getCardsFromDeck,
   everyCardIsSameSuite,
+  arrayToObject,
+  getLastCardInPile,
 } from '../utils/';
 
 const createDeck = () => {
@@ -32,26 +34,18 @@ const createFoundationPiles = (pileKeys) => {
 
 const createTableauPilesFromDeck = (deck, pileKeys) => {
   const splitAtNr = 4;
-  const tableauPiles = pileKeys.reduce((mem, obj, i) => {
+  const pilesWithCards = pileKeys.map((_, i) => {
     const nrOfCards = i < splitAtNr ? 6 : 5;
     const cards = getCardsFromDeck(deck, nrOfCards);
-    return {
-      ...mem,
-      [obj]: setLastIsFaceUp(cards)
-    }
-  }, {});
-
-  return {
-    tableauPiles,
-  }
+    return setLastIsFaceUp(cards)
+  });
+  return arrayToObject(pileKeys, pilesWithCards);
 }
 
 const init = () => {
   let deck = shuffleArray(createDeck().flat());
   const foundation = createFoundationPiles(foundationPilesKeys);
-  const {
-    tableauPiles, 
-  } = createTableauPilesFromDeck(deck, tableauPilesKeys);
+  const tableauPiles = createTableauPilesFromDeck(deck, tableauPilesKeys);
   return {
     ...foundation,
     ...tableauPiles,
@@ -102,7 +96,7 @@ const findFirstAvailableFoundation = (state) => {
   return foundationPilesKeys[index];
 }
 
-const allowDropTableau = (cardsToBeMoved, destCardIndex, destinationPile, destCard) => {
+const allowDropTableau = (cardsToBeMoved, destinationPile) => {
   if (destinationPile.length === 0) {
     return true;
   }
@@ -112,11 +106,12 @@ const allowDropTableau = (cardsToBeMoved, destCardIndex, destinationPile, destCa
 
   // TODO, check that its an allowed sequence
   if (allIsHearts || allIsSpades) {
-    const firstCardToBeMoved = cardsToBeMoved[0];
-    const lastCardInDestPile = destCardIndex === destinationPile.length - 1;
-    const isRightValue = destCard.value === firstCardToBeMoved.value + 1;
 
-    return lastCardInDestPile && isRightValue;
+    const lastCardInPile = getLastCardInPile(destinationPile);
+    const firstCardToBeMoved = cardsToBeMoved[0];
+    const isRightValue = lastCardInPile.value === firstCardToBeMoved.value + 1;
+
+    return isRightValue;
   }
 
   return false;
@@ -158,14 +153,14 @@ const moveToFoundationPile = (state, pile) => {
 }
 
 const tableauDropHandler = (state, { dropData, dragData }) => {
-  const {card: destCard, cardIndex: destCardIndex, destinationPile} = dropData;
+  const {destinationPile} = dropData;
   const {cardIndexInPile, sourcePile} = dragData;
   const stateSourcePile = state[sourcePile];
   const stateDestinationPile = state[destinationPile];
 
   const cardsToBeMoved = grabCardsToBeMoved(cardIndexInPile, stateSourcePile);
 
-  if (allowDropTableau(cardsToBeMoved, destCardIndex, stateDestinationPile, destCard)) {
+  if (allowDropTableau(cardsToBeMoved, stateDestinationPile)) {
     const newDestination = moveToPile(cardsToBeMoved, stateDestinationPile);
     const newSource = moveFromPile(cardIndexInPile, stateSourcePile);
 

@@ -22,7 +22,7 @@ const PileTableau = ({ pile, pileKey, onDrop, onClick }) => {
         return (
           <CardDroppable
             key={card.key + pileKey}
-            data={{ card, cardIndex, destinationPile: pileKey }}
+            data={{ destinationPile: pileKey }}
             dropHandler={onDrop}
           >
             <CardFan cardIndex={cardIndex}>

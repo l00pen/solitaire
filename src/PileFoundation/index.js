@@ -7,18 +7,18 @@ import { CardStacked, CardDroppable } from '../Card';
 import './styles.css';
 
 const PileFoundation = ({ pile, pileId, onDrop }) => {
-  if (pile.length === 0) {
-    return (
-      <CardDroppable
-        data={{ destinationPile: pileId }}
-        dropHandler={onDrop}
-      >
-        <PileEmpty />
-      </CardDroppable>
-    )
-  }
-
   if (onDrop) {
+    if (pile.length === 0) {
+      return (
+        <CardDroppable
+          data={{ destinationPile: pileId }}
+          dropHandler={onDrop}
+        >
+          <PileEmpty />
+        </CardDroppable>
+      )
+    }
+
     return (
       <CardDroppable
         data={{ destinationPile: pileId }}
@@ -33,6 +33,10 @@ const PileFoundation = ({ pile, pileId, onDrop }) => {
         </Pile>
       </CardDroppable>
     )
+  }
+
+  if (pile.length === 0) {
+    return <PileEmpty />;
   }
 
   return (

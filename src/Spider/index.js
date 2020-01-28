@@ -30,7 +30,7 @@ function Spider(props) {
   if (game.hasWon) {
     onHasWon();
   }
-  
+
   return (
     <div>
       <section className='Game-top'>

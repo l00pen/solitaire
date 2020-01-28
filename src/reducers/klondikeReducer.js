@@ -13,6 +13,7 @@ import {
   createArrayWithKeys,
   createEmptyPiles,
   getCardsFromDeck,
+  arrayToObject,
 } from '../utils/';
 
 const tableauPilesKeys = createArrayWithKeys('tableau', 7);
@@ -29,24 +30,16 @@ const createFoundationPiles = (pileKeys) => {
 }
 
 const createTableauPilesFromDeck = (deck, pileKeys) => {
-  const tmp2 = pileKeys.map((_, i) => {
+  const pilesWithCards = pileKeys.map((_, i) => {
     const cards = getCardsFromDeck(deck, i + 1);
-    return cards;
+    return setLastIsFaceUp(cards);
   });
 
-  const tableauPiles = tmp2.reduce((mem, cards, i) => {
-    const key = pileKeys[i]
-    return {
-      ...mem,
-      [key]: setLastIsFaceUp(cards)
-    }
-  }, {});
-
-  return tableauPiles;
+  return arrayToObject(pileKeys, pilesWithCards);
 }
 
 const init = () => {
-  const deck = shuffleArray(createDeck().flat());
+  let deck = shuffleArray(createDeck().flat());
   const foundation = createFoundationPiles(foundationPilesKeys);
   const tableauPiles = createTableauPilesFromDeck(deck, tableauPilesKeys);
   return {
@@ -89,10 +82,7 @@ const tableauClickHandler = (state, { card, cardIndexInPile, sourcePile }) => {
   })
 
   const allowedTableauPiles = state.tableauPilesKeys.filter((pile) => {
-    const destinationPile = state[pile];
-    const destCardIndex = destinationPile.length - 1;
-    const destCard = destinationPile[destCardIndex];
-    return allowDropTableau([card], destCardIndex, destinationPile, destCard);
+    return allowDropTableau([card], state[pile]);
   })
 
   const allowedPiles = allowedFoundationPiles.concat(allowedTableauPiles);
@@ -156,31 +146,24 @@ const foundationDropHandler = (game, {destinationPile}, {cardIndexInPile, source
   return game;
 }
 
-const allowDropTableau = (cardsToBeMoved, destCardIndex, destinationPile, destCard) => {
+const allowDropTableau = (cardsToBeMoved, destinationPile) => {
   if (destinationPile.length === 0) {
     return true;
   }
 
-  const firstCardToBeMoved = cardsToBeMoved[0];
-  const lastCardInPile = destCardIndex === destinationPile.length - 1;
-  const isOppositeColor = destCard.color !== firstCardToBeMoved.color;
-  const isRightValue = destCard.value === firstCardToBeMoved.value + 1;
+  const lastCardInPile = getLastCardInPile(destinationPile);
 
-  return destCard.isFaceUp && lastCardInPile && isOppositeColor && isRightValue;
+  const firstCardToBeMoved = cardsToBeMoved[0];
+  const isOppositeColor = lastCardInPile.color !== firstCardToBeMoved.color;
+  const isRightValue = lastCardInPile.value === firstCardToBeMoved.value + 1;
+
+  return lastCardInPile.isFaceUp && isOppositeColor && isRightValue;
 };
 
-const tableauDropHandler = (game, {
-  card: destCard,
-  cardIndex: destCardIndex,
-  destinationPile,
-},{
-  cardIndexInPile,
-  sourcePile,
-}) => {
-
+const tableauDropHandler = (game, {destinationPile}, {cardIndexInPile,sourcePile}) => {
   const cardsToBeMoved = grabCardsToBeMoved(cardIndexInPile, game[sourcePile]);
 
-  if (allowDropTableau(cardsToBeMoved, destCardIndex, game[destinationPile], destCard)) {
+  if (allowDropTableau(cardsToBeMoved, game[destinationPile])) {
     const newDestination = moveToPile(cardsToBeMoved, game[destinationPile]);
     const newSource = moveFromPile(cardIndexInPile, game[sourcePile]);
     return {

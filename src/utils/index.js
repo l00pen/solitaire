@@ -81,16 +81,6 @@ const createEmptyPiles = (piles) => {
   }, {})
 }
 
-const getCardsFromMutableDeck = (deck, nrOfCards) => {
-  const cards = [];
-  let counter = Math.min(nrOfCards, deck.length - 1);
-  while(counter > 0) {
-    cards.push(deck.pop());
-    counter--;
-  }
-  return {cards, deck};
-}
-
 const getCardsFromDeck = (deck, nrOfCards) => {
   const cards = [];
   let counter = Math.min(nrOfCards, deck.length - 1);
@@ -103,6 +93,17 @@ const getCardsFromDeck = (deck, nrOfCards) => {
 
 const everyCardIsSameSuite = (cards, suite) => {
   return cards.every(card => card.suite === suite);
+}
+
+const arrayToObject = (keys, values) => {
+  const object = values.reduce((mem, obj, i) => {
+    const key = keys[i]
+    return {
+      ...mem,
+      [key]: obj
+    }
+  }, {});
+  return object;
 }
 
 export {
@@ -120,7 +121,7 @@ export {
 
   createArrayWithKeys,
   createEmptyPiles,
-  getCardsFromMutableDeck,
   getCardsFromDeck,
   everyCardIsSameSuite,
+  arrayToObject,
 };
