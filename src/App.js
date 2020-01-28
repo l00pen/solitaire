@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { connect } from 'react-redux'
 
 
+import Spider from './Spider';
 import Klondike from './Klondike';
 
 import './App.css';
@@ -9,18 +10,17 @@ import './App.css';
 const getSelectedGameComponent = (game) => {
   switch(game) {
     case 'klondike':
-      console.log('bajs')
       return <Klondike />;
+    case 'spider':
+      return <Spider />;
     default:
       return <div>No valid game selected</div>;
   }
 }
 
 function App({ undo, redeal }) {
-  const [selectedGame, setSelectedGame] = useState('klondike');
-  
+  const [selectedGame, setSelectedGame] = useState('spider');
   const selectedGameComponent = getSelectedGameComponent(selectedGame);
-  console.log('hej', selectedGame, selectedGameComponent)
   return (
     <div className="Game">
       <div className="Game__dashboard">

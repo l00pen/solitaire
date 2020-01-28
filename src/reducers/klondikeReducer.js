@@ -12,8 +12,14 @@ import {
   getLastCardInPile,
 } from '../utils/';
 
+const createDeck = () => {
+  return [clubs, diamonds, hearts, spades].map((suite, i) => {
+    return suite.map((card) => ({...card, key: `${card.id}${i}`}))
+  })
+}
+
 const init = () => {
-  const deck = shuffleArray([clubs, diamonds, hearts, spades].flat());
+  const deck = shuffleArray(createDeck().flat());
 
   return {
     foundation0: [],

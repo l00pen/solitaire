@@ -21,7 +21,7 @@ const PileTableau = ({ pile, pileKey, onDrop, onClick }) => {
       {pile.map((card, cardIndex) => {
         return (
           <CardDroppable
-            key={card.id + pileKey}
+            key={card.key + pileKey}
             data={{ card, cardIndex, destinationPile: pileKey }}
             dropHandler={onDrop}
           >

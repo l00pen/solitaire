@@ -455,11 +455,15 @@ const setLastIsFaceUp = (cards) => {
 
   return [
     ...allCards,
-    {
-      ...last,
-      isFaceUp: true,
-    }
+    setFaceIsUp(last),
   ];
+}
+
+const setFaceIsUp = (card) => {
+  return {
+    ...card,
+    isFaceUp: true,
+  }
 }
 
 const moveToPile = (cards, pile) => {
@@ -500,4 +504,5 @@ export {
   moveFromPile,
   grabCardsToBeMoved,
   getLastCardInPile,
+  setFaceIsUp,
 };

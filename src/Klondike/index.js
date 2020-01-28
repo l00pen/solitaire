@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
-
 import PileWaste from '../PileWaste';
 import PileStock from '../PileStock';
 import PileFoundation from '../PileFoundation';

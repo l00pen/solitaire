@@ -12,6 +12,7 @@ html {
   min-height: 20vh;
   width: 50%;
   margin: 0 auto;
+  align-items: center;
 }
 
 .Game__section {
@@ -38,7 +39,7 @@ html {
 .Game-Tableau {
   display: flex;
   justify-content: space-between;
-  width: 50%;
+  min-width: 50%;
   height: 80vh;
   margin: 0 auto;
 }

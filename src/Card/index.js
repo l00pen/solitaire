@@ -11,7 +11,12 @@ function importAll(r) {
 
 const images = importAll(require.context('./images/cards', false, /\.(png|jpe?g|svg)$/));
 
-const CardFaceUp = ({ id, label, suite, onClick, ...props }) => {
+const CardFaceUp = (props) => {
+  const { id, label, suite, onClick, ...moreProps } = props
+  if (!id) {
+    console.log(props)
+    return <div className={`Card Card-suite-${suite}`}>Soemthings wrong with card</div>;
+  }
   const newId = id.match(/[a-z]+|[^a-z]+/gi);
   const idSuite = newId[0].toUpperCase();
   let idValue = newId[1];
@@ -32,7 +37,7 @@ const CardFaceUp = ({ id, label, suite, onClick, ...props }) => {
   }
 
   return(
-    <div className={`Card Card-suite-${suite}`} onClick={onClick} {...props}>
+    <div className={`Card Card-suite-${suite}`} onClick={onClick} {...moreProps}>
       <img src={images[`${idValue}${idSuite}.png`]} alt='card background' />
     </div>
   )}

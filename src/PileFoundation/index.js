@@ -18,19 +18,31 @@ const PileFoundation = ({ pile, pileId, onDrop }) => {
     )
   }
 
+  if (onDrop) {
+    return (
+      <CardDroppable
+        data={{ destinationPile: pileId }}
+        dropHandler={onDrop}
+      >
+        <Pile>
+          {pile.map((card, cardIndex) => (
+            <CardStacked key={card.key}>
+              <CardFaceUp id={card.id} label={card.label} suite={card.suite} />
+            </CardStacked>
+          ))}
+        </Pile>
+      </CardDroppable>
+    )
+  }
+
   return (
-    <CardDroppable
-      data={{ destinationPile: pileId }}
-      dropHandler={onDrop}
-    >
-      <Pile>
-        {pile.map((card, cardIndex) => (
-          <CardStacked key={card.id}>
-            <CardFaceUp id={card.id} label={card.label} suite={card.suite} />
-          </CardStacked>
-        ))}
-      </Pile>
-    </CardDroppable>
+    <Pile>
+      {pile.map((card, cardIndex) => (
+        <CardStacked key={card.key}>
+          <CardFaceUp id={card.id} label={card.label} suite={card.suite} />
+        </CardStacked>
+      ))}
+    </Pile>
   )
 }
 
