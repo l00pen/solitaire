@@ -9,6 +9,8 @@ import {
   grabCardsToBeMoved,
   setFaceIsUp,
   createArrayWithKeys,
+  createEmptyPiles,
+  getCardsFromMutableDeck,
 } from '../utils/';
 
 const createDeck = () => {
@@ -20,30 +22,43 @@ const createDeck = () => {
   })
 }
 
-export const tableauPilesKeys = createArrayWithKeys('tableau', 10);
-export const foundationPilesKeys = createArrayWithKeys('foundation', 8);
+const tableauPilesKeys = createArrayWithKeys('tableau', 10);
+const foundationPilesKeys = createArrayWithKeys('foundation', 8);
+
+const createFoundationPiles = (pileKeys) => {
+  return createEmptyPiles(pileKeys)
+}
+
+const createTableauPilesFromDeck = (deckOrigin, pileKeys) => {
+  let mutableDeck = [...deckOrigin];
+  const splitAtNr = 4;
+  const tableauPiles = pileKeys.reduce((mem, obj, i) => {
+    const nrOfCards = i < splitAtNr ? 6 : 5;
+    let { deck, cards } = getCardsFromMutableDeck(mutableDeck, nrOfCards);
+    mutableDeck = deck;
+    return {
+      ...mem,
+      [obj]: setLastIsFaceUp(cards)
+    }
+  }, {});
+
+  return {
+    deck: mutableDeck,
+    tableauPiles,
+  }
+}
 
 const init = () => {
   const deck = shuffleArray(createDeck().flat());
-  const foundation = foundationPilesKeys.reduce((mem, key) => {
-    return {
-      ...mem,
-      [key]: [],
-    }
-  }, {})
+  const foundation = createFoundationPiles(foundationPilesKeys);
+  const {
+    deck: stock,
+    tableauPiles, 
+  } = createTableauPilesFromDeck(deck, tableauPilesKeys);
   return {
     ...foundation,
-    tableau0: setLastIsFaceUp(deck.slice(0, 6)),
-    tableau1: setLastIsFaceUp(deck.slice(6, 12)),
-    tableau2: setLastIsFaceUp(deck.slice(12, 18)),
-    tableau3: setLastIsFaceUp(deck.slice(18, 24)),
-    tableau4: setLastIsFaceUp(deck.slice(24, 29)),
-    tableau5: setLastIsFaceUp(deck.slice(29, 34)),
-    tableau6: setLastIsFaceUp(deck.slice(34, 39)),
-    tableau7: setLastIsFaceUp(deck.slice(39, 44)),
-    tableau8: setLastIsFaceUp(deck.slice(44, 49)),
-    tableau9: setLastIsFaceUp(deck.slice(49, 54)),
-    stock: deck.slice(54),
+    ...tableauPiles,
+    stock,
 
     tableauPilesKeys,
     foundationPilesKeys,
@@ -165,7 +180,6 @@ const spiderReducer = (state = init(), action) => {
     case 'RE_DEAL':
       return init();
     case 'SPIDER_CLICK_STOCK':
-      console.log(state.stock)
       return stockClickHandler(state);
     case 'SPIDER_DROP_TABLEAU':
       const afterDropState = tableauDropHandler(

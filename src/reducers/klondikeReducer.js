@@ -11,7 +11,12 @@ import {
   grabCardsToBeMoved,
   getLastCardInPile,
   createArrayWithKeys,
+  createEmptyPiles,
+  getCardsFromMutableDeck,
 } from '../utils/';
+
+const tableauPilesKeys = createArrayWithKeys('tableau', 7);
+const foundationPilesKeys = createArrayWithKeys('foundation', 4);
 
 const createDeck = () => {
   return [clubs, diamonds, hearts, spades].map((suite, i) => {
@@ -19,25 +24,38 @@ const createDeck = () => {
   })
 }
 
-export const tableauPilesKeys = createArrayWithKeys('tableau', 7);
-export const foundationPilesKeys = createArrayWithKeys('foundation', 4);
+const createFoundationPiles = (pileKeys) => {
+  return createEmptyPiles(pileKeys)
+}
+
+const createTableauPilesFromDeck = (deckOrigin, pileKeys) => {
+  let mutableDeck = [...deckOrigin];
+  const tableauPiles = pileKeys.reduce((mem, obj, i) => {
+    let { deck, cards } = getCardsFromMutableDeck(mutableDeck, i + 1);
+    mutableDeck = deck;
+    return {
+      ...mem,
+      [obj]: setLastIsFaceUp(cards)
+    }
+  }, {});
+
+  return {
+    deck: mutableDeck,
+    tableauPiles,
+  }
+}
 
 const init = () => {
   const deck = shuffleArray(createDeck().flat());
-
+  const foundation = createFoundationPiles(foundationPilesKeys);
+  const {
+    deck: stock,
+    tableauPiles, 
+  } = createTableauPilesFromDeck(deck, tableauPilesKeys);
   return {
-    foundation0: [],
-    foundation1: [],
-    foundation2: [],
-    foundation3: [],
-    tableau0: setLastIsFaceUp(deck.slice(0, 1)),
-    tableau1: setLastIsFaceUp(deck.slice(1, 3)),
-    tableau2: setLastIsFaceUp(deck.slice(3, 6)),
-    tableau3: setLastIsFaceUp(deck.slice(6, 10)),
-    tableau4: setLastIsFaceUp(deck.slice(10, 15)),
-    tableau5: setLastIsFaceUp(deck.slice(15, 21)),
-    tableau6: setLastIsFaceUp(deck.slice(21, 28)),
-    stock: deck.slice(28),
+    ...foundation,
+    ...tableauPiles,
+    stock,
     waste: [],
 
     tableauPilesKeys,

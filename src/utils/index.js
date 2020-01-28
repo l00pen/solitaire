@@ -72,6 +72,25 @@ const createArrayWithKeys = (keyName, nr) => {
   return foundationKeys;
 }
 
+const createEmptyPiles = (piles) => {
+  return piles.reduce((mem, key) => {
+    return {
+      ...mem,
+      [key]: [],
+    }
+  }, {})
+}
+
+const getCardsFromMutableDeck = (deck, nrOfCards) => {
+  const cards = [];
+  let counter = Math.min(nrOfCards, deck.length - 1);
+  while(counter > 0) {
+    cards.push(deck.pop());
+    counter--;
+  }
+  return {cards, deck};
+}
+
 export {
   shuffleArray,
   clubs,
@@ -86,4 +105,6 @@ export {
   setFaceIsUp,
 
   createArrayWithKeys,
+  createEmptyPiles,
+  getCardsFromMutableDeck,
 };
