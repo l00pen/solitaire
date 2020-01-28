@@ -6,8 +6,12 @@ import PileStock from '../PileStock';
 import PileFoundation from '../PileFoundation';
 import PileTableau from '../PileTableau';
 
-function Klondike({ game, reRunDeck, stockClickHandler, foundationDropHandler, tableauDropHandler, tableauClickHandler, wasteClickHandler }) {
+function Klondike({ game, reRunDeck, stockClickHandler, foundationDropHandler, tableauDropHandler, tableauClickHandler, wasteClickHandler, onHasWon }) {
   const { tableauPilesKeys, foundationPilesKeys } = game;
+
+  if (game.hasWon) {
+    onHasWon();
+  }
 
   const onDropTableau = (dropData, dragData) => {
     tableauDropHandler({ dropData, dragData });

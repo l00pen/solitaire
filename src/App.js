@@ -7,12 +7,12 @@ import Klondike from './Klondike';
 
 import './App.css';
 
-const getSelectedGameComponent = (game) => {
+const getSelectedGameComponent = (game, hasWonHandler) => {
   switch(game) {
     case 'klondike':
-      return <Klondike />;
+      return <Klondike onHasWon={hasWonHandler} />;
     case 'spider':
-      return <Spider />;
+      return <Spider onHasWon={hasWonHandler} />;
     default:
       return <div>No valid game selected</div>;
   }
@@ -20,7 +20,14 @@ const getSelectedGameComponent = (game) => {
 
 function App({ undo, redeal }) {
   const [selectedGame, setSelectedGame] = useState('spider');
-  const selectedGameComponent = getSelectedGameComponent(selectedGame);
+  const [hasWon, setHasWon] = useState(false);
+
+  const hasWonHandler = () => {
+    setHasWon(true);
+  }
+
+  const selectedGameComponent = getSelectedGameComponent(selectedGame, hasWonHandler);
+
   return (
     <div className="Game">
       <div className="Game__dashboard">
@@ -38,6 +45,9 @@ function App({ undo, redeal }) {
           </option>
         </select>
       </div>
+      { hasWon &&
+        <div>CONGRATULATION YOU HAVE WON THE GAME</div>
+      }
       <section className='Game__section'>
         {selectedGameComponent}
       </section>

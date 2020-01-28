@@ -91,6 +91,20 @@ const getCardsFromMutableDeck = (deck, nrOfCards) => {
   return {cards, deck};
 }
 
+const getCardsFromDeck = (deck, nrOfCards) => {
+  const cards = [];
+  let counter = Math.min(nrOfCards, deck.length - 1);
+  while(counter > 0) {
+    cards.push(deck.pop());
+    counter--;
+  }
+  return cards;
+}
+
+const everyCardIsSameSuite = (cards, suite) => {
+  return cards.every(card => card.suite === suite);
+}
+
 export {
   shuffleArray,
   clubs,
@@ -107,4 +121,6 @@ export {
   createArrayWithKeys,
   createEmptyPiles,
   getCardsFromMutableDeck,
+  getCardsFromDeck,
+  everyCardIsSameSuite,
 };

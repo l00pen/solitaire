@@ -5,12 +5,14 @@ import PileStock from '../PileStock';
 import PileFoundation from '../PileFoundation';
 import PileTableau from '../PileTableau';
 
+import './styles.css';
+
 function Spider(props) {
   const {
     game,
     stockClickHandler,
     tableauDropHandler,
-    tableauClickHandler,
+    onHasWon,
     foundationPilesKeys,
     tableauPilesKeys,
   } = props;
@@ -25,6 +27,10 @@ function Spider(props) {
 
   const onClickTableau = (clickData) => {}
 
+  if (game.hasWon) {
+    onHasWon();
+  }
+  
   return (
     <div>
       <section className='Game-top'>
@@ -40,7 +46,7 @@ function Spider(props) {
             )
           })}
         </section>
-        <section className='Game-stock'>
+        <section className='Spider-stock'>
           <PileStock
             onClick={onStockClick}
             pile={game.stock}

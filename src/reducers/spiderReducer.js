@@ -10,7 +10,8 @@ import {
   setFaceIsUp,
   createArrayWithKeys,
   createEmptyPiles,
-  getCardsFromMutableDeck,
+  getCardsFromDeck,
+  everyCardIsSameSuite,
 } from '../utils/';
 
 const createDeck = () => {
@@ -29,13 +30,11 @@ const createFoundationPiles = (pileKeys) => {
   return createEmptyPiles(pileKeys)
 }
 
-const createTableauPilesFromDeck = (deckOrigin, pileKeys) => {
-  let mutableDeck = [...deckOrigin];
+const createTableauPilesFromDeck = (deck, pileKeys) => {
   const splitAtNr = 4;
   const tableauPiles = pileKeys.reduce((mem, obj, i) => {
     const nrOfCards = i < splitAtNr ? 6 : 5;
-    let { deck, cards } = getCardsFromMutableDeck(mutableDeck, nrOfCards);
-    mutableDeck = deck;
+    const cards = getCardsFromDeck(deck, nrOfCards);
     return {
       ...mem,
       [obj]: setLastIsFaceUp(cards)
@@ -43,26 +42,35 @@ const createTableauPilesFromDeck = (deckOrigin, pileKeys) => {
   }, {});
 
   return {
-    deck: mutableDeck,
     tableauPiles,
   }
 }
 
 const init = () => {
-  const deck = shuffleArray(createDeck().flat());
+  let deck = shuffleArray(createDeck().flat());
   const foundation = createFoundationPiles(foundationPilesKeys);
   const {
-    deck: stock,
     tableauPiles, 
   } = createTableauPilesFromDeck(deck, tableauPilesKeys);
   return {
     ...foundation,
     ...tableauPiles,
-    stock,
+    stock: deck,
+    hasWon: false,
 
     tableauPilesKeys,
     foundationPilesKeys,
   };
+}
+
+const checkHasWon = (state) => {
+  return {
+    ...state,
+    hasWon: foundationPilesKeys.reduce((mem, pileKey) => {
+      const pile = state[pileKey];
+      return mem && pile.length === 13;
+    }, true)
+  }
 }
 
 const stockClickHandler = (state) => {
@@ -84,10 +92,6 @@ const stockClickHandler = (state) => {
     stock: newSource,
     ...newTableau,
   };
-}
-
-const everyCardIsSameSuite = (cards, suite) => {
-  return cards.every(card => card.suite === suite);
 }
 
 const findFirstAvailableFoundation = (state) => {
@@ -186,7 +190,7 @@ const spiderReducer = (state = init(), action) => {
         state,
         action.payload,
       )
-      return moveToFoundationPile(afterDropState, action.payload.dropData.destinationPile)
+      return checkHasWon(moveToFoundationPile(afterDropState, action.payload.dropData.destinationPile))
     default:
       return state;
   }

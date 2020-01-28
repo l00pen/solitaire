@@ -12,7 +12,7 @@ import {
   getLastCardInPile,
   createArrayWithKeys,
   createEmptyPiles,
-  getCardsFromMutableDeck,
+  getCardsFromDeck,
 } from '../utils/';
 
 const tableauPilesKeys = createArrayWithKeys('tableau', 7);
@@ -28,35 +28,33 @@ const createFoundationPiles = (pileKeys) => {
   return createEmptyPiles(pileKeys)
 }
 
-const createTableauPilesFromDeck = (deckOrigin, pileKeys) => {
-  let mutableDeck = [...deckOrigin];
-  const tableauPiles = pileKeys.reduce((mem, obj, i) => {
-    let { deck, cards } = getCardsFromMutableDeck(mutableDeck, i + 1);
-    mutableDeck = deck;
+const createTableauPilesFromDeck = (deck, pileKeys) => {
+  const tmp2 = pileKeys.map((_, i) => {
+    const cards = getCardsFromDeck(deck, i + 1);
+    return cards;
+  });
+
+  const tableauPiles = tmp2.reduce((mem, cards, i) => {
+    const key = pileKeys[i]
     return {
       ...mem,
-      [obj]: setLastIsFaceUp(cards)
+      [key]: setLastIsFaceUp(cards)
     }
   }, {});
 
-  return {
-    deck: mutableDeck,
-    tableauPiles,
-  }
+  return tableauPiles;
 }
 
 const init = () => {
   const deck = shuffleArray(createDeck().flat());
   const foundation = createFoundationPiles(foundationPilesKeys);
-  const {
-    deck: stock,
-    tableauPiles, 
-  } = createTableauPilesFromDeck(deck, tableauPilesKeys);
+  const tableauPiles = createTableauPilesFromDeck(deck, tableauPilesKeys);
   return {
     ...foundation,
     ...tableauPiles,
-    stock,
+    stock: deck,
     waste: [],
+    hasWon: false,
 
     tableauPilesKeys,
     foundationPilesKeys,
@@ -73,6 +71,16 @@ const stockClickHandler = (game, { card }) => {
     waste: newDestination,
     stock: newSource,
   };
+}
+
+const checkHasWon = (state) => {
+  return {
+    ...state,
+    hasWon: foundationPilesKeys.reduce((mem, pileKey) => {
+      const pile = state[pileKey];
+      return mem && pile.length === 13;
+    }, true)
+  }
 }
 
 const tableauClickHandler = (state, { card, cardIndexInPile, sourcePile }) => {
@@ -199,13 +207,13 @@ const klondikeReducer = (state = init(), action) => {
     case 'CLICK_STOCK':
       return stockClickHandler(state, action.payload)
     case 'CLICK_TABLEAU':
-      return tableauClickHandler(state, action.payload)
+      return checkHasWon(tableauClickHandler(state, action.payload))
     case 'CLICK_WASTE':
-      return tableauClickHandler(state, action.payload)
+      return checkHasWon(tableauClickHandler(state, action.payload))
     case 'DROP_FOUNDATION':
-      return foundationDropHandler(state, action.payload.dropData, action.payload.dragData, )
+      return foundationDropHandler(state, action.payload.dropData, action.payload.dragData)
     case 'DROP_TABLEAU':
-      return tableauDropHandler(state, action.payload.dropData, action.payload.dragData, )
+      return tableauDropHandler(state, action.payload.dropData, action.payload.dragData)
     default:
       return state;
   }
