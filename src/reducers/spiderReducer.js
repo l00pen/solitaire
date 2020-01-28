@@ -8,6 +8,7 @@ import {
   moveFromPile,
   grabCardsToBeMoved,
   setFaceIsUp,
+  createArrayWithKeys,
 } from '../utils/';
 
 const createDeck = () => {
@@ -19,29 +20,8 @@ const createDeck = () => {
   })
 }
 
-export const tableauPilesKeys = [
-  'tableau0',
-  'tableau1',
-  'tableau2',
-  'tableau3',
-  'tableau4',
-  'tableau5',
-  'tableau6',
-  'tableau7',
-  'tableau8',
-  'tableau9',
-];
-
-export const foundationPilesKeys = [
-  'foundation0',
-  'foundation1',
-  'foundation2',
-  'foundation3',
-  'foundation4',
-  'foundation5',
-  'foundation6',
-  'foundation7',
-];
+export const tableauPilesKeys = createArrayWithKeys('tableau', 10);
+export const foundationPilesKeys = createArrayWithKeys('foundation', 8);
 
 const init = () => {
   const deck = shuffleArray(createDeck().flat());

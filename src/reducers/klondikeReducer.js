@@ -10,6 +10,7 @@ import {
   moveFromPile,
   grabCardsToBeMoved,
   getLastCardInPile,
+  createArrayWithKeys,
 } from '../utils/';
 
 const createDeck = () => {
@@ -17,6 +18,9 @@ const createDeck = () => {
     return suite.map((card) => ({...card, key: `${card.id}${i}`}))
   })
 }
+
+export const tableauPilesKeys = createArrayWithKeys('tableau', 7);
+export const foundationPilesKeys = createArrayWithKeys('foundation', 4);
 
 const init = () => {
   const deck = shuffleArray(createDeck().flat());
@@ -36,21 +40,8 @@ const init = () => {
     stock: deck.slice(28),
     waste: [],
 
-    tableauPilesKeys: [
-      'tableau0',
-      'tableau1',
-      'tableau2',
-      'tableau3',
-      'tableau4',
-      'tableau5',
-      'tableau6',
-    ],
-    foundationPilesKeys: [
-      'foundation0',
-      'foundation1',
-      'foundation2',
-      'foundation3',
-    ],
+    tableauPilesKeys,
+    foundationPilesKeys,
   };
 }
 
