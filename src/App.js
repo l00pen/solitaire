@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import Spider from './Spider';
 import Klondike from './Klondike';
+import Yukon from './Yukon';
 
 import './App.css';
 
@@ -13,6 +14,8 @@ const getSelectedGameComponent = (game, hasWonHandler) => {
       return <Klondike onHasWon={hasWonHandler} />;
     case 'spider':
       return <Spider onHasWon={hasWonHandler} />;
+    case 'yukon':
+      return <Yukon onHasWon={hasWonHandler} />;
     default:
       return <div>No valid game selected</div>;
   }
@@ -42,6 +45,9 @@ function App({ undo, redeal }) {
           </option>
           <option key={'spider'} value={'spider'}>
             Spider
+          </option>
+          <option key={'yukon'} value={'yukon'}>
+            Yukon
           </option>
         </select>
       </div>
