@@ -22,7 +22,7 @@ const getSelectedGameComponent = (game, hasWonHandler) => {
 }
 
 function App({ undo, redeal }) {
-  const [selectedGame, setSelectedGame] = useState('spider');
+  const [selectedGame, setSelectedGame] = useState('yukon');
   const [hasWon, setHasWon] = useState(false);
 
   const hasWonHandler = () => {

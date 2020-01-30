@@ -28,7 +28,7 @@ const PileTableau = ({ pile, pileKey, onDrop, onClick }) => {
             <CardFan cardIndex={cardIndex}>
               <CardDraggable
                 data={{ card, cardIndexInPile: cardIndex, sourcePile: pileKey }}
-                draggable={!!card.isFaceUp}
+                draggable={!!card.isFaceUp /* TODO move to reducers isDraggable function */}
               >
                 <CardToggleFaceUp {...card} onClick={() => onClick({ card, cardIndexInPile: cardIndex, sourcePile: pileKey })} />
               </CardDraggable>

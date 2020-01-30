@@ -5,7 +5,7 @@ import {
   hearts,
   spades,
   moveToPile,
-  moveFromPile2,
+  moveFromPile,
   moveCardsBetweenPilesInState,
   cardDropHandler,
   createArrayWithKeys,
@@ -70,7 +70,7 @@ const checkHasWon = (state) => {
 const stockClickHandler = (state) => {
   const numberOfcards = Math.min(tableauPilesKeys.length, state.stock.length);
   const cardsAtIndex = state.stock.length - numberOfcards;
-  const { moved, remain: newStock } = moveFromPile2(cardsAtIndex, state.stock);
+  const { moved, remain: newStock } = moveFromPile(cardsAtIndex, state.stock);
 
   const newTableau = tableauPilesKeys.reduce((mem, tableauId) => {
     if (moved.length) {
@@ -119,15 +119,20 @@ const allowDropTableau = (cardsToBeMoved, destinationPile) => {
 };
 
 const moveToFoundationPile = (state, sourcePileKey) => {
-  const sourcePile = [...state[sourcePileKey]].reverse();
+  // TODO rewrite this to something readable
+  const sourcePile = [...state[sourcePileKey]];
   const potentialMove = sourcePile.reduce((mem, obj, i) => {
-    if (obj.value === 1 && obj.isFaceUp) {
+    if (mem.length === 13) {
+      return mem;
+    }
+
+    if (obj.value === 13 && obj.isFaceUp) {
       return [obj];
     }
     
     if (mem.length > 0) {
       const prevCard = mem[mem.length-1];
-      if ((prevCard.value === obj.value - 1) && (prevCard.suite === obj.suite)) {
+      if ((prevCard.value === obj.value + 1) && (prevCard.suite === obj.suite)) {
         mem.push(obj)
         return mem;
       }

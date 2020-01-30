@@ -61,7 +61,7 @@ const CardStacked = styled.li`
 const CardFan = styled.li`
   position: absolute;
   width: 50px;
-  top: ${(props) => (props.cardIndex * 10)}px;
+  top: ${(props) => (props.cardIndex * 15)}px;
 `;
 
 const CardDroppable = ({ children, data, dropHandler }) => {

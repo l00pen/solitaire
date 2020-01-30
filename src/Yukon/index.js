@@ -8,10 +8,15 @@ function Yukon(props) {
   const {
     game,
     tableauDropHandler,
+    foundationDropHandler,
     onHasWon,
     foundationPilesKeys,
     tableauPilesKeys,
   } = props;
+
+  const onDropFoundation = (dropData, dragData) => {
+    foundationDropHandler({ dropData, dragData })
+  }
 
   const onDropTableau = (dropData, dragData) => {
     tableauDropHandler({ dropData, dragData })
@@ -34,6 +39,7 @@ function Yukon(props) {
                 key={pileKey}
                 pile={pile}
                 pileId={pileKey}
+                onDrop={onDropFoundation}
               />
             )
           })}
@@ -64,8 +70,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  tableauClickHandler: (payload) => {},
-  tableauDropHandler: (payload) => {},
+  foundationDropHandler: (payload) => dispatch({ type: 'YUKON_DROP_FOUNDATION', payload }),
+  tableauDropHandler: (payload) => dispatch({ type: 'YUKON_DROP_TABLEAU', payload }),
 })
 
 export default connect(

@@ -161,7 +161,7 @@ const klondikeReducer = (state = init(), action) => {
     case 'CLICK_WASTE':
       return checkHasWon(tableauClickHandler(state, action.payload))
     case 'DROP_FOUNDATION':
-      return foundationDropHandler(state, action.payload.dropData, action.payload.dragData)
+      return checkHasWon(foundationDropHandler(state, action.payload.dropData, action.payload.dragData))
     case 'DROP_TABLEAU':
       return tableauDropHandler(state, action.payload.dropData, action.payload.dragData)
     default:
