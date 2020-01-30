@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const Pile = styled.ul`
-  width: 3.5em;
+  width: 50px;
   list-style: none;
   padding: 0;
   margin: 0;

@@ -7,6 +7,7 @@ import { CardStacked, CardDroppable } from '../Card';
 import './styles.css';
 
 const PileFoundation = ({ pile, pileId, onDrop }) => {
+  // TODO Split component in two
   if (onDrop) {
     if (pile.length === 0) {
       return (

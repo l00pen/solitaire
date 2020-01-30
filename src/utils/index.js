@@ -57,8 +57,42 @@ const moveFromPile = (cardSourceIndex, pile) => {
   return setLastIsFaceUp(newPile);
 }
 
+const moveFromPile2 = (cardSourceIndex, pile) => {
+  var p1 = pile.slice(0, cardSourceIndex);
+  var p2 = grabCardsToBeMoved(cardSourceIndex, pile);
+
+  return {
+    moved: p2.map(card => ({...card, isFaceUp: true })),
+    remain: setLastIsFaceUp(p1),
+  };
+}
+
+const moveCardsBetweenPilesInState = (state, { cardIndexAtSource, sourcePileKey, destPileKey }) => {
+  const { moved, remain } = moveFromPile2(cardIndexAtSource, state[sourcePileKey]);
+  const newDestination = moveToPile(moved, state[destPileKey]);
+
+  return {
+    ...state,
+    [destPileKey]: newDestination,
+    [sourcePileKey]: remain,
+  }
+}
+
+const cardDropHandler = (state, {destinationPile}, {cardIndexInPile, sourcePile}, allowDropHandler) => {
+  const { moved, remain } = moveFromPile2(cardIndexInPile, state[sourcePile])
+  if (allowDropHandler(moved, state[destinationPile])) {
+    return {
+      ...state,
+      [sourcePile]: remain,
+      [destinationPile]: moveToPile(moved, state[destinationPile]),
+    };
+  }
+
+  return state;
+}
+
 const grabCardsToBeMoved = (cardSourceIndex, pile) => {
-  return pile.slice(cardSourceIndex, pile.length);
+  return pile.slice(cardSourceIndex);
 }
 
 const getLastCardInPile = (cards) => {
@@ -115,6 +149,9 @@ export {
   setLastIsFaceUp,
   moveToPile,
   moveFromPile,
+  moveFromPile2,
+  moveCardsBetweenPilesInState,
+  cardDropHandler,
   grabCardsToBeMoved,
   getLastCardInPile,
   setFaceIsUp,

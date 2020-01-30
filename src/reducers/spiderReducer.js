@@ -5,9 +5,9 @@ import {
   hearts,
   spades,
   moveToPile,
-  moveFromPile,
-  grabCardsToBeMoved,
-  setFaceIsUp,
+  moveFromPile2,
+  moveCardsBetweenPilesInState,
+  cardDropHandler,
   createArrayWithKeys,
   createEmptyPiles,
   getCardsFromDeck,
@@ -70,20 +70,21 @@ const checkHasWon = (state) => {
 const stockClickHandler = (state) => {
   const numberOfcards = Math.min(tableauPilesKeys.length, state.stock.length);
   const cardsAtIndex = state.stock.length - numberOfcards;
-  const cardsToBeMoved = grabCardsToBeMoved(cardsAtIndex, state.stock);
+  const { moved, remain: newStock } = moveFromPile2(cardsAtIndex, state.stock);
 
-  const newTableau = tableauPilesKeys.reduce((mem, tableauId, i) => {
-    return {
-      ...mem,
-      [tableauId]: moveToPile([setFaceIsUp(cardsToBeMoved[i])], state[tableauId])
+  const newTableau = tableauPilesKeys.reduce((mem, tableauId) => {
+    if (moved.length) {
+      return {
+        ...mem,
+        [tableauId]: moveToPile([moved.pop()], state[tableauId])
+      }
     }
+    return mem;
   }, {})
-
-  const newSource = moveFromPile(cardsAtIndex, state.stock);
 
   return {
     ...state,
-    stock: newSource,
+    stock: newStock,
     ...newTableau,
   };
 }
@@ -117,15 +118,16 @@ const allowDropTableau = (cardsToBeMoved, destinationPile) => {
   return false;
 };
 
-const moveToFoundationPile = (state, pile) => {
-  const newPile = state[pile].reduce((mem, obj, i) => {
-    if (obj.value === 13 && obj.isFaceUp) {
+const moveToFoundationPile = (state, sourcePileKey) => {
+  const sourcePile = [...state[sourcePileKey]].reverse();
+  const potentialMove = sourcePile.reduce((mem, obj, i) => {
+    if (obj.value === 1 && obj.isFaceUp) {
       return [obj];
     }
     
     if (mem.length > 0) {
       const prevCard = mem[mem.length-1];
-      if ((prevCard.value === obj.value + 1 || (prevCard.value === 2 && obj.value === 14)) && prevCard.suite === obj.suite) {
+      if ((prevCard.value === obj.value - 1) && (prevCard.suite === obj.suite)) {
         mem.push(obj)
         return mem;
       }
@@ -134,44 +136,25 @@ const moveToFoundationPile = (state, pile) => {
     return mem;
   }, []);
 
-  if (newPile.length === 13) {
-    const cardsAtIndex = state[pile].findIndex((card) => {
-      return card.key === newPile[0].key
+  if (potentialMove.length === 13) {
+    const cardsAtIndex = state[sourcePileKey].findIndex((card) => {
+      // TODO fix key's and id's
+      return card.key === potentialMove[0].key
     })
-    const cardsToBeMoved = grabCardsToBeMoved(cardsAtIndex, state[pile]);
 
-    const newSourcePile = moveFromPile(cardsAtIndex, state[pile]);
     const foundationToMoveTo = findFirstAvailableFoundation(state);
-    return {
-      ...state,
-      [foundationToMoveTo]: moveToPile(cardsToBeMoved, state[foundationToMoveTo]),
-      [pile]: newSourcePile,
-    }
+    return moveCardsBetweenPilesInState(state, {
+      cardIndexAtSource: cardsAtIndex,
+      sourcePileKey,
+      destPileKey: foundationToMoveTo,
+    });
   }
 
   return state;
 }
 
 const tableauDropHandler = (state, { dropData, dragData }) => {
-  const {destinationPile} = dropData;
-  const {cardIndexInPile, sourcePile} = dragData;
-  const stateSourcePile = state[sourcePile];
-  const stateDestinationPile = state[destinationPile];
-
-  const cardsToBeMoved = grabCardsToBeMoved(cardIndexInPile, stateSourcePile);
-
-  if (allowDropTableau(cardsToBeMoved, stateDestinationPile)) {
-    const newDestination = moveToPile(cardsToBeMoved, stateDestinationPile);
-    const newSource = moveFromPile(cardIndexInPile, stateSourcePile);
-
-    return {
-      ...state,
-      [destinationPile]: newDestination,
-      [sourcePile]: newSource,
-    }
-  }
-
-  return state;
+  return cardDropHandler(state, dropData, dragData, allowDropTableau);
 }
 
 const spiderReducer = (state = init(), action) => {

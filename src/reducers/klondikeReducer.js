@@ -6,9 +6,8 @@ import {
   diamonds,
   hearts,
   spades,
-  moveToPile,
-  moveFromPile,
-  grabCardsToBeMoved,
+  cardDropHandler,
+  moveCardsBetweenPilesInState,
   getLastCardInPile,
   createArrayWithKeys,
   createEmptyPiles,
@@ -55,15 +54,11 @@ const init = () => {
 }
 
 const stockClickHandler = (game, { card }) => {
-  const newCard = { ...card, isFaceUp: true };
-  const newDestination = moveToPile([newCard], game['waste']);
-  const newSource = moveFromPile(game.stock.length - 1, game['stock']);
-
-  return {
-    ...game,
-    waste: newDestination,
-    stock: newSource,
-  };
+  return moveCardsBetweenPilesInState(game, {
+    cardIndexAtSource: game.stock.length - 1,
+    sourcePileKey: 'stock',
+    destPileKey: 'waste',
+  });
 }
 
 const checkHasWon = (state) => {
@@ -89,14 +84,12 @@ const tableauClickHandler = (state, { card, cardIndexInPile, sourcePile }) => {
 
   if (allowedPiles.length) {
     const allowedPile = allowedPiles[0];
-    const cardsToBeMoved = grabCardsToBeMoved(cardIndexInPile, state[sourcePile])
-    const newDestination = moveToPile(cardsToBeMoved, state[allowedPile]);
-    const newSource = moveFromPile(cardIndexInPile, state[sourcePile]);
-    return {
-      ...state,
-      [allowedPile]: newDestination,
-      [sourcePile]: newSource,
-    };
+
+    return moveCardsBetweenPilesInState(state, {
+      cardIndexAtSource: cardIndexInPile,
+      sourcePileKey: sourcePile,
+      destPileKey: allowedPile,
+    });
   }
 
   return state;
@@ -124,27 +117,9 @@ const allowFoundationDrop = (cardsToBeMoved, destPile) => {
     };
   }
 
-
   return false;
 }
 
-const foundationDropHandler = (game, {destinationPile}, {cardIndexInPile, sourcePile}) => {
-  const destPile = game[destinationPile];
-
-  const cardsToBeMoved = grabCardsToBeMoved(cardIndexInPile, game[sourcePile]);
-  
-  if (allowFoundationDrop(cardsToBeMoved, destPile)) {
-    const newDestination = moveToPile(cardsToBeMoved, game[destinationPile]);
-    const newSource = moveFromPile(cardIndexInPile, game[sourcePile]);
-    return {
-      ...game,
-      [destinationPile]: newDestination,
-      [sourcePile]: newSource,
-    };
-  }
-
-  return game;
-}
 
 const allowDropTableau = (cardsToBeMoved, destinationPile) => {
   if (destinationPile.length === 0) {
@@ -160,20 +135,12 @@ const allowDropTableau = (cardsToBeMoved, destinationPile) => {
   return lastCardInPile.isFaceUp && isOppositeColor && isRightValue;
 };
 
-const tableauDropHandler = (game, {destinationPile}, {cardIndexInPile,sourcePile}) => {
-  const cardsToBeMoved = grabCardsToBeMoved(cardIndexInPile, game[sourcePile]);
+const foundationDropHandler = (game, dropData, dragData) => {
+  return cardDropHandler(game, dropData, dragData, allowFoundationDrop);
+}
 
-  if (allowDropTableau(cardsToBeMoved, game[destinationPile])) {
-    const newDestination = moveToPile(cardsToBeMoved, game[destinationPile]);
-    const newSource = moveFromPile(cardIndexInPile, game[sourcePile]);
-    return {
-      ...game,
-      [destinationPile]: newDestination,
-      [sourcePile]: newSource,
-    }
-  }
-
-  return game;
+const tableauDropHandler = (game, dropData, dragData) => {
+  return cardDropHandler(game, dropData, dragData, allowDropTableau);
 }
 
 const klondikeReducer = (state = init(), action) => {

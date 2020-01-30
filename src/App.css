@@ -22,8 +22,7 @@ html {
 .Game-top {
   display: flex;
   justify-content: space-between;
-  width: 50%;
-  margin: 0 auto;
+  margin: 0 140px;
   margin-bottom: 3em;
   height: 20vh;
 }
@@ -39,7 +38,6 @@ html {
 .Game-Tableau {
   display: flex;
   justify-content: space-between;
-  min-width: 50%;
   height: 80vh;
-  margin: 0 auto;
+  margin: 0 140px;
 }
