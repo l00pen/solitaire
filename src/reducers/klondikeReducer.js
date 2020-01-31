@@ -21,7 +21,7 @@ const foundationPilesKeys = createArrayWithKeys('foundation', 4);
 const createDeck = () => {
   return [clubs, diamonds, hearts, spades].map((suite, i) => {
     return suite.map((card) => ({...card, key: `${card.id}${i}`}))
-  })
+  }).flat()
 }
 
 const createFoundationPiles = (pileKeys) => {
@@ -38,7 +38,7 @@ const createTableauPilesFromDeck = (deck, pileKeys) => {
 }
 
 const init = () => {
-  let deck = shuffleArray(createDeck().flat());
+  let deck = shuffleArray(createDeck());
   const foundation = createFoundationPiles(foundationPilesKeys);
   const tableauPiles = createTableauPilesFromDeck(deck, tableauPilesKeys);
   return {
@@ -143,7 +143,9 @@ const tableauDropHandler = (game, dropData, dragData) => {
   return cardDropHandler(game, dropData, dragData, allowDropTableau);
 }
 
-const klondikeReducer = (state = init(), action) => {
+const initialState = init();
+
+const klondikeReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'RE_DEAL':
       return init();

@@ -2,15 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
+import { composeWithDevTools } from "redux-devtools-extension";
 
 import './index.css';
 
 import App from './App';
-import rootReducer from './reducers'
+import rootReducer from './reducers';
+import SpiderMoveToFoundation from './reducers/states/SpiderMoveToFoundation';
 
 import * as serviceWorker from './serviceWorker';
 
-const store = createStore(rootReducer)
+const initialState = SpiderMoveToFoundation;
+const store = createStore(rootReducer, initialState, composeWithDevTools())
 
 ReactDOM.render(
   <Provider store={store}>

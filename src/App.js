@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import { connect } from 'react-redux'
 
-
 import Spider from './Spider';
 import Klondike from './Klondike';
 import Yukon from './Yukon';
@@ -22,7 +21,7 @@ const getSelectedGameComponent = (game, hasWonHandler) => {
 }
 
 function App({ undo, redeal }) {
-  const [selectedGame, setSelectedGame] = useState('yukon');
+  const [selectedGame, setSelectedGame] = useState('spider');
   const [hasWon, setHasWon] = useState(false);
 
   const hasWonHandler = () => {

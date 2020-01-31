@@ -7,7 +7,7 @@ import PileTableau from '../PileTableau';
 
 import './styles.css';
 
-function Spider(props) {
+export function Spider(props) {
   const {
     game,
     stockClickHandler,

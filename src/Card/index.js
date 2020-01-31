@@ -14,7 +14,6 @@ const images = importAll(require.context('./images/cards', false, /\.(png|jpe?g|
 const CardFaceUp = (props) => {
   const { id, label, suite, onClick, ...moreProps } = props
   if (!id) {
-    console.log(props)
     return <div className={`Card Card-suite-${suite}`}>Soemthings wrong with card</div>;
   }
   const newId = id.match(/[a-z]+|[^a-z]+/gi);
