@@ -5,6 +5,7 @@ import PileStock from '../PileStock';
 import PileFoundation from '../PileFoundation';
 import PileTableau from '../PileTableau';
 import styled from 'styled-components';
+import { Grid, Cell } from 'styled-css-grid';
 
 import './styles.css';
 
@@ -14,7 +15,6 @@ const SpiderBoard = styled.div`
 `;
 
 const Foundation = styled.section`
-  min-height: 20vh;
   display: flex;
 `;
 
@@ -23,7 +23,6 @@ const Stock = styled.section`
 `;
 
 const Tableau = styled.section`
-  min-height: 60vh;
   display: flex;
 `;
 
@@ -51,41 +50,53 @@ export function Spider(props) {
     onHasWon();
   }
 
+  const nrOfColumns = Math.max(tableauPilesKeys.length, foundationPilesKeys.length);
+  const maxNrOfCardsInTableau = tableauPilesKeys.reduce((mem, pileKey) => {
+    return Math.max(game[pileKey].length, mem);
+  }, 0);
+
   return (
-    <SpiderBoard>
-      <Foundation>
-        {foundationPilesKeys.map((pileKey) => {
-          const pile = game[pileKey];
-          return (
-            <PileFoundation
-              key={pileKey}
-              pile={pile}
-              pileId={pileKey}
-            />
-          )
-        })}
-      </Foundation>
-      <Stock>
-        <PileStock
-          onClick={onStockClick}
-          pile={game.stock}
-        />
-      </Stock>
-      <Tableau>
-        {tableauPilesKeys.map((pileKey) => {
-          const pile = game[pileKey];
-          return (
-            <PileTableau
-              key={pileKey}
-              pile={pile}
-              pileKey={pileKey}
-              onDrop={onDropTableau}
-              onClick={onClickTableau}
-            />
-          )
-        })}
-      </Tableau>
-    </SpiderBoard>
+    <Grid columns={1}>
+      <Cell>
+        <Grid columns={nrOfColumns}>
+          {foundationPilesKeys.map((pileKey) => {
+            const pile = game[pileKey];
+            return (
+              <PileFoundation
+                key={pileKey}
+                pile={pile}
+                pileId={pileKey}
+              />
+            )
+          })}
+        </Grid>
+      </Cell>
+      <Cell>
+        <Grid columns={nrOfColumns}>
+          <PileStock
+            onClick={onStockClick}
+            pile={game.stock}
+          />
+        </Grid>
+      </Cell>
+      <Cell>
+        <Grid columns={nrOfColumns}>
+          {tableauPilesKeys.map((pileKey) => {
+            const pile = game[pileKey];
+            return (
+              <PileTableau
+                key={pileKey}
+                pile={pile}
+                pileKey={pileKey}
+                onDrop={onDropTableau}
+                onClick={onClickTableau}
+                minHeight={maxNrOfCardsInTableau}
+              />
+            )
+          })}
+        </Grid>
+      </Cell>
+    </Grid>
   );
 }
 
