@@ -4,8 +4,28 @@ import { connect } from 'react-redux'
 import PileStock from '../PileStock';
 import PileFoundation from '../PileFoundation';
 import PileTableau from '../PileTableau';
+import styled from 'styled-components';
 
 import './styles.css';
+
+const SpiderBoard = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Foundation = styled.section`
+  min-height: 20vh;
+  display: flex;
+`;
+
+const Stock = styled.section`
+  display: flex;
+`;
+
+const Tableau = styled.section`
+  min-height: 60vh;
+  display: flex;
+`;
 
 export function Spider(props) {
   const {
@@ -32,28 +52,26 @@ export function Spider(props) {
   }
 
   return (
-    <div>
-      <section className='Game-top'>
-        <section className='Game-Foundation'>
-          {foundationPilesKeys.map((pileKey) => {
-            const pile = game[pileKey];
-            return (
-              <PileFoundation
-                key={pileKey}
-                pile={pile}
-                pileId={pileKey}
-              />
-            )
-          })}
-        </section>
-        <section className='Spider-stock'>
-          <PileStock
-            onClick={onStockClick}
-            pile={game.stock}
-          />
-        </section>
-      </section>
-      <section className='Game-Tableau'>
+    <SpiderBoard>
+      <Foundation>
+        {foundationPilesKeys.map((pileKey) => {
+          const pile = game[pileKey];
+          return (
+            <PileFoundation
+              key={pileKey}
+              pile={pile}
+              pileId={pileKey}
+            />
+          )
+        })}
+      </Foundation>
+      <Stock>
+        <PileStock
+          onClick={onStockClick}
+          pile={game.stock}
+        />
+      </Stock>
+      <Tableau>
         {tableauPilesKeys.map((pileKey) => {
           const pile = game[pileKey];
           return (
@@ -66,8 +84,8 @@ export function Spider(props) {
             />
           )
         })}
-      </section>
-    </div>
+      </Tableau>
+    </SpiderBoard>
   );
 }
 

@@ -17,14 +17,14 @@ html {
 
 .Game__section {
   min-height: 80vh;
+  padding: 0 10%;
 }
 
 .Game-top {
   display: flex;
   justify-content: space-between;
-  margin: 0 140px;
+  margin: 0 10%;
   margin-bottom: 3em;
-  height: 20vh;
 }
 
 .Game-stockAndWaste {
@@ -39,5 +39,5 @@ html {
   display: flex;
   justify-content: space-between;
   height: 80vh;
-  margin: 0 140px;
+  margin: 0 10%;
 }

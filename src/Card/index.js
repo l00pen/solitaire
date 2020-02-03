@@ -1,6 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import {
+  cardMinWidth,
+  cardMaxWidth
+} from '../styleVariables';
+
 import './styles.css';
 
 function importAll(r) {
@@ -11,10 +16,30 @@ function importAll(r) {
 
 const images = importAll(require.context('./images/cards', false, /\.(png|jpe?g|svg)$/));
 
+const Card = styled.div`
+  min-width: ${cardMinWidth}px;
+  max-width: ${cardMaxWidth}px;
+  min-height: 100px;
+  max-height: 200px;
+  color: ${(props) => props.suite === 'black' ? 'black' : 'red'};
+  img{
+    width: 100%;
+  }
+`;
+
+const CardStacked = styled(Card)`
+  position: absolute;
+`;
+
+const CardFan = styled(Card)`
+  position: absolute;
+  top: ${(props) => (props.cardIndex * 15)}px;
+`;
+
 const CardFaceUp = (props) => {
   const { id, label, suite, onClick, ...moreProps } = props
   if (!id) {
-    return <div className={`Card Card-suite-${suite}`}>Soemthings wrong with card</div>;
+    return <Card suite={suite}>Soemthings wrong with card</Card>;
   }
   const newId = id.match(/[a-z]+|[^a-z]+/gi);
   const idSuite = newId[0].toUpperCase();
@@ -36,32 +61,22 @@ const CardFaceUp = (props) => {
   }
 
   return(
-    <div className={`Card Card-suite-${suite}`} onClick={onClick} {...moreProps}>
+    <Card suite={suite} onClick={onClick} {...moreProps}>
       <img src={images[`${idValue}${idSuite}.png`]} alt='card background' />
-    </div>
+    </Card>
   )}
 
 const CardFaceDown = (props) => (
-  <div className={`Card`} {...props}>
+  <Card {...props}>
     <img src={images['green_back.png']} alt='card background' />
-  </div>
+  </Card>
 );
 
 const CardEmpty = () => (
-  <div className={`Card`}>
+  <Card>
     <img src={images['purple_back.png']} alt='card background' />
-  </div>
+  </Card>
 );
-
-const CardStacked = styled.li`
-  position: absolute;
-`;
-
-const CardFan = styled.li`
-  position: absolute;
-  width: 50px;
-  top: ${(props) => (props.cardIndex * 15)}px;
-`;
 
 const CardDroppable = ({ children, data, dropHandler }) => {
   const props = {
@@ -100,6 +115,7 @@ const CardToggleFaceUp = ({ label, suite, isFaceUp, onClick, ...props }) => {
 }
 
 export {
+  Card,
   CardFaceUp,
   CardFaceDown,
   CardEmpty,
