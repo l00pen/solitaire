@@ -1,23 +1,24 @@
 import React from 'react';
 
-import Pile, { PileEmpty } from '../Pile';
-import { CardFan, CardDroppable, CardDraggable, CardToggleFaceUp } from '../Card';
+import Pile from '../Pile';
+import { CardFan, CardDroppable, CardDraggable, CardToggleFaceUp, CardEmpty } from '../Card';
 
-import './styles.css';
+import { cardFanOffset } from '../styleVariables.js'
 
-const PileTableau = ({ pile, pileKey, onDrop, onClick }) => {
+const PileTableau = ({ pile, pileKey, minHeight, onDrop, onClick }) => {
   if (pile.length === 0) {
     return (
       <CardDroppable
         data={{ card: {}, cardIndex: 0, destinationPile: pileKey }}
         dropHandler={onDrop}
       >
-        <PileEmpty />
+        <CardEmpty />
       </CardDroppable>
     )
   }
+
   return (
-    <Pile>
+    <Pile minHeight={cardFanOffset * minHeight + 125}>
       {pile.map((card, cardIndex) => {
         return (
           <CardDroppable

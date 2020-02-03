@@ -2,7 +2,7 @@ import React from 'react';
 
 import { CardFaceUp } from '../Card';
 import Pile, { PileEmpty } from '../Pile';
-import { CardStacked, CardDroppable } from '../Card';
+import { CardStacked, CardDroppable, CardEmpty } from '../Card';
 
 import './styles.css';
 
@@ -15,7 +15,7 @@ const PileFoundation = ({ pile, pileId, onDrop }) => {
           data={{ destinationPile: pileId }}
           dropHandler={onDrop}
         >
-          <PileEmpty />
+          <CardEmpty />
         </CardDroppable>
       )
     }
@@ -37,7 +37,7 @@ const PileFoundation = ({ pile, pileId, onDrop }) => {
   }
 
   if (pile.length === 0) {
-    return <PileEmpty />;
+    return <CardEmpty />;
   }
 
   return (

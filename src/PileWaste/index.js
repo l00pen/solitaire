@@ -1,14 +1,14 @@
 import React from 'react';
 
 import { CardFaceUp } from '../Card';
-import Pile, { PileEmpty } from '../Pile';
-import { CardStacked, CardDraggable } from '../Card';
+import Pile from '../Pile';
+import { CardStacked, CardDraggable, CardEmpty } from '../Card';
 
 import './styles.css';
 
 const PileWaste = ({ pile, onClick }) => {
   if (pile.length === 0) {
-    return <PileEmpty />
+    return <CardEmpty />
   }
   return (
     <Pile>
