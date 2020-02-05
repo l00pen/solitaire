@@ -7,6 +7,7 @@ import { CardStacked, CardDroppable, CardEmpty } from '../Card';
 import './styles.css';
 
 const PileFoundation = ({ pile, pileId, onDrop }) => {
+  let card = {};
   // TODO Split component in two
   if (onDrop) {
     if (pile.length === 0) {
@@ -19,19 +20,14 @@ const PileFoundation = ({ pile, pileId, onDrop }) => {
         </CardDroppable>
       )
     }
+    card = pile[pile.length - 1];
 
     return (
       <CardDroppable
         data={{ destinationPile: pileId }}
         dropHandler={onDrop}
       >
-        <Pile>
-          {pile.map((card, cardIndex) => (
-            <CardStacked key={card.key}>
-              <CardFaceUp id={card.id} label={card.label} suite={card.suite} />
-            </CardStacked>
-          ))}
-        </Pile>
+        <CardFaceUp id={card.id} label={card.label} suite={card.suite} />
       </CardDroppable>
     )
   }
@@ -40,14 +36,9 @@ const PileFoundation = ({ pile, pileId, onDrop }) => {
     return <CardEmpty />;
   }
 
+  card = pile[pile.length - 1];
   return (
-    <Pile>
-      {pile.map((card, cardIndex) => (
-        <CardStacked key={card.key}>
-          <CardFaceUp id={card.id} label={card.label} suite={card.suite} />
-        </CardStacked>
-      ))}
-    </Pile>
+    <CardFaceUp id={card.id} label={card.label} suite={card.suite} />
   )
 }
 

@@ -1,32 +1,24 @@
 import React from 'react';
 
 import { CardFaceUp } from '../Card';
-import Pile from '../Pile';
-import { CardStacked, CardDraggable, CardEmpty } from '../Card';
-
-import './styles.css';
+import { CardDraggable, CardEmpty } from '../Card';
 
 const PileWaste = ({ pile, onClick }) => {
   if (pile.length === 0) {
     return <CardEmpty />
   }
+
+  const cardIndexInPile = pile.length - 1;
+  const card = pile[cardIndexInPile]
+  const clickAndDragData = { card, cardIndexInPile: cardIndexInPile, sourcePile: 'waste' };
   return (
-    <Pile>
-      {pile.map((card, i) => {
-        const clickAndDragData = { card, cardIndexInPile: i, sourcePile: 'waste' };
-        return (
-          <CardDraggable
-            key={card.id}
-            data={clickAndDragData}
-            draggable={!!card.isFaceUp}
-          >
-            <CardStacked>
-              <CardFaceUp id={card.id} label={card.label} suite={card.suite} onClick={() => onClick(clickAndDragData)} />
-            </CardStacked>
-          </CardDraggable>
-        );
-      })}
-    </Pile>
+    <CardDraggable
+      key={card.id}
+      data={clickAndDragData}
+      draggable={!!card.isFaceUp}
+    >
+      <CardFaceUp id={card.id} label={card.label} suite={card.suite} onClick={() => onClick(clickAndDragData)} />
+    </CardDraggable>
   );
 }
 

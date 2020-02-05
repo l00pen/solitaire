@@ -4,8 +4,6 @@ import styled from 'styled-components';
 import {
   cardMinWidth,
   cardMaxWidth,
-  cardMinHeight,
-  cardMaxHeight
 } from '../styleVariables';
 
 function importAll(r) {
@@ -19,8 +17,6 @@ const images = importAll(require.context('./images/cards', false, /\.(png|jpe?g|
 const Card = styled.div`
   min-width: ${cardMinWidth}px;
   max-width: ${cardMaxWidth}px;
-  min-height: ${cardMinHeight}px;
-  max-height: ${cardMaxHeight}px;
   color: ${(props) => props.suite === 'black' ? 'black' : 'red'};
   img{
     width: 100%;
@@ -72,8 +68,8 @@ const CardFaceDown = (props) => (
   </Card>
 );
 
-const CardEmpty = () => (
-  <Card>
+const CardEmpty = ({ onClick }) => (
+  <Card onClick={onClick}>
     <img src={images['empty.png']} alt='card background' />
   </Card>
 );

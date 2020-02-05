@@ -44,6 +44,7 @@ const createTableauPilesFromDeck = (deck, pileKeys) => {
 }
 
 const allowFoundationDrop = (cardsToBeMoved, destPile) => {
+  debugger;
   const cardToBeMoved = cardsToBeMoved[0];
 
   if (cardsToBeMoved.length > 1) {

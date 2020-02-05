@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 
 import {
-  cardMinHeight,
-  cardMaxHeight,
   cardMinWidth,
   cardMaxWidth
 } from '../styleVariables';
