@@ -6,6 +6,56 @@ import { CardFan, CardDroppable, CardDraggable, CardToggleFaceUp, CardEmpty } fr
 import { cardFanOffset } from '../styleVariables.js'
 
 const PileTableau = ({ pile, pileKey, minHeight, onDrop, onClick }) => {
+  
+  const createRecursiveList = (list, cardIndex) => {
+    const [card, ...rest] = list;
+    if (rest.length === 0 && card) {
+      console.log('hej hej hej', card, rest, cardIndex)
+      return (
+        <CardDroppable
+          key={card.key + pileKey}
+          data={{ destinationPile: pileKey }}
+          dropHandler={onDrop}
+        >
+          <CardFan cardIndex={cardIndex}>
+            <CardDraggable
+              data={{ card, cardIndexInPile: cardIndex, sourcePile: pileKey }}
+              draggable={!!card.isFaceUp /* TODO move to reducers isDraggable function */}
+            >
+              <CardToggleFaceUp {...card} onClick={() => onClick({ card, cardIndexInPile: cardIndex, sourcePile: pileKey })} />
+            </CardDraggable>
+          </CardFan>
+        </CardDroppable>
+      );
+    }
+
+    const tmp =  (
+      <CardDraggable
+        data={{ card, cardIndexInPile: cardIndex, sourcePile: pileKey }}
+        draggable={!!card.isFaceUp /* TODO move to reducers isDraggable function */}
+      >
+        <CardDroppable
+          key={card.key + pileKey}
+          data={{ destinationPile: pileKey }}
+          dropHandler={onDrop}
+        >
+          <CardFan cardIndex={cardIndex}>
+            <CardDraggable
+              data={{ card, cardIndexInPile: cardIndex, sourcePile: pileKey }}
+              draggable={!!card.isFaceUp /* TODO move to reducers isDraggable function */}
+            >
+              <CardToggleFaceUp {...card} onClick={() => onClick({ card, cardIndexInPile: cardIndex, sourcePile: pileKey })} />
+            </CardDraggable>
+          </CardFan>
+        </CardDroppable>
+        {createRecursiveList(rest, cardIndex + 1)}
+      </CardDraggable>
+    );
+
+    console.log(tmp)
+    return tmp;
+  }
+
   if (pile.length === 0) {
     return (
       <CardDroppable
@@ -17,26 +67,12 @@ const PileTableau = ({ pile, pileKey, minHeight, onDrop, onClick }) => {
     )
   }
 
+  const result = createRecursiveList(pile, 0);
+  console.log(result)
+  debugger
   return (
     <Pile minHeight={cardFanOffset * minHeight + 125}>
-      {pile.map((card, cardIndex) => {
-        return (
-          <CardDroppable
-            key={card.key + pileKey}
-            data={{ destinationPile: pileKey }}
-            dropHandler={onDrop}
-          >
-            <CardFan cardIndex={cardIndex}>
-              <CardDraggable
-                data={{ card, cardIndexInPile: cardIndex, sourcePile: pileKey }}
-                draggable={!!card.isFaceUp /* TODO move to reducers isDraggable function */}
-              >
-                <CardToggleFaceUp {...card} onClick={() => onClick({ card, cardIndexInPile: cardIndex, sourcePile: pileKey })} />
-              </CardDraggable>
-            </CardFan>
-          </CardDroppable>
-        );
-      })}
+      {result}
     </Pile>
   );
 }
