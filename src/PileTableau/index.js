@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Pile from '../Pile';
-import { CardFan, CardDroppable, CardToggleFaceUp, CardEmpty } from '../Card';
+import { CardFan, CardDroppable, CardDraggable, CardToggleFaceUp, CardEmpty } from '../Card';
 
 import { cardFanOffset } from '../styleVariables.js'
 

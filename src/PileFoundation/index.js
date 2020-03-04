@@ -9,20 +9,12 @@ const PileFoundation = ({ pile, pileId, onDrop }) => {
   if (onDrop) {
     if (pile.length === 0) {
       return (
-        <div
-          onDragOver={(ev) => {
-            ev.preventDefault();
-          }}
-          onDrop={(ev) => {
-            console.log('yumahu', { destinationPile: pileId })
-            ev.preventDefault();
-            const dataFromTransfer = ev.dataTransfer.getData("pip");
-
-            onDrop({ destinationPile: pileId }, JSON.parse(dataFromTransfer))
-          }}
+        <CardDroppable
+          data={{ destinationPile: pileId }}
+          dropHandler={onDrop}
         >
           <CardEmpty />
-        </div>
+        </CardDroppable>
       )
     }
     card = pile[pile.length - 1];
