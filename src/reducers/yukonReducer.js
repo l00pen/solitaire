@@ -44,7 +44,6 @@ const createTableauPilesFromDeck = (deck, pileKeys) => {
 }
 
 const allowFoundationDrop = (cardsToBeMoved, destPile) => {
-  debugger;
   const cardToBeMoved = cardsToBeMoved[0];
 
   if (cardsToBeMoved.length > 1) {
@@ -121,6 +120,7 @@ const yukonReducer = (state = init(), action) => {
     case 'RE_DEAL':
       return init();
     case 'YUKON_DROP_FOUNDATION':
+      console.log('cokoo')
       return checkHasWon(foundationDropHandler(state, action.payload.dropData, action.payload.dragData))
     case 'YUKON_DROP_TABLEAU':
       return tableauDropHandler(state, action.payload.dropData, action.payload.dragData)

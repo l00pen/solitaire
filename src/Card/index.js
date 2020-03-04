@@ -29,7 +29,7 @@ const CardStacked = styled(Card)`
 
 const CardFan = styled(Card)`
   position: absolute;
-  top: ${(props) => (props.cardIndex * 15)}px;
+  top: ${(props) => props.cardIndex === 0 ? 0 : 15}px;
 `;
 
 const CardFaceUp = (props) => {
@@ -68,8 +68,8 @@ const CardFaceDown = (props) => (
   </Card>
 );
 
-const CardEmpty = ({ onClick }) => (
-  <Card onClick={onClick}>
+const CardEmpty = ({ onClick, ...props }) => (
+  <Card onClick={onClick} {...props}>
     <img src={images['empty.png']} alt='card background' />
   </Card>
 );
@@ -80,6 +80,7 @@ const CardDroppable = ({ children, data, dropHandler }) => {
       ev.preventDefault();
     },
     onDrop: (ev) => {
+      console.log('yumahu', data)
       ev.preventDefault();
       const dataFromTransfer = ev.dataTransfer.getData("pip");
 
@@ -87,8 +88,10 @@ const CardDroppable = ({ children, data, dropHandler }) => {
     },
   };
 
-  const tmp = React.cloneElement(children, props);
-  return tmp;
+  console.log('children onDrop', React.Children.count(children))
+  return React.Children.map(children, child => {
+    return React.cloneElement(child, props);
+  });
 };
 
 const CardDraggable = ({ children, data, draggable }) => {
@@ -99,8 +102,9 @@ const CardDraggable = ({ children, data, draggable }) => {
     draggable,
   };
 
-  const tmp = React.cloneElement(children, props);
-  return tmp;
+  return React.Children.map(children, child => {
+    return React.cloneElement(child, props);
+  });
 };
 
 const CardToggleFaceUp = ({ label, suite, isFaceUp, onClick, ...props }) => {

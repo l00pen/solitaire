@@ -1,10 +1,7 @@
 import React from 'react';
 
 import { CardFaceUp } from '../Card';
-import Pile, { PileEmpty } from '../Pile';
-import { CardStacked, CardDroppable, CardEmpty } from '../Card';
-
-import './styles.css';
+import { CardDroppable, CardEmpty } from '../Card';
 
 const PileFoundation = ({ pile, pileId, onDrop }) => {
   let card = {};
@@ -12,12 +9,20 @@ const PileFoundation = ({ pile, pileId, onDrop }) => {
   if (onDrop) {
     if (pile.length === 0) {
       return (
-        <CardDroppable
-          data={{ destinationPile: pileId }}
-          dropHandler={onDrop}
+        <div
+          onDragOver={(ev) => {
+            ev.preventDefault();
+          }}
+          onDrop={(ev) => {
+            console.log('yumahu', { destinationPile: pileId })
+            ev.preventDefault();
+            const dataFromTransfer = ev.dataTransfer.getData("pip");
+
+            onDrop({ destinationPile: pileId }, JSON.parse(dataFromTransfer))
+          }}
         >
           <CardEmpty />
-        </CardDroppable>
+        </div>
       )
     }
     card = pile[pile.length - 1];

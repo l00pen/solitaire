@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
 import { connect } from 'react-redux'
+import { ThemeProvider } from 'styled-components';
 
 import Spider from './Spider';
 import Klondike from './Klondike';
 import Yukon from './Yukon';
+import { ButtonPrimaryAction, ButtonSecondaryAction } from './Buttons';
 
 import './App.css';
 
@@ -20,8 +22,17 @@ const getSelectedGameComponent = (game, hasWonHandler) => {
   }
 }
 
+const theme = {
+  secondaryColor: "#fefefe",
+  primaryColor: "#40b4de",
+  primaryTextColor: '#0a3458',
+  borderRadius: 0.125,
+  baseSize: 1.75,
+  padding: 0.5,
+};
+
 function App({ undo, redeal }) {
-  const [selectedGame, setSelectedGame] = useState('spider');
+  const [selectedGame, setSelectedGame] = useState('yukon');
   const [hasWon, setHasWon] = useState(false);
 
   const hasWonHandler = () => {
@@ -31,32 +42,34 @@ function App({ undo, redeal }) {
   const selectedGameComponent = getSelectedGameComponent(selectedGame, hasWonHandler);
 
   return (
-    <div className="Game">
-      <div className="Game__dashboard">
-        <button onClick={undo}>Undo</button>
-        <button onClick={redeal}>New Deal</button>
-        <select
-          value={selectedGame}
-          onChange={e => setSelectedGame(e.target.value)}
-        >
-          <option key={'klondike'} value={'klondike'}>
-            Klondike
-          </option>
-          <option key={'spider'} value={'spider'}>
-            Spider
-          </option>
-          <option key={'yukon'} value={'yukon'}>
-            Yukon
-          </option>
-        </select>
+    <ThemeProvider theme={theme}>
+      <div className="Game">
+        <div className="Game__dashboard">
+          <ButtonSecondaryAction onClick={undo}>Undo</ButtonSecondaryAction>
+          <ButtonPrimaryAction onClick={redeal}>New Deal</ButtonPrimaryAction>
+          <select
+            value={selectedGame}
+            onChange={e => setSelectedGame(e.target.value)}
+          >
+            <option key={'klondike'} value={'klondike'}>
+              Klondike
+            </option>
+            <option key={'spider'} value={'spider'}>
+              Spider
+            </option>
+            <option key={'yukon'} value={'yukon'}>
+              Yukon
+            </option>
+          </select>
+          </div>
+        { hasWon &&
+          <div>CONGRATULATION YOU HAVE WON THE GAME</div>
+        }
+        <section className='Game__section'>
+          {selectedGameComponent}
+        </section>
       </div>
-      { hasWon &&
-        <div>CONGRATULATION YOU HAVE WON THE GAME</div>
-      }
-      <section className='Game__section'>
-        {selectedGameComponent}
-      </section>
-    </div>
+    </ThemeProvider>
   );
 }
 

@@ -1,30 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux'
+import { Grid, Cell } from 'styled-css-grid';
 
 import PileStock from '../PileStock';
 import PileFoundation from '../PileFoundation';
 import PileTableau from '../PileTableau';
-import styled from 'styled-components';
-import { Grid, Cell } from 'styled-css-grid';
 
 import './styles.css';
-
-const SpiderBoard = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Foundation = styled.section`
-  display: flex;
-`;
-
-const Stock = styled.section`
-  display: flex;
-`;
-
-const Tableau = styled.section`
-  display: flex;
-`;
 
 export function Spider(props) {
   const {
