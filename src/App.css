@@ -16,14 +16,12 @@ html {
 }
 
 .Game__section {
-  min-height: 80vh;
-  padding: 0 10%;
+  display: inline-block;
 }
 
 .Game-top {
   display: flex;
   justify-content: space-between;
-  margin: 0 10%;
   margin-bottom: 3em;
 }
 
@@ -38,6 +36,5 @@ html {
 .Game-Tableau {
   display: flex;
   justify-content: space-between;
-  height: 80vh;
-  margin: 0 10%;
+  height: 100vh; 
 }

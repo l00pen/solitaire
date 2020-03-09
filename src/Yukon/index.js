@@ -32,7 +32,7 @@ function Yukon(props) {
   }
 
   return (
-    <div>
+    <React.Fragment>
       <section className='Game-top'>
         <section className='Game-Foundation'>
           {foundationPilesKeys.map((pileKey) => {
@@ -62,7 +62,7 @@ function Yukon(props) {
           )
         })}
       </section>
-    </div>
+    </React.Fragment>
   );
 }
 
