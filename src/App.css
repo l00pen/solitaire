@@ -17,6 +17,8 @@ html {
 
 .Game__section {
   display: inline-block;
+  width: 50%;
+    margin: 0 auto;
 }
 
 .Game-top {

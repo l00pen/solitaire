@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import sprite from './images/cards/spriteCard.png';
+import sprite from './images/cards/lov.svg';
 
 import {
   cardMinWidth,
@@ -18,7 +18,6 @@ const images = importAll(require.context('./images/cards', false, /\.(png|jpe?g|
 const Card = styled.div`
   min-width: ${cardMinWidth}px;
   max-width: ${cardMaxWidth}px;
-
   color: ${(props) => props.suite === 'black' ? 'black' : 'red'};
   img{
     width: 100%;
@@ -29,7 +28,7 @@ const CardStacked = styled(Card)`
   position: absolute;
 `;
 
-const CardFan = styled(Card)`
+const CardFan = styled.div`
   position: absolute;
   top: ${(props) => props.cardIndex === 0 ? 0 : 15}px;
 `;
@@ -42,8 +41,10 @@ const CardFaceUp = (props) => {
   const newId = id.match(/[a-z]+|[^a-z]+/gi);
 
   let idValue = newId[1];
+  let value = moreProps.value;
   if (idValue === '1') {
     idValue = 'A';
+    value = 14;
   }
 
   if (idValue === '13') {
@@ -58,24 +59,27 @@ const CardFaceUp = (props) => {
     idValue = 'J';
   }
 
-  let valueOffset = `-${((moreProps.value - 2))*100}%`;
+  let valueOffset = `-${((value - 2))*100 - 1}%`;
   let suiteOffset = 0;
-  if (suite === 'diamonds') {
-    suiteOffset = '-15%';
-  } else if (suite === 'spades') {
-    suiteOffset = '-428%';
+  if (suite === 'spades') {
+    suiteOffset = '1%';
+  } else if (suite === 'diamonds') {
+    suiteOffset = '-280%';
   } else if (suite === 'clubs') {
-    suiteOffset = '-150%';
+    suiteOffset = '-137%';
   } else if (suite === 'hearts') {
-    suiteOffset = '-290%';
+    suiteOffset = '-423%';
   }
 
   return (
     <Card suite={suite} onClick={onClick} {...moreProps}>
       <div style={{
         overflow: 'hidden',
-        paddingBottom: '130%',
+        paddingBottom: '138%',
         height: 0,
+        border: '1px solid papayawhip',
+        borderRadius: '3px',
+        backgroundColor: 'white',
       }}>
         <img
           id={`${moreProps.value}-${suite}`}
@@ -96,13 +100,16 @@ const CardFaceDown = (props) => (
   <Card {...props}>
     <div style={{
       overflow: 'hidden',
-      maxHeight: '115px',
+      height: 0,
+      paddingBottom: '138%',
+      border: '1px solid papayawhip',
+      borderRadius: '3px',
     }}>
       <img
         style={{
-          maxWidth: '1600%',
-          width: 'unset',
-          margin: '-339% 0 0 -1543%',
+          maxWidth: '1500%',
+          width: '1500%',
+          margin: '-167% 0 0 -1400%',
         }}
         alt='card'
         src={sprite}
