@@ -40,7 +40,7 @@ const CardFaceUp = (props) => {
     return <Card suite={suite}>Soemthings wrong with card</Card>;
   }
   const newId = id.match(/[a-z]+|[^a-z]+/gi);
-  const idSuite = newId[0].toUpperCase();
+
   let idValue = newId[1];
   if (idValue === '1') {
     idValue = 'A';
@@ -58,33 +58,36 @@ const CardFaceUp = (props) => {
     idValue = 'J';
   }
 
+  let valueOffset = `-${((moreProps.value - 2))*100}%`;
+  let suiteOffset = 0;
   if (suite === 'diamonds') {
-    const valueOffset = `-${((moreProps.value + 1) * 152 / 2330) * 1200}%`;
-    console.log('pip', moreProps.value)
-    return (
-      <Card suite={suite} onClick={onClick} {...moreProps}>
-        <div style={{
-          overflow: 'hidden',
-          maxHeight: '115px',
-        }}>
-          <img
-            id={moreProps.value}
-            style={{
-              maxWidth: '1657%',
-              width: 'unset',
-              margin: `-15% 0 0 ${valueOffset}`,
-            }}
-            alt='card'
-            src={sprite}
-          />
-        </div>
-      </Card>
-    )
+    suiteOffset = '-15%';
+  } else if (suite === 'spades') {
+    suiteOffset = '-428%';
+  } else if (suite === 'clubs') {
+    suiteOffset = '-150%';
+  } else if (suite === 'hearts') {
+    suiteOffset = '-290%';
   }
 
   return (
     <Card suite={suite} onClick={onClick} {...moreProps}>
-      <img src={images[`${idValue}${idSuite}.png`]} alt='card background' />
+      <div style={{
+        overflow: 'hidden',
+        paddingBottom: '130%',
+        height: 0,
+      }}>
+        <img
+          id={`${moreProps.value}-${suite}`}
+          style={{
+            maxWidth: '1400%',
+            width: '1400%',
+            margin: `${suiteOffset} 0 0 ${valueOffset}`,
+          }}
+          alt='card'
+          src={sprite}
+        />
+      </div>
     </Card>
   )
 } 
@@ -97,7 +100,7 @@ const CardFaceDown = (props) => (
     }}>
       <img
         style={{
-          maxWidth: '1657%',
+          maxWidth: '1600%',
           width: 'unset',
           margin: '-339% 0 0 -1543%',
         }}
