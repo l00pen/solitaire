@@ -109,7 +109,7 @@ const CardFaceDown = (props) => (
         style={{
           maxWidth: '1500%',
           width: '1500%',
-          margin: '-167% 0 0 -1400%',
+          margin: '-162% 0 0 -1400%',
         }}
         alt='card'
         src={sprite}
@@ -120,7 +120,23 @@ const CardFaceDown = (props) => (
 
 const CardEmpty = ({ onClick, ...props }) => (
   <Card onClick={onClick} {...props}>
-    <img src={images['empty.png']} alt='card background' />
+    <div style={{
+      overflow: 'hidden',
+      height: 0,
+      paddingBottom: '138%',
+      border: '1px solid papayawhip',
+      borderRadius: '3px',
+    }}>
+      <img
+        style={{
+          maxWidth: '1500%',
+          width: '1500%',
+          margin: '0% 0 0 -1400%',
+        }}
+        alt='card'
+        src={sprite}
+      />
+    </div>
   </Card>
 );
 
