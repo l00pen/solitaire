@@ -17,7 +17,6 @@ const PileTableau = ({ pile, pileKey, minHeight, onDrop, onClick }) => {
     const dragAndDropData = { card, cardIndexInPile: cardIndex, sourcePile: pileKey };
 
     if (rest.length === 0 && card) {
-      console.log('card', card, cardIndex)
       return (
         <CardDroppable
           key={card.key + pileKey}

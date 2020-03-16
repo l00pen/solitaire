@@ -32,7 +32,7 @@ const theme = {
 };
 
 function App({ undo, redeal }) {
-  const [selectedGame, setSelectedGame] = useState('yukon');
+  const [selectedGame, setSelectedGame] = useState('klondike');
   const [hasWon, setHasWon] = useState(false);
 
   const hasWonHandler = () => {

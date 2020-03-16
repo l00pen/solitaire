@@ -17,7 +17,7 @@ const PileWaste = ({ pile, onClick }) => {
       data={clickAndDragData}
       draggable={!!card.isFaceUp}
     >
-      <CardFaceUp id={card.id} label={card.label} suite={card.suite} onClick={() => onClick(clickAndDragData)} />
+      <CardFaceUp onClick={() => onClick(clickAndDragData)} {...card} />
     </CardDraggable>
   );
 }

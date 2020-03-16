@@ -15,7 +15,6 @@ function Yukon(props) {
   } = props;
 
   const onDropFoundation = (dropData, dragData) => {
-    console.log('hej hej hej yukon comp', dropData, dragData)
     foundationDropHandler({ dropData, dragData })
   }
 
@@ -23,9 +22,7 @@ function Yukon(props) {
     tableauDropHandler({ dropData, dragData })
   }
 
-  const onClickTableau = (clickData) => {
-    console.log('hej')
-  }
+  const onClickTableau = (clickData) => {}
 
   if (game.hasWon) {
     onHasWon();
