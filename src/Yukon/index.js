@@ -15,7 +15,7 @@ function Yukon(props) {
   } = props;
 
   const onDropFoundation = (dropData, dragData) => {
-    console.log('hej hej hej yukon comp')
+    console.log('hej hej hej yukon comp', dropData, dragData)
     foundationDropHandler({ dropData, dragData })
   }
 

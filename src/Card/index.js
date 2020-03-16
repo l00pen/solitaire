@@ -7,21 +7,9 @@ import {
   cardMaxWidth,
 } from '../styleVariables';
 
-function importAll(r) {
-  let images = {};
-  r.keys().map((item, index) => ( images[item.replace('./', '')] = r(item) ));
-  return images;
-}
-
-const images = importAll(require.context('./images/cards', false, /\.(png|jpe?g|svg)$/));
-
 const Card = styled.div`
   min-width: ${cardMinWidth}px;
   max-width: ${cardMaxWidth}px;
-  color: ${(props) => props.suite === 'black' ? 'black' : 'red'};
-  img{
-    width: 100%;
-  }
 `;
 
 const CardStacked = styled(Card)`
@@ -59,7 +47,7 @@ const CardFaceUp = (props) => {
     idValue = 'J';
   }
 
-  let valueOffset = `-${((value - 2))*100 - 1}%`;
+  let valueOffset = `-${((value - 2))*100}%`;
   let suiteOffset = 0;
   if (suite === 'spades') {
     suiteOffset = '1%';
@@ -146,28 +134,25 @@ const CardDroppable = ({ children, data, dropHandler }) => {
       ev.preventDefault();
     },
     onDrop: (ev) => {
-      console.log('yumahu', data)
       ev.preventDefault();
       const dataFromTransfer = ev.dataTransfer.getData("pip");
-
       dropHandler(data, JSON.parse(dataFromTransfer))
     },
   };
 
-  console.log('children onDrop', React.Children.count(children))
   return React.Children.map(children, child => {
     return React.cloneElement(child, props);
   });
 };
 
-const CardDraggable = ({ children, data, draggable }) => {
+const CardDraggable = ({ children, data, ...moreProps }) => {
   const props = {
     onDragStart: (ev) => {
       ev.dataTransfer.setData("pip", JSON.stringify(data));
       ev.dataTransfer.setDragImage(ev.currentTarget, 50, 15);
       ev.stopPropagation();
     },
-    draggable,
+    ...moreProps,
   };
 
   return React.Children.map(children, child => {

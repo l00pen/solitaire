@@ -24,7 +24,7 @@ const PileFoundation = ({ pile, pileId, onDrop }) => {
         data={{ destinationPile: pileId }}
         dropHandler={onDrop}
       >
-        <CardFaceUp id={card.id} label={card.label} suite={card.suite} />
+        <CardFaceUp {...card} />
       </CardDroppable>
     )
   }
@@ -35,7 +35,7 @@ const PileFoundation = ({ pile, pileId, onDrop }) => {
 
   card = pile[pile.length - 1];
   return (
-    <CardFaceUp id={card.id} label={card.label} suite={card.suite} />
+    <CardFaceUp {...card} />
   )
 }
 

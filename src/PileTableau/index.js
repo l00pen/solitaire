@@ -1,17 +1,24 @@
 import React from 'react';
 
 import Pile from '../Pile';
-import { CardFan, CardDroppable, CardDraggable, CardToggleFaceUp, CardEmpty } from '../Card';
+import {
+  CardFan,
+  CardDroppable,
+  CardDraggable,
+  CardToggleFaceUp,
+  CardEmpty,
+} from '../Card';
 
 import { cardFanOffset } from '../styleVariables.js'
 
 const PileTableau = ({ pile, pileKey, minHeight, onDrop, onClick }) => {
   const createRecursiveList = (list, cardIndex) => {
     const [card, ...rest] = list;
+    const dragAndDropData = { card, cardIndexInPile: cardIndex, sourcePile: pileKey };
 
     if (rest.length === 0 && card) {
-      console.log('hej hej hej hej', card, cardIndex, pileKey)
-      const baseCase = (
+      console.log('card', card, cardIndex)
+      return (
         <CardDroppable
           key={card.key + pileKey}
           data={{ destinationPile: pileKey }}
@@ -22,33 +29,28 @@ const PileTableau = ({ pile, pileKey, minHeight, onDrop, onClick }) => {
             draggable={!!card.isFaceUp}
           >
             <CardFan cardIndex={cardIndex}>
-              <CardToggleFaceUp {...card} onClick={() => onClick({ card, cardIndexInPile: cardIndex, sourcePile: pileKey })} />
+              <CardToggleFaceUp {...card} onClick={() => onClick(dragAndDropData)} />
             </CardFan>
           </CardDraggable>
         </CardDroppable>
       );
-      return baseCase;
     }
 
-    const pip = createRecursiveList(rest, cardIndex + 1);
-
-    const tmp = (
+    const cardList = createRecursiveList(rest, cardIndex + 1);
+    return (
       <CardFan cardIndex={cardIndex}>
         <CardDraggable
-          data={{ card, cardIndexInPile: cardIndex, sourcePile: pileKey }}
+          data={dragAndDropData}
           draggable={!!card.isFaceUp}
         >
-          <CardToggleFaceUp {...card} onClick={() => onClick({ card, cardIndexInPile: cardIndex, sourcePile: pileKey })} />
-          {pip}
+          <CardToggleFaceUp {...card} onClick={() => onClick(dragAndDropData)} />
+          {cardList}
         </CardDraggable>
       </CardFan>
     );
-
-    return tmp;
   }
 
   if (pile.length === 0) {
-    console.log('jabba hej hej')
     return (
       <CardDroppable
         data={{ card: {}, cardIndex: 0, destinationPile: pileKey }}
