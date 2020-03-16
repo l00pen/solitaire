@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import PileWaste from '../PileWaste';
 import PileStock from '../PileStock';
-import PileFoundation from '../PileFoundation';
+import { PileFoundationDropppable } from '../PileFoundation';
 import PileTableau from '../PileTableau';
 
 function Klondike({ game, reRunDeck, stockClickHandler, foundationDropHandler, tableauDropHandler, tableauClickHandler, wasteClickHandler, onHasWon }) {
@@ -40,7 +40,7 @@ function Klondike({ game, reRunDeck, stockClickHandler, foundationDropHandler, t
           {foundationPilesKeys.map((pileKey) => {
             const pile = game[pileKey];
             return (
-              <PileFoundation
+              <PileFoundationDropppable
                 key={pileKey}
                 pile={pile}
                 pileId={pileKey}

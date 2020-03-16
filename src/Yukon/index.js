@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
-import PileFoundation from '../PileFoundation';
+import { PileFoundationDropppable } from '../PileFoundation';
 import PileTableau from '../PileTableau';
 
 function Yukon(props) {
@@ -38,7 +38,7 @@ function Yukon(props) {
           {foundationPilesKeys.map((pileKey) => {
             const pile = game[pileKey];
             return (
-              <PileFoundation
+              <PileFoundationDropppable
                 key={pileKey}
                 pile={pile}
                 pileId={pileKey}
