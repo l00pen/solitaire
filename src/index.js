@@ -8,11 +8,11 @@ import './index.css';
 
 import App from './App';
 import rootReducer from './reducers';
-import SpiderMoveToFoundation from './reducers/states/SpiderMoveToFoundation';
+// import SpiderMoveToFoundation from './reducers/states/SpiderMoveToFoundation';
 
 import * as serviceWorker from './serviceWorker';
 
-const initialState = SpiderMoveToFoundation;
+const initialState = {};
 const store = createStore(rootReducer, initialState, composeWithDevTools())
 
 ReactDOM.render(
