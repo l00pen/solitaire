@@ -12,6 +12,7 @@ export function Spider(props) {
   const {
     game,
     stockClickHandler,
+    tableauClickHandler,
     tableauDropHandler,
     onHasWon,
     foundationPilesKeys,
@@ -26,7 +27,9 @@ export function Spider(props) {
     stockClickHandler(clickData);
   }
 
-  const onClickTableau = (clickData) => {}
+  const onClickTableau = (clickData) => {
+    tableauClickHandler(clickData)
+  }
 
   if (game.hasWon) {
     onHasWon();

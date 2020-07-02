@@ -162,12 +162,31 @@ const tableauDropHandler = (state, { dropData, dragData }) => {
   return cardDropHandler(state, dropData, dragData, allowDropTableau);
 }
 
+const tableauClickHandler = (state, clickData) => {
+  const { card, cardIndexInPile, sourcePile } = clickData;
+
+  const allowedTableauPiles = state.tableauPilesKeys.filter((pile) => {
+    return allowDropTableau([card], state[pile]);
+  })
+
+  if (allowedTableauPiles.length) {
+    const allowedPile = allowedTableauPiles[0];
+    const afterClickState = cardDropHandler(state, { destinationPile: allowedPile }, clickData, allowDropTableau);
+    return moveToFoundationPile(afterClickState, allowedPile)
+  }
+
+  return state;
+}
+
 const spiderReducer = (state = init(), action) => {
   switch (action.type) {
     case 'RE_DEAL':
       return init();
     case 'SPIDER_CLICK_STOCK':
       return stockClickHandler(state);
+    case 'SPIDER_CLICK_TABLEAU':
+      const afterClickState = tableauClickHandler(state, action.payload);
+      return checkHasWon(afterClickState)
     case 'SPIDER_DROP_TABLEAU':
       const afterDropState = tableauDropHandler(
         state,
