@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import { connect } from 'react-redux'
 import styled, { ThemeProvider } from 'styled-components';
 
+import Dashboard from './Dashboard';
 import Spider from './Spider';
 import Klondike from './Klondike';
 import Yukon from './Yukon';
-import { ButtonPrimaryAction, ButtonSecondaryAction } from './Buttons';
 
 import './App.css';
 
@@ -43,7 +43,7 @@ const ContentSection = styled.section`
   min-height: 20em;
 `;
 
-function App({ undo, redeal }) {
+function App(props) {
   const [selectedGame, setSelectedGame] = useState('klondike');
   const [hasWon, setHasWon] = useState(false);
 
@@ -56,26 +56,9 @@ function App({ undo, redeal }) {
   return (
     <ThemeProvider theme={theme}>
       <div className="Game">
-        <ContentSection>
-          <div className="Game__dashboard">
-            <ButtonSecondaryAction onClick={undo}>Undo</ButtonSecondaryAction>
-            <ButtonPrimaryAction onClick={redeal}>New Deal</ButtonPrimaryAction>
-            <select
-              value={selectedGame}
-              onChange={e => setSelectedGame(e.target.value)}
-            >
-              <option key={'klondike'} value={'klondike'}>
-                Klondike
-              </option>
-              <option key={'spider'} value={'spider'}>
-                Spider
-              </option>
-              <option key={'yukon'} value={'yukon'}>
-                Yukon
-              </option>
-            </select>
-          </div>
-        </ContentSection>
+        <div className="Game__dashboard">
+          <Dashboard selectedGame={selectedGame} setSelectedGame={setSelectedGame} {...props} />
+        </div>
         { hasWon &&
           <ContentSection>
             CONGRATULATION YOU HAVE WON THE GAME

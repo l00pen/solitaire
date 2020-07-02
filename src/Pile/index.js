@@ -28,6 +28,18 @@ export const PileEmpty = styled(Pile)`
   box-sizing: border-box;
 `;
 
+export const PileGroup = styled.div`
+  display: flex;
+  justify-content: space-between;
+  
+  & > * {
+    margin: 0 0.5em 0 0;
+  }
+
+  & > *:last-child {
+    margin-right: 0;
+  }
+`;
 
 export default Pile;
   // height: 5.17em;  should be a min height or someting from a "pile" 

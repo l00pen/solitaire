@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import { PileFoundationDropppable } from '../PileFoundation';
 import PileTableau from '../PileTableau';
+import {PileGroup} from '../Pile';
 
 function Yukon(props) {
   const {
@@ -31,7 +32,7 @@ function Yukon(props) {
   return (
     <React.Fragment>
       <section className='Game-top'>
-        <section className='Game-Foundation'>
+        <PileGroup>
           {foundationPilesKeys.map((pileKey) => {
             const pile = game[pileKey];
             return (
@@ -43,9 +44,9 @@ function Yukon(props) {
               />
             )
           })}
-        </section>
+        </PileGroup>
       </section>
-      <section className='Game-Tableau'>
+      <PileGroup>
         {tableauPilesKeys.map((pileKey) => {
           const pile = game[pileKey];
           return (
@@ -58,7 +59,7 @@ function Yukon(props) {
             />
           )
         })}
-      </section>
+      </PileGroup>
     </React.Fragment>
   );
 }

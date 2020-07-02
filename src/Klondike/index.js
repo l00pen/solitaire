@@ -5,6 +5,7 @@ import PileWaste from '../PileWaste';
 import PileStock from '../PileStock';
 import { PileFoundationDropppable } from '../PileFoundation';
 import PileTableau from '../PileTableau';
+import {PileGroup} from '../Pile';
 
 function Klondike({ game, reRunDeck, stockClickHandler, foundationDropHandler, tableauDropHandler, tableauClickHandler, wasteClickHandler, onHasWon }) {
   const { tableauPilesKeys, foundationPilesKeys } = game;
@@ -36,7 +37,7 @@ function Klondike({ game, reRunDeck, stockClickHandler, foundationDropHandler, t
   return (
     <div>
       <section className='Game-top'>
-        <section className='Game-Foundation'>
+        <PileGroup>
           {foundationPilesKeys.map((pileKey) => {
             const pile = game[pileKey];
             return (
@@ -48,8 +49,8 @@ function Klondike({ game, reRunDeck, stockClickHandler, foundationDropHandler, t
               />
             )
           })}
-        </section>
-        <div className='Game-stockAndWaste'>
+        </PileGroup>
+        <PileGroup>
           <section className='Game-Waste'>
             <PileWaste pile={game.waste} onClick={wasteClickHandler} />
           </section>
@@ -60,9 +61,9 @@ function Klondike({ game, reRunDeck, stockClickHandler, foundationDropHandler, t
               reRunDeck={reRunDeck}
             />
           </section>
-        </div>
+        </PileGroup>
       </section>
-      <section className='Game-Tableau'>
+      <PileGroup>
         {tableauPilesKeys.map((pileKey) => {
           const pile = game[pileKey];
           return (
@@ -76,7 +77,7 @@ function Klondike({ game, reRunDeck, stockClickHandler, foundationDropHandler, t
             />
           )
         })}
-      </section>
+      </PileGroup>
     </div>
   );
 }

@@ -5,6 +5,7 @@ html {
 .Game {
   text-align: center;
   background-color: #282c34;
+  height: 100vh;
 }
 
 .Game__dashboard {
@@ -18,25 +19,12 @@ html {
 .Game__section {
   display: inline-block;
   width: 50%;
-    margin: 0 auto;
+  margin: 0 auto;
 }
 
 .Game-top {
   display: flex;
   justify-content: space-between;
   margin-bottom: 3em;
-}
-
-.Game-stockAndWaste {
-  display: flex;
-}
-
-.Game-Foundation {
-  display: flex;
-}
-
-.Game-Tableau {
-  display: flex;
-  justify-content: space-between;
-  height: 100vh; 
+  flex-wrap: wrap;
 }
