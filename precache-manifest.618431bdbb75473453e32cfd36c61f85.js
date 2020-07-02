@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "c2c90175e9f61ade2a7dc545db109da5",
+    "revision": "3a1ace78e9a50f7a21710d27928ef30a",
     "url": "/solitaire/index.html"
   },
   {
-    "revision": "398635b807d6bde37da7",
+    "revision": "df4f167118419bffd1e1",
     "url": "/solitaire/static/css/main.7dc122e9.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/solitaire/static/js/2.eb372e1d.chunk.js"
   },
   {
-    "revision": "398635b807d6bde37da7",
-    "url": "/solitaire/static/js/main.adfedcca.chunk.js"
+    "revision": "df4f167118419bffd1e1",
+    "url": "/solitaire/static/js/main.409031a9.chunk.js"
   },
   {
     "revision": "a647a0caccceb8d03464",
