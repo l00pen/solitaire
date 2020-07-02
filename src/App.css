@@ -2,24 +2,24 @@ html {
   font-size: 16px;
 }
 
+body { 
+  background-color: #282c34;
+}
+
 .Game {
   text-align: center;
-  background-color: #282c34;
   height: 100vh;
 }
 
 .Game__dashboard {
   display: flex;
-  min-height: 20vh;
-  width: 50%;
-  margin: 0 auto;
-  align-items: center;
+  /*min-height: 20vh;*/
+  margin: 1em;
 }
 
 .Game__section {
   display: inline-block;
-  width: 50%;
-  margin: 0 auto;
+  margin: 0 1em;
 }
 
 .Game-top {
@@ -27,4 +27,17 @@ html {
   justify-content: space-between;
   margin-bottom: 3em;
   flex-wrap: wrap;
+}
+
+@media only screen and (min-width: 768px) {
+  .Game__dashboard {
+    width: 50%;
+    margin: 0 auto;
+    align-items: center;
+  }
+
+  .Game__section {
+    width: 50%;
+    margin: 0 auto;
+  }
 }
