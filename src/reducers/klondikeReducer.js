@@ -72,10 +72,10 @@ const checkHasWon = (state) => {
 }
 
 const tableauClickHandler = (state, { card, cardIndexInPile, sourcePile }) => {
-  // TODO Bugfix only allow move if no cards coming after
-  const allowedFoundationPiles = state.foundationPilesKeys.filter((pile) => {
+  const isLastCard = cardIndexInPile === (state[sourcePile].length - 1)
+  const allowedFoundationPiles = isLastCard ? state.foundationPilesKeys.filter((pile) => {
     return allowFoundationDrop([card], state[pile]);
-  })
+  }) : [];
 
   const allowedTableauPiles = state.tableauPilesKeys.filter((pile) => {
     return allowDropTableau([card], state[pile]);
