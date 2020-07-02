@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { connect } from 'react-redux'
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 
 import Spider from './Spider';
 import Klondike from './Klondike';
@@ -31,6 +31,18 @@ const theme = {
   padding: 0.5,
 };
 
+const ContentSection = styled.section`
+  background-color: rgba(245,245,245,0.7);
+  color: rgba(3,2,20,0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1 0 auto;
+  padding: 1em;
+  min-height: 20em;
+`;
+
 function App({ undo, redeal }) {
   const [selectedGame, setSelectedGame] = useState('klondike');
   const [hasWon, setHasWon] = useState(false);
@@ -44,26 +56,30 @@ function App({ undo, redeal }) {
   return (
     <ThemeProvider theme={theme}>
       <div className="Game">
-        <div className="Game__dashboard">
-          <ButtonSecondaryAction onClick={undo}>Undo</ButtonSecondaryAction>
-          <ButtonPrimaryAction onClick={redeal}>New Deal</ButtonPrimaryAction>
-          <select
-            value={selectedGame}
-            onChange={e => setSelectedGame(e.target.value)}
-          >
-            <option key={'klondike'} value={'klondike'}>
-              Klondike
-            </option>
-            <option key={'spider'} value={'spider'}>
-              Spider
-            </option>
-            <option key={'yukon'} value={'yukon'}>
-              Yukon
-            </option>
-          </select>
+        <ContentSection>
+          <div className="Game__dashboard">
+            <ButtonSecondaryAction onClick={undo}>Undo</ButtonSecondaryAction>
+            <ButtonPrimaryAction onClick={redeal}>New Deal</ButtonPrimaryAction>
+            <select
+              value={selectedGame}
+              onChange={e => setSelectedGame(e.target.value)}
+            >
+              <option key={'klondike'} value={'klondike'}>
+                Klondike
+              </option>
+              <option key={'spider'} value={'spider'}>
+                Spider
+              </option>
+              <option key={'yukon'} value={'yukon'}>
+                Yukon
+              </option>
+            </select>
           </div>
+        </ContentSection>
         { hasWon &&
-          <div>CONGRATULATION YOU HAVE WON THE GAME</div>
+          <ContentSection>
+            CONGRATULATION YOU HAVE WON THE GAME
+          </ContentSection>
         }
         <section className='Game__section'>
           {selectedGameComponent}
