@@ -9,14 +9,14 @@ import Yukon from './Yukon';
 
 import './App.css';
 
-const getSelectedGameComponent = (game, hasWonHandler) => {
+const getSelectedGameComponent = (game) => {
   switch(game) {
     case 'klondike':
-      return <Klondike onHasWon={hasWonHandler} />;
+      return <Klondike />;
     case 'spider':
-      return <Spider onHasWon={hasWonHandler} />;
+      return <Spider />;
     case 'yukon':
-      return <Yukon onHasWon={hasWonHandler} />;
+      return <Yukon />;
     default:
       return <div>No valid game selected</div>;
   }
@@ -31,27 +31,12 @@ const theme = {
   padding: 0.5,
 };
 
-const ContentSection = styled.section`
-  background-color: rgba(245,245,245,0.7);
-  color: rgba(3,2,20,0.7);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  flex: 1 0 auto;
-  padding: 1em;
-  min-height: 20em;
-`;
-
 function App(props) {
-  const [selectedGame, setSelectedGame] = useState('klondike');
-  const [hasWon, setHasWon] = useState(false);
+  const [selectedGame, setSelectedGame] = useState('spider');
 
-  const hasWonHandler = () => {
-    setHasWon(true);
-  }
+  console.log(selectedGame)
 
-  const selectedGameComponent = getSelectedGameComponent(selectedGame, hasWonHandler);
+  const selectedGameComponent = getSelectedGameComponent(selectedGame);
 
   return (
     <ThemeProvider theme={theme}>
@@ -59,11 +44,6 @@ function App(props) {
         <div className="Game__dashboard">
           <Dashboard selectedGame={selectedGame} setSelectedGame={setSelectedGame} {...props} />
         </div>
-        { hasWon &&
-          <ContentSection>
-            CONGRATULATION YOU HAVE WON THE GAME
-          </ContentSection>
-        }
         <section className='Game__section'>
           {selectedGameComponent}
         </section>

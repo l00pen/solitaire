@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
+import ContentSection from '../ContentSection';
 import { PileFoundationDropppable } from '../PileFoundation';
 import PileTableau from '../PileTableau';
 import {PileGroup} from '../Pile';
@@ -26,7 +27,11 @@ function Yukon(props) {
   const onClickTableau = (clickData) => {}
 
   if (game.hasWon) {
-    onHasWon();
+    return (
+      <ContentSection>
+        CONGRATULATION YOU HAVE WON THE GAME
+      </ContentSection>
+    );
   }
 
   return (

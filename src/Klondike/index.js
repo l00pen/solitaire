@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
+import ContentSection from '../ContentSection';
 import PileWaste from '../PileWaste';
 import PileStock from '../PileStock';
 import { PileFoundationDropppable } from '../PileFoundation';
@@ -11,7 +12,11 @@ function Klondike({ game, reRunDeck, stockClickHandler, foundationDropHandler, t
   const { tableauPilesKeys, foundationPilesKeys } = game;
 
   if (game.hasWon) {
-    onHasWon();
+    return (
+      <ContentSection>
+        CONGRATULATION YOU HAVE WON THE GAME
+      </ContentSection>
+    );
   }
 
   const onDropTableau = (dropData, dragData) => {

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { Grid, Cell } from 'styled-css-grid';
 
+import ContentSection from '../ContentSection';
 import PileStock from '../PileStock';
 import PileFoundation from '../PileFoundation';
 import PileTableau from '../PileTableau';
@@ -14,7 +15,6 @@ export function Spider(props) {
     stockClickHandler,
     tableauClickHandler,
     tableauDropHandler,
-    onHasWon,
     foundationPilesKeys,
     tableauPilesKeys,
   } = props;
@@ -32,7 +32,11 @@ export function Spider(props) {
   }
 
   if (game.hasWon) {
-    onHasWon();
+    return (
+      <ContentSection>
+        CONGRATULATION YOU HAVE WON THE GAME
+      </ContentSection>
+    );
   }
 
   const nrOfColumns = Math.max(tableauPilesKeys.length, foundationPilesKeys.length);
