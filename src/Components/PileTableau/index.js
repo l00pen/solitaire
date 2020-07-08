@@ -1,15 +1,15 @@
 import React from 'react';
 
-import Pile from '../Pile';
+import Pile from 'Components/Pile';
 import {
   CardFan,
   CardDroppable,
   CardDraggable,
   CardToggleFaceUp,
   CardEmpty,
-} from '../Card';
+} from 'Components/Card';
 
-import { cardFanOffset } from '../styleVariables.js'
+import { cardFanOffset } from 'utils/styleVariables.js'
 
 const PileTableau = ({ pile, pileKey, minHeight, onDrop, onClick }) => {
   const createRecursiveList = (list, cardIndex) => {

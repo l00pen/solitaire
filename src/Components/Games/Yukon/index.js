@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
-import ContentSection from '../ContentSection';
-import { PileFoundationDropppable } from '../PileFoundation';
-import PileTableau from '../PileTableau';
-import {PileGroup} from '../Pile';
+import ContentSection from 'Components/ContentSection';
+import { PileFoundationDropppable } from 'Components/PileFoundation';
+import PileTableau from 'Components/PileTableau';
+import {PileGroup} from 'Components/Pile';
 
 function Yukon(props) {
   const {

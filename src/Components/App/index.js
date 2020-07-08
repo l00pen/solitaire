@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import { connect } from 'react-redux'
 import styled, { ThemeProvider } from 'styled-components';
 
-import Dashboard from './Dashboard';
-import Spider from './Spider';
-import Klondike from './Klondike';
-import Yukon from './Yukon';
+import Dashboard from 'Components/Dashboard';
+import Spider from 'Components/Games/Spider';
+import Klondike from 'Components/Games/Klondike';
+import Yukon from 'Components/Games/Yukon';
 
 import './App.css';
 

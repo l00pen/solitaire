@@ -6,7 +6,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 
 import './index.css';
 
-import App from './App';
+import App from 'Components/App';
 import rootReducer from './reducers';
 // import SpiderMoveToFoundation from './reducers/states/SpiderMoveToFoundation';
 

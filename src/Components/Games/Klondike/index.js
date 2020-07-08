@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
-import ContentSection from '../ContentSection';
-import PileWaste from '../PileWaste';
-import PileStock from '../PileStock';
-import { PileFoundationDropppable } from '../PileFoundation';
-import PileTableau from '../PileTableau';
-import {PileGroup} from '../Pile';
+import ContentSection from 'Components/ContentSection';
+import PileWaste from 'Components/PileWaste';
+import PileStock from 'Components/PileStock';
+import { PileFoundationDropppable } from 'Components/PileFoundation';
+import PileTableau from 'Components/PileTableau';
+import {PileGroup} from 'Components/Pile';
 
 function Klondike({ game, reRunDeck, stockClickHandler, foundationDropHandler, tableauDropHandler, tableauClickHandler, wasteClickHandler, onHasWon }) {
   const { tableauPilesKeys, foundationPilesKeys } = game;

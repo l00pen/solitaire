@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { Grid, Cell } from 'styled-css-grid';
 
-import ContentSection from '../ContentSection';
-import PileStock from '../PileStock';
-import PileFoundation from '../PileFoundation';
-import PileTableau from '../PileTableau';
+import ContentSection from 'Components/ContentSection';
+import PileStock from 'Components/PileStock';
+import PileFoundation from 'Components/PileFoundation';
+import PileTableau from 'Components/PileTableau';
 
 import './styles.css';
 

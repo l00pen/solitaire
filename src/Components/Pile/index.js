@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {
   cardMinWidth,
   cardMaxWidth
-} from '../styleVariables';
+} from 'utils/styleVariables';
 
 const Pile = styled.div`
   min-width: ${cardMinWidth}px;

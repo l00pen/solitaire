@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { CardFaceUp } from '../Card';
-import { CardDroppable, CardEmpty } from '../Card';
+import { CardFaceUp } from 'Components/Card';
+import { CardDroppable, CardEmpty } from 'Components/Card';
 
 export const PileFoundationDropppable = ({ pile, pileId, onDrop }) => {
   let cardComponent = null;

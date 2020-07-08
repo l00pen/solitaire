@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CardFaceDown, CardEmpty } from '../Card';
+import { CardFaceDown, CardEmpty } from 'Components/Card';
 
 const PileStock = ({ pile, onClick, reRunDeck }) => {
   if (pile.length === 0) {

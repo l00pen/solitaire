@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { ButtonPrimaryAction, ButtonSecondaryAction } from '../Buttons';
+import { ButtonPrimaryAction, ButtonSecondaryAction } from 'Components/Buttons';
 
 const DashboardStyled = styled.section`
   display: flex;

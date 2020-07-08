@@ -12,7 +12,7 @@ import {
   createArrayWithKeys,
   cardDropHandler,
   getLastCardInPile,
-} from '../utils/';
+} from 'utils/';
 
 const tableauPilesKeys = createArrayWithKeys('tableau', 7);
 const foundationPilesKeys = createArrayWithKeys('foundation', 4);

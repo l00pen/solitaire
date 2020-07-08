@@ -14,7 +14,7 @@ import {
   everyCardIsSameSuite,
   arrayToObject,
   getLastCardInPile,
-} from '../utils/';
+} from 'utils/';
 
 const createDeck = () => {
   return [

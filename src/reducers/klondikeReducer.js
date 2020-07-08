@@ -13,7 +13,7 @@ import {
   createEmptyPiles,
   getCardsFromDeck,
   arrayToObject,
-} from '../utils/';
+} from 'utils/';
 
 const tableauPilesKeys = createArrayWithKeys('tableau', 7);
 const foundationPilesKeys = createArrayWithKeys('foundation', 4);

@@ -5,7 +5,7 @@ import sprite from './images/cards/lov.svg';
 import {
   cardMinWidth,
   cardMaxWidth,
-} from '../styleVariables';
+} from 'utils/styleVariables';
 
 const Card = styled.div`
   min-width: ${cardMinWidth}px;

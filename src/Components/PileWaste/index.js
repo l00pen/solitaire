@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { CardFaceUp } from '../Card';
-import { CardDraggable, CardEmpty } from '../Card';
+import { CardFaceUp } from 'Components/Card';
+import { CardDraggable, CardEmpty } from 'Components/Card';
 
 const PileWaste = ({ pile, onClick }) => {
   if (pile.length === 0) {
