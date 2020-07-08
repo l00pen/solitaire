@@ -18,7 +18,7 @@ const CardStacked = styled(Card)`
 
 const CardFan = styled.div`
   position: absolute;
-  top: ${(props) => props.cardIndex === 0 ? 0 : 25}px;
+  top: ${(props) => props.cardIndex === 0 ? 0 : 10}px;
 `;
 
 const CardFaceUp = (props) => {

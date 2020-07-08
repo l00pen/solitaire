@@ -14,7 +14,7 @@ const ActionList = styled.section`
   
   /* TODO change to button styled component name */
   & > button {
-    margin: 0 0.5em 0 0;
+    margin: 0 0.125em 0 0;
   }
 
   & > button:last-child {

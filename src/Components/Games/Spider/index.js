@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { Grid, Cell } from 'styled-css-grid';
 
+import { useBreakpoint } from 'Contexts/BreakpointProvider'
+
 import ContentSection from 'Components/ContentSection';
 import PileStock from 'Components/PileStock';
 import PileFoundation from 'Components/PileFoundation';
@@ -18,6 +20,8 @@ export function Spider(props) {
     foundationPilesKeys,
     tableauPilesKeys,
   } = props;
+
+  const breakpoints = useBreakpoint();
 
   const onDropTableau = (dropData, dragData) => {
     tableauDropHandler({ dropData, dragData })
@@ -39,15 +43,21 @@ export function Spider(props) {
     );
   }
 
+  const smBP = Object.keys(breakpoints).find(key => breakpoints[key]);
   const nrOfColumns = Math.max(tableauPilesKeys.length, foundationPilesKeys.length);
   const maxNrOfCardsInTableau = tableauPilesKeys.reduce((mem, pileKey) => {
     return Math.max(game[pileKey].length, mem);
   }, 0);
 
+  let gapSize = '2px';
+  if (smBP === 'xs') {
+    gapSize = '2px';
+  }
+
   return (
-    <Grid columns={1}>
+    <Grid columns={1} gap={gapSize}>
       <Cell>
-        <Grid columns={nrOfColumns}>
+        <Grid columns={nrOfColumns} gap={gapSize}>
           {foundationPilesKeys.map((pileKey) => {
             const pile = game[pileKey];
             return (
@@ -61,7 +71,7 @@ export function Spider(props) {
         </Grid>
       </Cell>
       <Cell>
-        <Grid columns={nrOfColumns}>
+        <Grid columns={nrOfColumns} gap={gapSize}>
           <PileStock
             onClick={onStockClick}
             pile={game.stock}
@@ -69,7 +79,7 @@ export function Spider(props) {
         </Grid>
       </Cell>
       <Cell>
-        <Grid columns={nrOfColumns}>
+        <Grid columns={nrOfColumns} gap={gapSize}>
           {tableauPilesKeys.map((pileKey) => {
             const pile = game[pileKey];
             return (

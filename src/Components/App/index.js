@@ -2,12 +2,22 @@ import React, {useState} from 'react';
 import { connect } from 'react-redux'
 import styled, { ThemeProvider } from 'styled-components';
 
+import {BreakpointProvider} from 'Contexts/BreakpointProvider'
+
 import Dashboard from 'Components/Dashboard';
 import Spider from 'Components/Games/Spider';
 import Klondike from 'Components/Games/Klondike';
 import Yukon from 'Components/Games/Yukon';
 
 import './App.css';
+
+const queries = {
+  xs: '(max-width: 320px)',
+  sm: '(max-width: 720px)',
+  md: '(max-width: 1024px)',
+  l: '(min-width: 1024px)',
+  or: '(orientation: portrait)', // we can check orientation also
+}
 
 const getSelectedGameComponent = (game) => {
   switch(game) {
@@ -34,21 +44,21 @@ const theme = {
 function App(props) {
   const [selectedGame, setSelectedGame] = useState('spider');
 
-  console.log(selectedGame)
-
   const selectedGameComponent = getSelectedGameComponent(selectedGame);
 
   return (
-    <ThemeProvider theme={theme}>
-      <div className="Game">
-        <div className="Game__dashboard">
-          <Dashboard selectedGame={selectedGame} setSelectedGame={setSelectedGame} {...props} />
+    <BreakpointProvider queries={queries}>
+      <ThemeProvider theme={theme}>
+        <div className="Game">
+          <div className="Game__dashboard">
+            <Dashboard selectedGame={selectedGame} setSelectedGame={setSelectedGame} {...props} />
+          </div>
+          <section className='Game__section'>
+            {selectedGameComponent}
+          </section>
         </div>
-        <section className='Game__section'>
-          {selectedGameComponent}
-        </section>
-      </div>
-    </ThemeProvider>
+      </ThemeProvider>
+    </BreakpointProvider>
   );
 }
 
