@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/solitaire/static/css/main.a22c0e03.chunk.css",
-    "main.js": "/solitaire/static/js/main.9f62befd.chunk.js",
-    "main.js.map": "/solitaire/static/js/main.9f62befd.chunk.js.map",
+    "main.js": "/solitaire/static/js/main.f7944d26.chunk.js",
+    "main.js.map": "/solitaire/static/js/main.f7944d26.chunk.js.map",
     "runtime-main.js": "/solitaire/static/js/runtime-main.e080015c.js",
     "runtime-main.js.map": "/solitaire/static/js/runtime-main.e080015c.js.map",
     "static/js/2.daa45d1e.chunk.js": "/solitaire/static/js/2.daa45d1e.chunk.js",
     "static/js/2.daa45d1e.chunk.js.map": "/solitaire/static/js/2.daa45d1e.chunk.js.map",
     "index.html": "/solitaire/index.html",
-    "precache-manifest.bd8458323e783a980b03223a27ae1104.js": "/solitaire/precache-manifest.bd8458323e783a980b03223a27ae1104.js",
+    "precache-manifest.2bb950979f14a8592033bd83d023d1f0.js": "/solitaire/precache-manifest.2bb950979f14a8592033bd83d023d1f0.js",
     "service-worker.js": "/solitaire/service-worker.js",
     "static/css/main.a22c0e03.chunk.css.map": "/solitaire/static/css/main.a22c0e03.chunk.css.map",
-    "static/media/lov.svg": "/solitaire/static/media/lov.cf1608c4.svg"
+    "static/media/lov.svg": "/solitaire/static/media/lov.6c70873e.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.e080015c.js",
     "static/js/2.daa45d1e.chunk.js",
     "static/css/main.a22c0e03.chunk.css",
-    "static/js/main.9f62befd.chunk.js"
+    "static/js/main.f7944d26.chunk.js"
   ]
 }
