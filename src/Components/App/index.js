@@ -39,6 +39,7 @@ const theme = {
   borderRadius: 0.125,
   baseSize: 1.75,
   padding: 0.5,
+  breakpoints: queries,
 };
 
 function App(props) {

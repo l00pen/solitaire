@@ -49,13 +49,13 @@ export function Spider(props) {
     return Math.max(game[pileKey].length, mem);
   }, 0);
 
-  let gapSize = '2px';
+  let gapSize = '8px';
   if (smBP === 'xs') {
     gapSize = '2px';
   }
 
   return (
-    <Grid columns={1} gap={gapSize}>
+    <Grid columns={1}>
       <Cell>
         <Grid columns={nrOfColumns} gap={gapSize}>
           {foundationPilesKeys.map((pileKey) => {

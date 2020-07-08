@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { ButtonPrimaryAction, ButtonSecondaryAction } from 'Components/Buttons';
+import { Button, ButtonPrimaryAction, ButtonSecondaryAction } from 'Components/Buttons';
 
 const DashboardStyled = styled.section`
   display: flex;
@@ -13,12 +13,18 @@ const ActionList = styled.section`
   display: flex;
   
   /* TODO change to button styled component name */
-  & > button {
+  & > ${Button} {
     margin: 0 0.125em 0 0;
   }
 
   & > button:last-child {
     margin-right: 0;
+  }
+
+  @media ${(props) => props.theme.breakpoints.l} {
+    & > ${Button} {
+      margin: 0 0.5em 0 0;
+    }
   }
 `;
 
