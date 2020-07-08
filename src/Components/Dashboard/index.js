@@ -2,11 +2,20 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Button, ButtonPrimaryAction, ButtonSecondaryAction } from 'Components/Buttons';
+import { Select } from 'Components/Select';
 
 const DashboardStyled = styled.section`
   display: flex;
   width: 100%;
   justify-content: space-between;
+
+  & > *:first-child {
+    flex: 2;
+  } 
+
+  & > *:last-child {
+    flex: 1;
+  }
 `;
 
 const ActionList = styled.section`
@@ -17,7 +26,7 @@ const ActionList = styled.section`
     margin: 0 0.125em 0 0;
   }
 
-  & > button:last-child {
+  & > ${Button}:last-child {
     margin-right: 0;
   }
 
@@ -35,7 +44,7 @@ const Dashboard = ({undo, redeal, selectedGame, setSelectedGame}) => {
         <ButtonSecondaryAction onClick={undo}>Undo</ButtonSecondaryAction>
         <ButtonPrimaryAction onClick={redeal}>New Deal</ButtonPrimaryAction>
       </ActionList>
-      <select
+      <Select
         value={selectedGame}
         onChange={e => setSelectedGame(e.target.value)}
       >
@@ -48,7 +57,7 @@ const Dashboard = ({undo, redeal, selectedGame, setSelectedGame}) => {
         <option key={'yukon'} value={'yukon'}>
           Yukon
         </option>
-      </select>
+      </Select>
     </DashboardStyled>
   );
 }
