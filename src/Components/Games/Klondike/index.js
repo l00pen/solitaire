@@ -8,7 +8,7 @@ import { PileFoundationDropppable } from 'Components/PileFoundation';
 import PileTableau from 'Components/PileTableau';
 import {PileGroup} from 'Components/Pile';
 
-function Klondike({ game, reRunDeck, stockClickHandler, foundationDropHandler, tableauDropHandler, tableauClickHandler, wasteClickHandler, onHasWon }) {
+function Klondike({ game, reRunDeck, stockClickHandler, foundationDropHandler, tableauDropHandler, tableauClickHandler, wasteClickHandler }) {
   const { tableauPilesKeys, foundationPilesKeys } = game;
 
   if (game.hasWon) {

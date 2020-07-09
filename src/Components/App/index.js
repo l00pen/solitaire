@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { connect } from 'react-redux'
-import styled, { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 
 import {BreakpointProvider} from 'Contexts/BreakpointProvider'
 

@@ -163,7 +163,7 @@ const tableauDropHandler = (state, { dropData, dragData }) => {
 }
 
 const tableauClickHandler = (state, clickData) => {
-  const { card, cardIndexInPile, sourcePile } = clickData;
+  const { card } = clickData;
 
   const allowedTableauPiles = state.tableauPilesKeys.filter((pile) => {
     return allowDropTableau([card], state[pile]);

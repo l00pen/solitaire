@@ -1,14 +1,4 @@
-import styled, { css } from 'styled-components';
-
-const ButtonStylesWhenError = css`
-  background-color: red;
-  transition: all 0.5s ease-in;
-`;
-
-const ButtonStylesWhenSuccessful = css`
-  background-color: green;
-  transition: all 0.5s ease-in;
-`;
+import styled from 'styled-components';
 
 const Select = styled.select`
   display: block;

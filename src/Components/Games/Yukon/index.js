@@ -12,7 +12,6 @@ function Yukon(props) {
     tableauDropHandler,
     foundationDropHandler,
     tableauClickHandler,
-    onHasWon,
     foundationPilesKeys,
     tableauPilesKeys,
   } = props;
