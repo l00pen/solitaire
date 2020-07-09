@@ -21,7 +21,6 @@ const DashboardStyled = styled.section`
 const ActionList = styled.section`
   display: flex;
   
-  /* TODO change to button styled component name */
   & > ${Button} {
     margin: 0 0.125em 0 0;
   }

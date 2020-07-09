@@ -43,7 +43,7 @@ const theme = {
 };
 
 function App(props) {
-  const [selectedGame, setSelectedGame] = useState('spider');
+  const [selectedGame, setSelectedGame] = useState('yukon');
 
   const selectedGameComponent = getSelectedGameComponent(selectedGame);
 

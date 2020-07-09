@@ -12,6 +12,7 @@ import {
   createArrayWithKeys,
   cardDropHandler,
   getLastCardInPile,
+  moveCardsBetweenPilesInState
 } from 'utils/';
 
 const tableauPilesKeys = createArrayWithKeys('tableau', 7);
@@ -91,6 +92,33 @@ const tableauDropHandler = (state, dropData, dragData) => {
   return cardDropHandler(state, dropData, dragData, allowDropTableau);
 }
 
+const tableauClickHandler = (state, clickData) => {
+  const { card, cardIndexInPile, sourcePile } = clickData;
+  const isLastCard = cardIndexInPile === (state[sourcePile].length - 1)
+
+  const allowedFoundationPiles = isLastCard ? state.foundationPilesKeys.filter((pile) => {
+    return allowFoundationDrop([card], state[pile]);
+  }) : [];
+
+  const allowedTableauPiles = state.tableauPilesKeys.filter((pile) => {
+    return allowDropTableau([card], state[pile]);
+  })
+
+  const allowedPiles = allowedFoundationPiles.concat(allowedTableauPiles);
+
+  if (allowedPiles.length) {
+    const allowedPile = allowedPiles[0];
+
+    return moveCardsBetweenPilesInState(state, {
+      cardIndexAtSource: cardIndexInPile,
+      sourcePileKey: sourcePile,
+      destPileKey: allowedPile,
+    });
+  }
+
+  return state;
+}
+
 const checkHasWon = (state) => {
   return {
     ...state,
@@ -123,6 +151,8 @@ const yukonReducer = (state = init(), action) => {
       return checkHasWon(foundationDropHandler(state, action.payload.dropData, action.payload.dragData))
     case 'YUKON_DROP_TABLEAU':
       return tableauDropHandler(state, action.payload.dropData, action.payload.dragData)
+    case 'YUKON_CLICK_TABLEAU':
+      return tableauClickHandler(state, action.payload)
     default:
       return state;
   }
