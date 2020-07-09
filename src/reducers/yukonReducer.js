@@ -152,7 +152,7 @@ const yukonReducer = (state = init(), action) => {
     case 'YUKON_DROP_TABLEAU':
       return tableauDropHandler(state, action.payload.dropData, action.payload.dragData)
     case 'YUKON_CLICK_TABLEAU':
-      return tableauClickHandler(state, action.payload)
+      return checkHasWon(tableauClickHandler(state, action.payload))
     default:
       return state;
   }
