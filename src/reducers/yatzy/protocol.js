@@ -269,7 +269,6 @@ const protocol = (state = initialState(), action) => {
     default:
       return state
   }
-  return state;
 };
 
 export default protocol;

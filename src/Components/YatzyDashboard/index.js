@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components'
 import { connect } from 'react-redux';
-import { Button, ButtonPrimaryAction, ButtonSecondaryAction } from 'Components/StyledComponents/Buttons';
+import { ButtonPrimaryAction } from 'Components/StyledComponents/Buttons';
 
 import {
   getTotal,
@@ -43,8 +43,8 @@ const YatzyDashboard = ({
       </div>
       <div>
         {`Current highScore: `}
-        {highScore.map(({score, userName}) => (
-          <div key={`${userName}: ${score}`}>{`${userName}: ${score}`}</div>
+        {highScore.map(({score, userName}, i) => (
+          <div key={`${userName}${i}`}>{`${userName}: ${score}`}</div>
         ))}
       </div>
     </Dashboard>

@@ -40,7 +40,6 @@ const dices = (state = rollDice(initialDiceState), action) => {
     default:
       return state;
   }
-  return state;
 }
 
 export default dices;

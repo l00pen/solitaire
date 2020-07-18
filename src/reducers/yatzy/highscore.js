@@ -9,8 +9,6 @@ const highscore = (state = initialState, action) => {
       }
       return state;
     case 'YATZY_GAME_FINISHED':
-      const potHighScore = action.data.total;
-      const hasNewHighScore = potHighScore >= state.highScore;
       const tmp = state;
       tmp.push({ score: action.data.total, userName: action.data.userName });
       const newHighscore = tmp.sort((a, b) => (b.score - a.score));
@@ -19,7 +17,6 @@ const highscore = (state = initialState, action) => {
     default:
       return state;
   }
-  return state;
 }
 
 export default highscore;
