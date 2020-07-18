@@ -8,6 +8,7 @@ import Dashboard from 'Components/Dashboard';
 import Spider from 'Components/Games/Spider';
 import Klondike from 'Components/Games/Klondike';
 import Yukon from 'Components/Games/Yukon';
+import Yatzy from 'Components/Games/Yatzy';
 
 import './App.css';
 
@@ -19,14 +20,23 @@ const queries = {
   or: '(orientation: portrait)', // we can check orientation also
 }
 
+const GAMES = {
+  YUKON: 'yukon',
+  KLONDIKE: 'klondike',
+  SPIDER: 'spider',
+  YATZY: 'yatzy',
+}
+
 const getSelectedGameComponent = (game) => {
   switch(game) {
-    case 'klondike':
+    case GAMES.KLONDIKE:
       return <Klondike />;
-    case 'spider':
+    case GAMES.SPIDER:
       return <Spider />;
-    case 'yukon':
+    case GAMES.YUKON:
       return <Yukon />;
+    case GAMES.YATZY:
+      return <Yatzy />;
     default:
       return <div>No valid game selected</div>;
   }
@@ -43,7 +53,7 @@ const theme = {
 };
 
 function App(props) {
-  const [selectedGame, setSelectedGame] = useState('yukon');
+  const [selectedGame, setSelectedGame] = useState(GAMES.YUKON);
 
   const selectedGameComponent = getSelectedGameComponent(selectedGame);
 
@@ -52,7 +62,12 @@ function App(props) {
       <ThemeProvider theme={theme}>
         <div className="Game">
           <div className="Game__dashboard">
-            <Dashboard selectedGame={selectedGame} setSelectedGame={setSelectedGame} {...props} />
+            <Dashboard
+              selectedGame={selectedGame}
+              setSelectedGame={setSelectedGame}
+              games={GAMES}
+              {...props}
+            />
           </div>
           <section className='Game__section'>
             {selectedGameComponent}
