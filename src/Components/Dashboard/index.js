@@ -36,7 +36,11 @@ const ActionList = styled.section`
   }
 `;
 
-const Dashboard = ({undo, redeal, selectedGame, setSelectedGame}) => {
+const Option = styled.option`
+  text-transform: capitalize;
+`
+
+const Dashboard = ({undo, redeal, games, selectedGame, setSelectedGame}) => {
   return (
     <DashboardStyled>
       <ActionList>
@@ -47,15 +51,11 @@ const Dashboard = ({undo, redeal, selectedGame, setSelectedGame}) => {
         value={selectedGame}
         onChange={e => setSelectedGame(e.target.value)}
       >
-        <option key={'klondike'} value={'klondike'}>
-          Klondike
-        </option>
-        <option key={'spider'} value={'spider'}>
-          Spider
-        </option>
-        <option key={'yukon'} value={'yukon'}>
-          Yukon
-        </option>
+        {Object.values(games).map((game) => (
+          <Option key={game} value={game}>
+            {game}
+          </Option>
+        ))}
       </Select>
     </DashboardStyled>
   );
