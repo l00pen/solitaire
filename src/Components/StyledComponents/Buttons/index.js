@@ -65,6 +65,24 @@ const ButtonTertiaryAction = styled(Button)`
   color: ${props => props.theme.primaryColor};
 `;
 
+const ButtonList = styled.div`
+  display: flex;
+  
+  & > ${Button} {
+    margin: 0 0.125em 0 0;
+  }
+
+  & > ${Button}:last-child {
+    margin-right: 0;
+  }
+
+  @media ${(props) => props.theme.breakpoints.l} {
+    & > ${Button} {
+      margin: 0 0.5em 0 0;
+    }
+  }
+`;
+
 export {
   Button,
   ButtonStyled,
@@ -72,4 +90,5 @@ export {
   ButtonPrimaryAction,
   ButtonSecondaryAction,
   ButtonTertiaryAction,
+  ButtonList,
 }

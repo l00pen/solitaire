@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Pile from 'Components/Pile';
+import Pile from 'Components/StyledComponents/Pile';
 import {
   CardFan,
   CardDroppable,

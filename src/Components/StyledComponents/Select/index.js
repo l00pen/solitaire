@@ -50,6 +50,11 @@ const Select = styled.select`
   }
 `;
 
+const Option = styled.option`
+  text-transform: capitalize;
+`
+
 export {
   Select,
+  Option,
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components'
 import { connect } from 'react-redux';
+import { Button, ButtonPrimaryAction, ButtonSecondaryAction } from 'Components/StyledComponents/Buttons';
 
 import {
   getTotal,
@@ -38,7 +39,7 @@ const YatzyDashboard = ({
     <Dashboard>
       <div>
         <div>{`Total: ${total}`}</div>
-        <button onClick={newGameHandler}>New game</button>
+        <ButtonPrimaryAction onClick={newGameHandler}>New game</ButtonPrimaryAction>
       </div>
       <div>
         {`Current highScore: `}

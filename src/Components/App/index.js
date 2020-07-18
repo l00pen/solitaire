@@ -9,6 +9,7 @@ import Spider from 'Components/Games/Spider';
 import Klondike from 'Components/Games/Klondike';
 import Yukon from 'Components/Games/Yukon';
 import Yatzy from 'Components/Games/Yatzy';
+import { Select, Option } from 'Components/StyledComponents/Select';
 
 import './App.css';
 
@@ -62,12 +63,16 @@ function App(props) {
       <ThemeProvider theme={theme}>
         <div className="Game">
           <div className="Game__dashboard">
-            <Dashboard
-              selectedGame={selectedGame}
-              setSelectedGame={setSelectedGame}
-              games={GAMES}
-              {...props}
-            />
+            <Select
+              value={selectedGame}
+              onChange={e => setSelectedGame(e.target.value)}
+            >
+              {Object.values(GAMES).map((game) => (
+                <Option key={game} value={game}>
+                  {game}
+                </Option>
+              ))}
+            </Select>
           </div>
           <section className='Game__section'>
             {selectedGameComponent}
@@ -80,10 +85,7 @@ function App(props) {
 
 const mapStateToProps = state => ({})
 
-const mapDispatchToProps = dispatch => ({
-  undo: () => dispatch({ type: 'UNDO' }),
-  redeal: () => dispatch({ type: 'RE_DEAL' }),
-})
+const mapDispatchToProps = dispatch => ({})
 
 export default connect(
   mapStateToProps,

@@ -1,14 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
-import ContentSection from 'Components/ContentSection';
+import Dashboard from 'Components/Dashboard';
+import ContentSection from 'Components/StyledComponents/ContentSection';
 import PileWaste from 'Components/PileWaste';
 import PileStock from 'Components/PileStock';
 import { PileFoundationDropppable } from 'Components/PileFoundation';
 import PileTableau from 'Components/PileTableau';
-import {PileGroup} from 'Components/Pile';
+import { PileGroup } from 'Components/StyledComponents/Pile';
 
-function Klondike({ game, reRunDeck, stockClickHandler, foundationDropHandler, tableauDropHandler, tableauClickHandler, wasteClickHandler }) {
+function Klondike(props) {
+  const {
+    undo,
+    redeal,
+    game,
+    reRunDeck,
+    stockClickHandler,
+    foundationDropHandler,
+    tableauDropHandler,
+    tableauClickHandler,
+    wasteClickHandler
+  } = props;
   const { tableauPilesKeys, foundationPilesKeys } = game;
 
   if (game.hasWon) {
@@ -41,6 +53,9 @@ function Klondike({ game, reRunDeck, stockClickHandler, foundationDropHandler, t
 
   return (
     <div>
+      <section>
+        <Dashboard undo={undo} redeal={redeal} />
+      </section>
       <section className='Game-top'>
         <PileGroup>
           {foundationPilesKeys.map((pileKey) => {
@@ -92,6 +107,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
+  undo: () => dispatch({ type: 'UNDO' }),
+  redeal: () => dispatch({ type: 'RE_DEAL' }),
   reRunDeck: () => dispatch({ type: 'RE_RUN_DECK'}),
   stockClickHandler: (payload) => dispatch({ type: 'CLICK_STOCK', payload }),
   tableauClickHandler: (payload) => dispatch({ type: 'CLICK_TABLEAU', payload }),

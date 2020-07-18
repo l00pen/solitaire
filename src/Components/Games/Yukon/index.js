@@ -1,13 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
-import ContentSection from 'Components/ContentSection';
+import Dashboard from 'Components/Dashboard';
+import ContentSection from 'Components/StyledComponents/ContentSection';
 import { PileFoundationDropppable } from 'Components/PileFoundation';
 import PileTableau from 'Components/PileTableau';
-import {PileGroup} from 'Components/Pile';
+import {PileGroup} from 'Components/StyledComponents/Pile';
 
 function Yukon(props) {
   const {
+    undo,
+    redeal,
     game,
     tableauDropHandler,
     foundationDropHandler,
@@ -38,6 +41,9 @@ function Yukon(props) {
 
   return (
     <React.Fragment>
+      <section>
+        <Dashboard undo={undo} redeal={redeal} />
+      </section>
       <section className='Game-top'>
         <PileGroup>
           {foundationPilesKeys.map((pileKey) => {
@@ -78,6 +84,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
+  undo: () => dispatch({ type: 'UNDO' }),
+  redeal: () => dispatch({ type: 'RE_DEAL' }),
   foundationDropHandler: (payload) => dispatch({ type: 'YUKON_DROP_FOUNDATION', payload }),
   tableauDropHandler: (payload) => dispatch({ type: 'YUKON_DROP_TABLEAU', payload }),
   tableauClickHandler: (payload) => dispatch({ type: 'YUKON_CLICK_TABLEAU', payload }),
