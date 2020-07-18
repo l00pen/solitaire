@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components'
 
 import YatzyDashboard from 'Components/YatzyDashboard';
+import { Button } from 'Components/StyledComponents/Buttons';
 
 import {
   getCurrentRoundCombination,
@@ -85,49 +86,51 @@ const Yatzy = ({
   }
 
   return (
-    <Container>
-      <Protocol>
-        { protocol.map((obj) => {
-          return (
-            <React.Fragment key={obj.label}>
-              <ProtocolKey>{`${obj.label}: `}</ProtocolKey>
-              <ProtocolValue
-                onClick={onProtocolValueClick.bind(this, obj)}
-                isUsed={obj.isUsed}
-                isValid={obj.currentSum > 0}
-                disabled={obj.label === 'bonus'}
-              >
-                {obj.isUsed ? `${obj.total}` : `${obj.currentSum}`}
-              </ProtocolValue>
-            </React.Fragment>
-          );
-        })}
-      </Protocol>
-      <Wrapper>
-        <YatzyDashboard />
-        <div>
+    <React.Fragment>
+      <YatzyDashboard />
+      <Container>
+        <Protocol>
+          { protocol.map((obj) => {
+            return (
+              <React.Fragment key={obj.label}>
+                <ProtocolKey>{`${obj.label}: `}</ProtocolKey>
+                <ProtocolValue
+                  onClick={onProtocolValueClick.bind(this, obj)}
+                  isUsed={obj.isUsed}
+                  isValid={obj.currentSum > 0}
+                  disabled={obj.label === 'bonus'}
+                >
+                  {obj.isUsed ? `${obj.total}` : `${obj.currentSum}`}
+                </ProtocolValue>
+              </React.Fragment>
+            );
+          })}
+        </Protocol>
+        <Wrapper>
           <div>
-            <p>{availableRolls}</p>
-            <button onClick={rollDices} disabled={availableRolls === 0}>Roll Dices</button>
+            <div>
+              <Button onClick={rollDices} disabled={availableRolls === 0}>Roll Dices</Button>
+              <p>Rolls left: {availableRolls}</p>
+            </div>
           </div>
-        </div>
-        <DiceBoard>
-          { dices.map(({ id, value, shouldReRoll }, i) => (
-            <Dice
-              style={{ color: shouldReRoll ? 'black' : 'cyan'}}
-              key={`dice-${id}`}
-              onClick={diceClickHandler.bind(this, id)}
-              dangerouslySetInnerHTML={{ __html: `&#x268${value}`}}
-            />
-          ))}
-        </DiceBoard>
-        { gameFinished &&
-          <div>
-            {`Game finished with a total of: ${total}`}
-          </div>
-        }
-      </Wrapper>
-    </Container>
+          <DiceBoard>
+            { dices.map(({ id, value, shouldReRoll }, i) => (
+              <Dice
+                style={{ color: shouldReRoll ? 'black' : 'cyan'}}
+                key={`dice-${id}`}
+                onClick={diceClickHandler.bind(this, id)}
+                dangerouslySetInnerHTML={{ __html: `&#x268${value}`}}
+              />
+            ))}
+          </DiceBoard>
+          { gameFinished &&
+            <div>
+              {`Game finished with a total of: ${total}`}
+            </div>
+          }
+        </Wrapper>
+      </Container>
+    </React.Fragment>
   );
 }
 
