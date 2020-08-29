@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Pile from 'Components/StyledComponents/Pile';
+import {Pile} from '../StyledComponents/Pile'
 import {
   CardFan,
   CardDroppable,
@@ -8,8 +8,6 @@ import {
   CardToggleFaceUp,
   CardEmpty,
 } from 'Components/Card';
-
-import { cardFanOffset } from 'utils/styleVariables.js'
 
 const PileTableau = ({ pile, pileKey, minHeight, onDrop, onClick }) => {
   const createRecursiveList = (list, cardIndex) => {
@@ -63,9 +61,10 @@ const PileTableau = ({ pile, pileKey, minHeight, onDrop, onClick }) => {
   const result = createRecursiveList(pile, 0);
 
   return (
-    <Pile minHeight={cardFanOffset * minHeight + 125}>
-      {result}
-    </Pile>
+
+      <Pile pile={pile}>
+        {result}
+      </Pile>
   );
 }
 

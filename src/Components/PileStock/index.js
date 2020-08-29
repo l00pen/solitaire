@@ -1,13 +1,17 @@
 import React from 'react';
 
+import { Pile } from '../StyledComponents/Pile'
 import { CardFaceDown, CardEmpty } from 'Components/Card';
 
 const PileStock = ({ pile, onClick, reRunDeck }) => {
-  if (pile.length === 0) {
-    return <CardEmpty onClick={reRunDeck} />
+  let comp = <CardEmpty onClick={reRunDeck} />
+  if (pile.length > 0) {
+    comp = <CardFaceDown onClick={() => onClick({ card: pile[0] })} />
   }
   return (
-    <CardFaceDown onClick={() => onClick({ card: pile[0] })} />
+    <Pile>
+      {comp}
+    </Pile>
   );
 }
 

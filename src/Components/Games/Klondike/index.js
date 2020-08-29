@@ -71,16 +71,12 @@ function Klondike(props) {
           })}
         </PileGroup>
         <PileGroup>
-          <section className='Game-Waste'>
-            <PileWaste pile={game.waste} onClick={wasteClickHandler} />
-          </section>
-          <section className='Game-Stock'>
-            <PileStock
-              onClick={onStockClick}
-              pile={game.stock}
-              reRunDeck={reRunDeck}
-            />
-          </section>
+          <PileWaste pile={game.waste} onClick={wasteClickHandler} />
+          <PileStock
+            onClick={onStockClick}
+            pile={game.stock}
+            reRunDeck={reRunDeck}
+          />
         </PileGroup>
       </GameTop>
       <PileGroup>

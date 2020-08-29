@@ -59,20 +59,22 @@ function Yukon(props) {
           })}
         </PileGroup>
       </GameTop>
-      <PileGroup>
-        {tableauPilesKeys.map((pileKey) => {
-          const pile = game[pileKey];
-          return (
-            <PileTableau
-              key={pileKey}
-              pile={pile}
-              pileKey={pileKey}
-              onDrop={onDropTableau}
-              onClick={onClickTableau}
-            />
-          )
-        })}
-      </PileGroup>
+      <GameTop>
+        <PileGroup>
+          {tableauPilesKeys.map((pileKey) => {
+            const pile = game[pileKey];
+            return (
+              <PileTableau
+                key={pileKey}
+                pile={pile}
+                pileKey={pileKey}
+                onDrop={onDropTableau}
+                onClick={onClickTableau}
+              />
+            )
+          })}
+        </PileGroup>
+      </GameTop>
     </React.Fragment>
   );
 }
