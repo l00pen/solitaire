@@ -6,6 +6,7 @@ const clubs = [
     suite: 'clubs',
     color: 'black',
     isFaceUp: false,
+    suiteSymbol: '♣︎',
   },
   { 
     id: 'c13',
@@ -14,6 +15,7 @@ const clubs = [
     suite: 'clubs',
     color: 'black',
     isFaceUp: false,
+    suiteSymbol: '♣︎',
   },
   { 
     id: 'c12',
@@ -22,6 +24,7 @@ const clubs = [
     suite: 'clubs',
     color: 'black',
     isFaceUp: false,
+    suiteSymbol: '♣︎',
   },
   { 
     id: 'c11',
@@ -30,6 +33,7 @@ const clubs = [
     suite: 'clubs',
     color: 'black',
     isFaceUp: false,
+    suiteSymbol: '♣︎',
   },
   { 
     id: 'c10',
@@ -38,6 +42,7 @@ const clubs = [
     suite: 'clubs',
     color: 'black',
     isFaceUp: false,
+    suiteSymbol: '♣︎',
   },
   { 
     id: 'c9',
@@ -46,6 +51,7 @@ const clubs = [
     suite: 'clubs',
     color: 'black',
     isFaceUp: false,
+    suiteSymbol: '♣︎',
   },
   { 
     id: 'c8',
@@ -54,6 +60,7 @@ const clubs = [
     suite: 'clubs',
     color: 'black',
     isFaceUp: false,
+    suiteSymbol: '♣︎',
   },
   { 
     id: 'c7',
@@ -62,6 +69,7 @@ const clubs = [
     suite: 'clubs',
     color: 'black',
     isFaceUp: false,
+    suiteSymbol: '♣︎',
   },
   { 
     id: 'c6',
@@ -70,6 +78,7 @@ const clubs = [
     suite: 'clubs',
     color: 'black',
     isFaceUp: false,
+    suiteSymbol: '♣︎',
   },
   { 
     id: 'c5',
@@ -78,6 +87,7 @@ const clubs = [
     suite: 'clubs',
     color: 'black',
     isFaceUp: false,
+    suiteSymbol: '♣︎',
   },
   { 
     id: 'c4',
@@ -86,6 +96,7 @@ const clubs = [
     suite: 'clubs',
     color: 'black',
     isFaceUp: false,
+    suiteSymbol: '♣︎',
   },
   { 
     id: 'c3',
@@ -94,6 +105,7 @@ const clubs = [
     suite: 'clubs',
     color: 'black',
     isFaceUp: false,
+    suiteSymbol: '♣︎',
   },
   { 
     id: 'c2',
@@ -102,6 +114,7 @@ const clubs = [
     suite: 'clubs',
     color: 'black',
     isFaceUp: false,
+    suiteSymbol: '♣︎',
   }
 ];
 

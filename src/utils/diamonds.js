@@ -6,6 +6,7 @@ const diamonds = [
     suite: 'diamonds',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♦︎',
   },
   { 
     id: 'd13',
@@ -14,6 +15,7 @@ const diamonds = [
     suite: 'diamonds',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♦︎',
   },
   { 
     id: 'd12',
@@ -22,6 +24,7 @@ const diamonds = [
     suite: 'diamonds',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♦︎',
   },
   { 
     id: 'd11',
@@ -30,6 +33,7 @@ const diamonds = [
     suite: 'diamonds',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♦︎',
   },
   { 
     id: 'd10',
@@ -38,6 +42,7 @@ const diamonds = [
     suite: 'diamonds',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♦︎',
   },
   { 
     id: 'd9',
@@ -46,6 +51,7 @@ const diamonds = [
     suite: 'diamonds',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♦︎',
   },
   { 
     id: 'd8',
@@ -54,6 +60,7 @@ const diamonds = [
     suite: 'diamonds',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♦︎',
   },
   { 
     id: 'd7',
@@ -62,6 +69,7 @@ const diamonds = [
     suite: 'diamonds',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♦︎',
   },
   { 
     id: 'd6',
@@ -70,6 +78,7 @@ const diamonds = [
     suite: 'diamonds',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♦︎',
   },
   { 
     id: 'd5',
@@ -78,6 +87,7 @@ const diamonds = [
     suite: 'diamonds',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♦︎',
   },
   { 
     id: 'd4',
@@ -86,6 +96,7 @@ const diamonds = [
     suite: 'diamonds',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♦︎',
   },
   { 
     id: 'd3',
@@ -94,6 +105,7 @@ const diamonds = [
     suite: 'diamonds',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♦︎',
   },
   { 
     id: 'd2',
@@ -102,6 +114,7 @@ const diamonds = [
     suite: 'diamonds',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♦︎',
   },
 ];
 

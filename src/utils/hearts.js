@@ -6,6 +6,7 @@ const hearts = [
     suite: 'hearts',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♥︎',
   },
   {
     id: 'h13',
@@ -14,6 +15,7 @@ const hearts = [
     suite: 'hearts',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♥︎',
   },
   {
     id: 'h12',
@@ -22,6 +24,7 @@ const hearts = [
     suite: 'hearts',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♥︎',
   },
   {
     id: 'h11',
@@ -30,6 +33,7 @@ const hearts = [
     suite: 'hearts',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♥︎',
   },
   {
     id: 'h10',
@@ -38,6 +42,7 @@ const hearts = [
     suite: 'hearts',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♥︎',
   },
   {
     id: 'h9',
@@ -46,6 +51,7 @@ const hearts = [
     suite: 'hearts',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♥︎',
   },
   {
     id: 'h8',
@@ -54,6 +60,7 @@ const hearts = [
     suite: 'hearts',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♥︎',
   },
   {
     id: 'h7',
@@ -62,6 +69,7 @@ const hearts = [
     suite: 'hearts',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♥︎',
   },
   {
     id: 'h6',
@@ -70,6 +78,7 @@ const hearts = [
     suite: 'hearts',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♥︎',
   },
   {
     id: 'h5',
@@ -78,6 +87,7 @@ const hearts = [
     suite: 'hearts',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♥︎',
   },
   {
     id: 'h4',
@@ -86,6 +96,7 @@ const hearts = [
     suite: 'hearts',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♥︎',
   },
   {
     id: 'h3',
@@ -94,6 +105,7 @@ const hearts = [
     suite: 'hearts',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♥︎',
   },
   {
     id: 'h2',
@@ -102,6 +114,7 @@ const hearts = [
     suite: 'hearts',
     color: 'red',
     isFaceUp: false,
+    suiteSymbol: '♥︎',
   },
 ];
 

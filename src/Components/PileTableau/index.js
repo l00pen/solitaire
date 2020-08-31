@@ -9,62 +9,43 @@ import {
   CardEmpty,
 } from 'Components/Card';
 
-const PileTableau = ({ pile, pileKey, minHeight, onDrop, onClick }) => {
-  const createRecursiveList = (list, cardIndex) => {
-    const [card, ...rest] = list;
-    const dragAndDropData = { card, cardIndexInPile: cardIndex, sourcePile: pileKey };
-
-    if (rest.length === 0 && card) {
-      return (
-        <CardDroppable
-          key={card.key + pileKey}
-          data={{ destinationPile: pileKey }}
-          dropHandler={onDrop}
-        >
-          <CardDraggable
-            data={{ card, cardIndexInPile: cardIndex, sourcePile: pileKey }}
-            draggable={!!card.isFaceUp}
-          >
-            <CardFan cardIndex={cardIndex}>
-              <CardToggleFaceUp {...card} onClick={() => onClick(dragAndDropData)} />
-            </CardFan>
-          </CardDraggable>
-        </CardDroppable>
-      );
-    }
-
-    const cardList = createRecursiveList(rest, cardIndex + 1);
-    return (
-      <CardFan cardIndex={cardIndex}>
-        <CardDraggable
-          data={dragAndDropData}
-          draggable={!!card.isFaceUp}
-        >
-          <CardToggleFaceUp {...card} onClick={() => onClick(dragAndDropData)} />
-          {cardList}
-        </CardDraggable>
-      </CardFan>
-    );
+const renderPile = (list, cardIndex, pileKey, onDrop, onClick) => {
+  if (list.length === 0) {
+    return null;
   }
 
-  if (pile.length === 0) {
-    return (
-      <CardDroppable
-        data={{ card: {}, cardIndex: 0, destinationPile: pileKey }}
-        dropHandler={onDrop}
+  const [card, ...rest] = list;
+  const dragAndDropData = { card, cardIndexInPile: cardIndex, sourcePile: pileKey };
+
+  const cardList = renderPile(rest, cardIndex + 1, pileKey, onDrop, onClick);
+  return (
+    <CardFan cardIndex={cardIndex}>
+      <CardDraggable
+        data={dragAndDropData}
+        draggable={!!card.isFaceUp}
       >
-        <CardEmpty />
-      </CardDroppable>
-    )
-  }
+        <CardToggleFaceUp {...card} onClick={() => onClick(dragAndDropData)} />
+        {cardList}
+      </CardDraggable>
+    </CardFan>
+  );
+}
 
-  const result = createRecursiveList(pile, 0);
+const PileTableau = ({ pile, pileKey, minHeight, onDrop, onClick }) => {
+  const lastCardInPile = pile.length > 0 ? pile[pile.length - 1] : {};
+  const lastCardInPileIndex = pile.length > 0 ? pile.length - 1 : 0;
+
+  const pileComponents = pile.length > 0 ? renderPile(pile, 0, pileKey, onDrop, onClick) : <CardEmpty />;
 
   return (
-
-      <Pile pile={pile}>
-        {result}
-      </Pile>
+    <Pile pile={pile}>
+      <CardDroppable
+        data={{ card: lastCardInPile, cardIndex: lastCardInPileIndex, destinationPile: pileKey }}
+        dropHandler={onDrop}
+      >
+        {pileComponents}
+      </CardDroppable>
+    </Pile>
   );
 }
 

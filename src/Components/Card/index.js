@@ -2,16 +2,6 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import PileContext from '../../Contexts/PileProvider';
 
-const Card = styled.div`
-  flex: 1 1 0;
-  width: 100%;
-  height: 100%;
-`;
-
-const CardStacked = styled(Card)`
-  position: absolute;
-`;
-
 const CardFan = styled.div`
   position: absolute;
   width: 100%;
@@ -48,22 +38,6 @@ const SuiteLarge = styled(CardFilling)`
   }};
 `;
 
-
-const getSuiteSymbol = (suite) => {
-  switch(suite) {
-    case 'diamonds':
-      return '♦︎';
-    case 'clubs':
-      return '♣︎';
-    case 'spades':
-      return '♠︎';
-    case 'hearts':
-      return '♥︎';
-    default:
-      return null;
-  }
-}
-
 export const Rectangle = styled.div`
   text-align:center;
   width: 100%;
@@ -97,12 +71,16 @@ const CardInnerEmpty = styled(CardInner)`
   background-color: transparent;
 `
 
-const CardFaceUp = (props) => {
-  const { id, color, label, suite, onClick, ...moreProps } = props
+const CardWrapper = ({children, ...props }) => (
+  <Rectangle {...props}>
+    <ImageWrapper>
+      {children}
+    </ImageWrapper>
+  </Rectangle>
+)
 
-  if (!id) {
-    return <Card suite={suite}>Soemthings wrong with card</Card>;
-  }
+const CardFaceUp = (props) => {
+  const { id, color, label, suite, suiteSymbol, onClick, ...moreProps } = props
   const newId = id.match(/[a-z]+|[^a-z]+/gi);
 
   let idValue = newId[1];
@@ -126,15 +104,13 @@ const CardFaceUp = (props) => {
     <PileContext.Consumer>
       { value => {
         return (
-          <Rectangle suite={suite} onClick={onClick} {...moreProps}>
-            <ImageWrapper>
-              <CardInner>
-                <Value color={color} containerWidth={value.width}>{idValue}</Value>
-                <SuiteSmall color={color} containerWidth={value.width}>{getSuiteSymbol(suite)}</SuiteSmall>
-                <SuiteLarge color={color} containerWidth={value.width}>{getSuiteSymbol(suite)}</SuiteLarge>
-              </CardInner>
-            </ImageWrapper>
-          </Rectangle>
+          <CardWrapper suite={suite} onClick={onClick} {...moreProps}>
+            <CardInner>
+              <Value color={color} containerWidth={value.width}>{idValue}</Value>
+              <SuiteSmall color={color} containerWidth={value.width}>{suiteSymbol}</SuiteSmall>
+              <SuiteLarge color={color} containerWidth={value.width}>{suiteSymbol}</SuiteLarge>
+            </CardInner>
+          </CardWrapper>
         )
       }}
     </PileContext.Consumer>
@@ -142,20 +118,16 @@ const CardFaceUp = (props) => {
 }
 
 const CardFaceDown = (props) => (
-  <Rectangle {...props}>
-    <ImageWrapper>
-      <CardInnerFaceDown />
-    </ImageWrapper>
-  </Rectangle>
+  <CardWrapper {...props}>
+    <CardInnerFaceDown />
+  </CardWrapper>
 );
 
 
 const CardEmpty = (props) => (
-  <Rectangle {...props}>
-    <ImageWrapper>
-      <CardInnerEmpty />
-    </ImageWrapper>
-  </Rectangle>
+  <CardWrapper {...props}>
+    <CardInnerEmpty />
+  </CardWrapper>
 );
 
 const CardDroppable = ({ children, data, dropHandler, ...moreProps }) => {
@@ -172,7 +144,9 @@ const CardDroppable = ({ children, data, dropHandler, ...moreProps }) => {
   };
 
   return React.Children.map(children, child => {
-    return React.cloneElement(child, props);
+    if (child) {
+      return React.cloneElement(child, props);
+    }
   });
 };
 
@@ -187,7 +161,9 @@ const CardDraggable = ({ children, data, ...moreProps }) => {
   };
 
   return React.Children.map(children, child => {
-    return React.cloneElement(child, props);
+    if (child) {
+      return React.cloneElement(child, props);
+    }
   });
 };
 
@@ -199,12 +175,10 @@ const CardToggleFaceUp = ({ label, suite, isFaceUp, onClick, ...props }) => {
 }
 
 export {
-  Card,
   CardFaceUp,
   CardFaceDown,
   CardEmpty,
   CardFan,
-  CardStacked,
   CardDroppable,
   CardDraggable,
   CardToggleFaceUp
