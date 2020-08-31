@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components/macro'
 import { connect } from 'react-redux';
 import { ButtonPrimaryAction } from 'Components/StyledComponents/Buttons';
@@ -29,11 +29,11 @@ const YatzyDashboard = ({
     onNewGameClick();
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (gameFinished) {
       gameFinishedHandler(total, userName);
     }
-  }, [gameFinished]);
+  }, [gameFinished, gameFinishedHandler, total, userName]);
 
   return (
     <Dashboard>

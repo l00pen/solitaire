@@ -255,7 +255,7 @@ const protocol = (state = initialState(), action) => {
     case 'YATZY_NEW_GAME':
       return initialState();
     case 'YATZY_SET_PROTOCOL_ITEM_SUM':
-      const { label, currentSum, isValid, isUsed } = action.data;
+      const { label, currentSum, isUsed } = action.data;
       if (!isUsed) { 
         const obj = state[label];
         obj.total = currentSum;

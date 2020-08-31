@@ -42,11 +42,6 @@ const Protocol = styled.div`
   grid-gap: 1px;
 `;
 
-const ProtocolItem = styled.div`
-  grid-column-start: 1;
-  grid-column-end: 2;
-`;
-
 const ProtocolKey = styled.div`
   border: 1px solid aliceblue;
   padding: 0.5em;

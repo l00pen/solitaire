@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components/macro';
 
 import {
-  Button,
   ButtonPrimaryAction,
   ButtonSecondaryAction,
   ButtonList,
