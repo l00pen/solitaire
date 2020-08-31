@@ -11,4 +11,13 @@ const ContentSection = styled.section`
   padding: 1em;
 `;
 
+export const GameTop = styled.section`
+  margin: 1em 0;
+  width: 100%;
+  display: flex;
+  & > div {
+    flex: 1 1 0;
+  }
+`
+
 export default ContentSection;

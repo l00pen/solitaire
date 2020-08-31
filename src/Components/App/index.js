@@ -1,17 +1,14 @@
 import React, {useState} from 'react';
 import { connect } from 'react-redux'
-import { ThemeProvider } from 'styled-components/macro';
+import styled, { ThemeProvider, createGlobalStyle } from 'styled-components/macro';
 
 import {BreakpointProvider} from 'Contexts/BreakpointProvider'
 
-import Dashboard from 'Components/Dashboard';
 import Spider from 'Components/Games/Spider';
 import Klondike from 'Components/Games/Klondike';
 import Yukon from 'Components/Games/Yukon';
 import Yatzy from 'Components/Games/Yatzy';
 import { Select, Option } from 'Components/StyledComponents/Select';
-
-import './App.css';
 
 const queries = {
   xs: '(max-width: 320px)',
@@ -53,6 +50,52 @@ const theme = {
   breakpoints: queries,
 };
 
+const GlobalStyle = createGlobalStyle`
+  html {
+    font-size: 16px;
+  }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+      "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #282c34;
+  }
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+      monospace;
+  }
+  svg {
+    width: 100%;
+  }
+`;
+
+const Game = styled.div`
+  text-align: center;
+  height: 100vh;
+`;
+
+const Dashboard = styled.div`
+  display: flex;
+  margin: 1em 0.25em;
+  @media ${(props) => props.theme.breakpoints.l} {
+    width: 50%;
+    margin: 1em auto;
+    align-items: center;
+  }
+`
+const GameSection = styled.div`
+  display: inline-block;
+  margin: 0 0.25em;
+  width: 100%;
+  @media ${(props) => props.theme.breakpoints.l} {
+    width: 50%;
+    margin: 0 auto;
+  }
+`
+
 function App(props) {
   const [selectedGame, setSelectedGame] = useState(GAMES.YUKON);
 
@@ -61,8 +104,9 @@ function App(props) {
   return (
     <BreakpointProvider queries={queries}>
       <ThemeProvider theme={theme}>
-        <div className="Game">
-          <div className="Game__dashboard">
+        <GlobalStyle />
+        <Game>
+          <Dashboard>
             <Select
               value={selectedGame}
               onChange={e => setSelectedGame(e.target.value)}
@@ -73,11 +117,11 @@ function App(props) {
                 </Option>
               ))}
             </Select>
-          </div>
-          <section className='Game__section'>
+          </Dashboard>
+          <GameSection>
             {selectedGameComponent}
-          </section>
-        </div>
+          </GameSection>
+        </Game>
       </ThemeProvider>
     </BreakpointProvider>
   );

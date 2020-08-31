@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 
 import Dashboard from 'Components/Dashboard';
-import ContentSection from 'Components/StyledComponents/ContentSection';
+import ContentSection, { GameTop } from 'Components/StyledComponents/ContentSection';
 import PileWaste from 'Components/PileWaste';
 import PileStock from 'Components/PileStock';
 import { PileFoundationDropppable } from 'Components/PileFoundation';
@@ -56,7 +56,7 @@ function Klondike(props) {
       <section>
         <Dashboard undo={undo} redeal={redeal} />
       </section>
-      <section className='Game-top'>
+      <GameTop>
         <PileGroup>
           {foundationPilesKeys.map((pileKey) => {
             const pile = game[pileKey];
@@ -82,7 +82,7 @@ function Klondike(props) {
             />
           </section>
         </PileGroup>
-      </section>
+      </GameTop>
       <PileGroup>
         {tableauPilesKeys.map((pileKey) => {
           const pile = game[pileKey];
