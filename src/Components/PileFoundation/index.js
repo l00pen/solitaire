@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { Pile } from '../StyledComponents/Pile'
-import { CardFaceUp } from 'Components/Card';
-import { CardDroppable, CardEmpty } from 'Components/Card';
+import { Pile } from 'Components/Pile'
+import { CardFaceUp, CardDroppable, CardEmpty } from 'Components/Card';
 
 export const PileFoundationDropppable = ({ pile, pileId, onDrop }) => {
   let cardComponent = null;
@@ -30,9 +29,7 @@ const PileFoundation = ({ pile, pileId }) => {
   let comp = <CardEmpty />
   if (pile.length > 0) {
     const card = pile[pile.length - 1];
-    comp = (
-      <CardFaceUp {...card} />
-    )
+    comp = <CardFaceUp {...card} />;
   }
   return (
     <Pile>

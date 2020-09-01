@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Pile } from '../StyledComponents/Pile'
+import { Pile } from 'Components/Pile'
 import { CardFaceDown, CardEmpty } from 'Components/Card';
 
 const PileStock = ({ pile, onClick, reRunDeck }) => {

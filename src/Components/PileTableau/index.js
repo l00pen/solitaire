@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Pile} from '../StyledComponents/Pile'
+import {Pile} from 'Components/Pile'
 import {
   CardFan,
   CardDroppable,
@@ -11,13 +11,13 @@ import {
 
 const renderPile = (list, cardIndex, pileKey, onDrop, onClick) => {
   if (list.length === 0) {
-    return null;
+    return <CardEmpty />;
   }
 
   const [card, ...rest] = list;
   const dragAndDropData = { card, cardIndexInPile: cardIndex, sourcePile: pileKey };
 
-  const cardList = renderPile(rest, cardIndex + 1, pileKey, onDrop, onClick);
+  const cardList = rest.length > 0 ? renderPile(rest, cardIndex + 1, pileKey, onDrop, onClick) : null;
   return (
     <CardFan cardIndex={cardIndex}>
       <CardDraggable
@@ -35,7 +35,7 @@ const PileTableau = ({ pile, pileKey, minHeight, onDrop, onClick }) => {
   const lastCardInPile = pile.length > 0 ? pile[pile.length - 1] : {};
   const lastCardInPileIndex = pile.length > 0 ? pile.length - 1 : 0;
 
-  const pileComponents = pile.length > 0 ? renderPile(pile, 0, pileKey, onDrop, onClick) : <CardEmpty />;
+  const pileComponents = renderPile(pile, 0, pileKey, onDrop, onClick);
 
   return (
     <Pile pile={pile}>

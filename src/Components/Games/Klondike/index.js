@@ -7,7 +7,7 @@ import PileWaste from 'Components/PileWaste';
 import PileStock from 'Components/PileStock';
 import { PileFoundationDropppable } from 'Components/PileFoundation';
 import PileTableau from 'Components/PileTableau';
-import { PileGroup } from 'Components/StyledComponents/Pile';
+import { PileGroup } from 'Components/Pile';
 
 function Klondike(props) {
   const {

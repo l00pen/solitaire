@@ -5,7 +5,7 @@ import Dashboard from 'Components/Dashboard';
 import ContentSection, { GameTop } from 'Components/StyledComponents/ContentSection';
 import { PileFoundationDropppable } from 'Components/PileFoundation';
 import PileTableau from 'Components/PileTableau';
-import {PileGroup} from 'Components/StyledComponents/Pile';
+import {PileGroup} from 'Components/Pile';
 
 function Yukon(props) {
   const {

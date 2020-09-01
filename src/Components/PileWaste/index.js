@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Pile } from '../StyledComponents/Pile'
+import { Pile } from 'Components/Pile'
 import { CardFaceUp } from 'Components/Card';
 import { CardDraggable, CardEmpty } from 'Components/Card';
 

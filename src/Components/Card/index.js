@@ -16,9 +16,7 @@ const CardFilling = styled.div`
 
 const CardFillingSmall = styled(CardFilling)`
   top: 0;
-  font-size: ${(props) => {
-    return `${props.containerWidth * 0.54}px`;
-  }};
+  font-size: ${(props) => `${props.containerWidth * 0.54}px`};
   letter-spacing: -0.1em;
 `
 
@@ -33,16 +31,14 @@ const SuiteSmall = styled(CardFillingSmall)`
 const SuiteLarge = styled(CardFilling)`
   bottom: 0;
   width: 100%;
-  font-size: ${(props) => {
-    return `${props.containerWidth}px`;
-  }};
+  font-size: ${(props) => `${props.containerWidth}px`};
 `;
 
-export const Rectangle = styled.div`
+export const CardOuter = styled.div`
   text-align:center;
   width: 100%;
 `
-export const ImageWrapper = styled.div`
+export const CardContainer = styled.div`
   padding-top: 150%;
   position: relative;
   width: 100%;
@@ -50,12 +46,12 @@ export const ImageWrapper = styled.div`
 export const Image = styled.div`
   bottom: 0;
   left: 0;
+  right: 0;
+  top: 0;
   margin: auto;
   max-height: 100%;
   max-width: 100%;
-  right: 0;
   position: absolute;
-  top: 0;
 `
 const CardInner = styled(Image)`
   border: 1px solid papayawhip;
@@ -72,11 +68,11 @@ const CardInnerEmpty = styled(CardInner)`
 `
 
 const CardWrapper = ({children, ...props }) => (
-  <Rectangle {...props}>
-    <ImageWrapper>
+  <CardOuter {...props}>
+    <CardContainer>
       {children}
-    </ImageWrapper>
-  </Rectangle>
+    </CardContainer>
+  </CardOuter>
 )
 
 const CardFaceUp = (props) => {
@@ -151,6 +147,7 @@ const CardDroppable = ({ children, data, dropHandler, ...moreProps }) => {
 };
 
 const CardDraggable = ({ children, data, ...moreProps }) => {
+  console.log(moreProps)
   const props = {
     onDragStart: (ev) => {
       ev.dataTransfer.setData("pip", JSON.stringify(data));
@@ -169,7 +166,14 @@ const CardDraggable = ({ children, data, ...moreProps }) => {
 
 const CardToggleFaceUp = ({ label, suite, isFaceUp, onClick, ...props }) => {
   if (isFaceUp) {
-    return <CardFaceUp suite={suite} label={label} onClick={onClick} {...props} />;
+    return (
+      <CardFaceUp
+        suite={suite}
+        label={label}
+        onClick={onClick}
+        {...props}
+      />
+    );
   }
   return <CardFaceDown />;
 }
