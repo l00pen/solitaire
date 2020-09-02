@@ -97,7 +97,6 @@ export function Spider(props) {
                 pileKey={pileKey}
                 onDrop={onDropTableau}
                 onClick={onClickTableau}
-                minHeight={maxNrOfCardsInTableau}
               />
             )
           })}

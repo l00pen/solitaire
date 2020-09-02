@@ -8,6 +8,7 @@ import PileStock from 'Components/PileStock';
 import { PileFoundationDropppable } from 'Components/PileFoundation';
 import PileTableau from 'Components/PileTableau';
 import { PileGroup } from 'Components/Pile';
+import { CardDisplayEmpty } from 'Components/Card';
 
 function Klondike(props) {
   const {
@@ -32,6 +33,7 @@ function Klondike(props) {
   }
 
   const onDropTableau = (dropData, dragData) => {
+    console.log('drop tableau', dragData)
     tableauDropHandler({ dropData, dragData });
   }
 
@@ -51,6 +53,30 @@ function Klondike(props) {
     return Math.max(game[pileKey].length, mem);
   }, 0);
 
+  const foundationComp = foundationPilesKeys.map((pileKey) => {
+    const pile = game[pileKey];
+    return (
+      <PileFoundationDropppable
+        key={pileKey}
+        pile={pile}
+        pileId={pileKey}
+        onDrop={onDropFoundation}
+      />
+    )
+  });
+
+  const stockAndWaste = [
+    <PileWaste key={'waste'} pile={game.waste} onClick={wasteClickHandler} />,
+    <PileStock
+      key={'stock'}
+      onClick={onStockClick}
+      pile={game.stock}
+      reRunDeck={reRunDeck}
+    />
+  ];
+
+  const paddComp = new Array(tableauPilesKeys.length - (foundationPilesKeys.length + stockAndWaste.length)).fill(<CardDisplayEmpty key={'none'}/>);
+  const topPileRow = [...foundationComp, ...paddComp, ...stockAndWaste]
   return (
     <div>
       <section>
@@ -58,25 +84,7 @@ function Klondike(props) {
       </section>
       <GameTop>
         <PileGroup>
-          {foundationPilesKeys.map((pileKey) => {
-            const pile = game[pileKey];
-            return (
-              <PileFoundationDropppable
-                key={pileKey}
-                pile={pile}
-                pileId={pileKey}
-                onDrop={onDropFoundation}
-              />
-            )
-          })}
-        </PileGroup>
-        <PileGroup>
-          <PileWaste pile={game.waste} onClick={wasteClickHandler} />
-          <PileStock
-            onClick={onStockClick}
-            pile={game.stock}
-            reRunDeck={reRunDeck}
-          />
+          {topPileRow}
         </PileGroup>
       </GameTop>
       <PileGroup>
@@ -89,7 +97,6 @@ function Klondike(props) {
               pileKey={pileKey}
               onDrop={onDropTableau}
               onClick={onClickTableau}
-              minHeight={maxNrOfCardsInTableau}
             />
           )
         })}

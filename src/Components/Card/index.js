@@ -3,7 +3,7 @@ import styled from 'styled-components/macro';
 import PileContext from '../../Contexts/PileProvider';
 
 const CardFan = styled.div`
-  position: absolute;
+  // position: absolute;
   width: 100%;
   top: ${(props) => props.cardIndex === 0 ? 0 : 2}vw;
 `;
@@ -39,9 +39,9 @@ export const CardOuter = styled.div`
   width: 100%;
 `
 export const CardContainer = styled.div`
-  padding-top: 150%;
   position: relative;
   width: 100%;
+  height: ${({ containerHeight }) => containerHeight}px;
 `
 export const Image = styled.div`
   bottom: 0;
@@ -49,8 +49,6 @@ export const Image = styled.div`
   right: 0;
   top: 0;
   margin: auto;
-  max-height: 100%;
-  max-width: 100%;
   position: absolute;
 `
 const CardInner = styled(Image)`
@@ -69,7 +67,7 @@ const CardInnerEmpty = styled(CardInner)`
 
 const CardWrapper = ({children, ...props }) => (
   <CardOuter {...props}>
-    <CardContainer>
+    <CardContainer containerHeight={props.containerHeight} containerWidth={props.containerWidth}>
       {children}
     </CardContainer>
   </CardOuter>
@@ -100,7 +98,7 @@ const CardFaceUp = (props) => {
     <PileContext.Consumer>
       { value => {
         return (
-          <CardWrapper suite={suite} onClick={onClick} {...moreProps}>
+          <CardWrapper suite={suite} onClick={onClick} {...moreProps} containerHeight={value.height} containerWidth={value.width}>
             <CardInner>
               <Value color={color} containerWidth={value.width}>{idValue}</Value>
               <SuiteSmall color={color} containerWidth={value.width}>{suiteSymbol}</SuiteSmall>
@@ -114,16 +112,38 @@ const CardFaceUp = (props) => {
 }
 
 const CardFaceDown = (props) => (
-  <CardWrapper {...props}>
+      <PileContext.Consumer>
+      { value => {
+        return (
+  <CardWrapper {...props} containerHeight={value.height} containerWidth={value.width}>
     <CardInnerFaceDown />
   </CardWrapper>
+          )
+      }}
+    </PileContext.Consumer>
 );
 
 
 const CardEmpty = (props) => (
-  <CardWrapper {...props}>
+      <PileContext.Consumer>
+      { value => {
+        return (
+  <CardWrapper {...props} containerHeight={value.height} containerWidth={value.width}>
     <CardInnerEmpty />
   </CardWrapper>
+          )
+      }}
+    </PileContext.Consumer>
+);
+
+const CardDisplayEmpty = (props) => (
+      <PileContext.Consumer>
+      { value => {
+        return (
+  <CardWrapper {...props} containerHeight={value.height} containerWidth={value.width} />
+          )
+      }}
+    </PileContext.Consumer>
 );
 
 const CardDroppable = ({ children, data, dropHandler, ...moreProps }) => {
@@ -132,8 +152,10 @@ const CardDroppable = ({ children, data, dropHandler, ...moreProps }) => {
       ev.preventDefault();
     },
     onDrop: (ev) => {
+
       ev.preventDefault();
       const dataFromTransfer = ev.dataTransfer.getData("pip");
+      console.log('hej drop', dataFromTransfer)
       dropHandler(data, JSON.parse(dataFromTransfer))
     },
     ...moreProps,
@@ -147,15 +169,16 @@ const CardDroppable = ({ children, data, dropHandler, ...moreProps }) => {
 };
 
 const CardDraggable = ({ children, data, ...moreProps }) => {
-  console.log(moreProps)
   const props = {
     onDragStart: (ev) => {
       ev.dataTransfer.setData("pip", JSON.stringify(data));
-      ev.dataTransfer.setDragImage(ev.currentTarget, 50, 15);
+      console.log('dragging', data)
+      ev.dataTransfer.setDragImage(ev.target, 50, 50);
       ev.stopPropagation();
     },
     ...moreProps,
   };
+
 
   return React.Children.map(children, child => {
     if (child) {
@@ -185,5 +208,6 @@ export {
   CardFan,
   CardDroppable,
   CardDraggable,
-  CardToggleFaceUp
+  CardToggleFaceUp,
+  CardDisplayEmpty
 };

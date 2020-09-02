@@ -17,7 +17,7 @@ export const GameTop = styled.section`
   display: flex;
 
   & > div {
-    flex: 1 1 0;
+    flex: 1 1 auto;
   }
 `
 
