@@ -47,10 +47,6 @@ function Klondike(props) {
     tableauClickHandler(clickData);
   }
 
-  const maxNrOfCardsInTableau = tableauPilesKeys.reduce((mem, pileKey) => {
-    return Math.max(game[pileKey].length, mem);
-  }, 0);
-
   return (
     <div>
       <section>
@@ -89,7 +85,6 @@ function Klondike(props) {
               pileKey={pileKey}
               onDrop={onDropTableau}
               onClick={onClickTableau}
-              minHeight={maxNrOfCardsInTableau}
             />
           )
         })}

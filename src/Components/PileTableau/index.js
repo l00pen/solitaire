@@ -31,7 +31,7 @@ const renderPile = (list, cardIndex, pileKey, onDrop, onClick) => {
   );
 }
 
-const PileTableau = ({ pile, pileKey, minHeight, onDrop, onClick }) => {
+const PileTableau = ({ pile, pileKey, onDrop, onClick }) => {
   const lastCardInPile = pile.length > 0 ? pile[pile.length - 1] : {};
   const lastCardInPileIndex = pile.length > 0 ? pile.length - 1 : 0;
 

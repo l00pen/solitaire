@@ -48,9 +48,6 @@ export function Spider(props) {
 
   const smBP = Object.keys(breakpoints).find(key => breakpoints[key]);
   const nrOfColumns = Math.max(tableauPilesKeys.length, foundationPilesKeys.length);
-  const maxNrOfCardsInTableau = tableauPilesKeys.reduce((mem, pileKey) => {
-    return Math.max(game[pileKey].length, mem);
-  }, 0);
 
   let gapSize = '8px';
   if (smBP === 'xs') {
@@ -97,7 +94,6 @@ export function Spider(props) {
                 pileKey={pileKey}
                 onDrop={onDropTableau}
                 onClick={onClickTableau}
-                minHeight={maxNrOfCardsInTableau}
               />
             )
           })}
