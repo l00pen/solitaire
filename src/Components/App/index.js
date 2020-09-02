@@ -80,6 +80,7 @@ const Game = styled.div`
 const Dashboard = styled.div`
   display: flex;
   margin: 1em 0.25em;
+
   @media ${(props) => props.theme.breakpoints.l} {
     width: 50%;
     margin: 1em auto;
@@ -97,7 +98,7 @@ const GameSection = styled.div`
 `
 
 function App(props) {
-  const [selectedGame, setSelectedGame] = useState(GAMES.YUKON);
+  const [selectedGame, setSelectedGame] = useState(GAMES.KLONDIKE);
 
   const selectedGameComponent = getSelectedGameComponent(selectedGame);
 

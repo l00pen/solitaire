@@ -6,6 +6,7 @@ const spades = [
   suite: 'spades',
   color: 'black',
   isFaceUp: false,
+  suiteSymbol: '♠︎',
 },
 { 
   id: 's13',
@@ -14,6 +15,7 @@ const spades = [
   suite: 'spades',
   color: 'black',
   isFaceUp: false,
+  suiteSymbol: '♠︎',
 },
 { 
   id: 's12',
@@ -22,6 +24,7 @@ const spades = [
   suite: 'spades',
   color: 'black',
   isFaceUp: false,
+  suiteSymbol: '♠︎',
 },
 { 
   id: 's11',
@@ -30,6 +33,7 @@ const spades = [
   suite: 'spades',
   color: 'black',
   isFaceUp: false,
+  suiteSymbol: '♠︎',
 },
 { 
   id: 's10',
@@ -38,6 +42,7 @@ const spades = [
   suite: 'spades',
   color: 'black',
   isFaceUp: false,
+  suiteSymbol: '♠︎',
 },
 { 
   id: 's9',
@@ -46,6 +51,7 @@ const spades = [
   suite: 'spades',
   color: 'black',
   isFaceUp: false,
+  suiteSymbol: '♠︎',
 },
 { 
   id: 's8',
@@ -54,6 +60,7 @@ const spades = [
   suite: 'spades',
   color: 'black',
   isFaceUp: false,
+  suiteSymbol: '♠︎',
 },
 { 
   id: 's7',
@@ -62,6 +69,7 @@ const spades = [
   suite: 'spades',
   color: 'black',
   isFaceUp: false,
+  suiteSymbol: '♠︎',
 },
 { 
   id: 's6',
@@ -70,6 +78,7 @@ const spades = [
   suite: 'spades',
   color: 'black',
   isFaceUp: false,
+  suiteSymbol: '♠︎',
 },
 { 
   id: 's5',
@@ -78,6 +87,7 @@ const spades = [
   suite: 'spades',
   color: 'black',
   isFaceUp: false,
+  suiteSymbol: '♠︎',
 },
 { 
   id: 's4',
@@ -86,6 +96,7 @@ const spades = [
   suite: 'spades',
   color: 'black',
   isFaceUp: false,
+  suiteSymbol: '♠︎',
 },
 { 
   id: 's3',
@@ -94,6 +105,7 @@ const spades = [
   suite: 'spades',
   color: 'black',
   isFaceUp: false,
+  suiteSymbol: '♠︎',
 },
 { 
   id: 's2',
@@ -102,6 +114,7 @@ const spades = [
   suite: 'spades',
   color: 'black',
   isFaceUp: false,
+  suiteSymbol: '♠︎',
 },
 ];
 

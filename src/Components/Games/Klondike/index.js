@@ -1,13 +1,35 @@
 import React from 'react';
 import { connect } from 'react-redux'
-
+import styled from 'styled-components/macro';
 import Dashboard from 'Components/Dashboard';
 import ContentSection, { GameTop } from 'Components/StyledComponents/ContentSection';
 import PileWaste from 'Components/PileWaste';
 import PileStock from 'Components/PileStock';
 import { PileFoundationDropppable } from 'Components/PileFoundation';
 import PileTableau from 'Components/PileTableau';
-import { PileGroup } from 'Components/StyledComponents/Pile';
+import { PileGroup } from 'Components/Pile';
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(${({nrOfColumns}) => nrOfColumns}, 1fr)};
+  grid-gap: 2vw;
+  margin: 1vh 0;
+  grid-template-rows: 2;
+`
+const GridFoundation = styled.div`
+  grid-column: 1 / 4;
+  grid-row: 1;
+`
+
+const GridStockAndWaste = styled.div`
+  grid-column: 5 / 7;
+  grid-row: 1;
+`
+
+const GridItem = styled.div`
+  grid-column: ${({ column }) => column};
+  grid-row: ${({ row }) => row};
+`
 
 function Klondike(props) {
   const {
@@ -47,57 +69,51 @@ function Klondike(props) {
     tableauClickHandler(clickData);
   }
 
-  const maxNrOfCardsInTableau = tableauPilesKeys.reduce((mem, pileKey) => {
-    return Math.max(game[pileKey].length, mem);
-  }, 0);
-
+  const stockAndWaste = 2;
+  const nrOfPiles = Math.max(tableauPilesKeys.length, foundationPilesKeys.length + stockAndWaste);
   return (
     <div>
       <section>
         <Dashboard undo={undo} redeal={redeal} />
       </section>
-      <GameTop>
-        <PileGroup>
-          {foundationPilesKeys.map((pileKey) => {
-            const pile = game[pileKey];
-            return (
+      <Grid nrOfColumns={nrOfPiles}>
+        {foundationPilesKeys.map((pileKey, i) => {
+          const pile = game[pileKey];
+          return (
+            <GridItem column={i + 1} key={pileKey}>
               <PileFoundationDropppable
-                key={pileKey}
                 pile={pile}
                 pileId={pileKey}
                 onDrop={onDropFoundation}
               />
-            )
-          })}
-        </PileGroup>
-        <PileGroup>
-          <section className='Game-Waste'>
-            <PileWaste pile={game.waste} onClick={wasteClickHandler} />
-          </section>
-          <section className='Game-Stock'>
-            <PileStock
-              onClick={onStockClick}
-              pile={game.stock}
-              reRunDeck={reRunDeck}
-            />
-          </section>
-        </PileGroup>
-      </GameTop>
-      <PileGroup>
-        {tableauPilesKeys.map((pileKey) => {
-          const pile = game[pileKey];
-          return (
-            <PileTableau
-              key={pileKey}
-              pile={pile}
-              pileKey={pileKey}
-              onDrop={onDropTableau}
-              onClick={onClickTableau}
-              minHeight={maxNrOfCardsInTableau}
-            />
+            </GridItem>
           )
         })}
-      </PileGroup>
+        <div style={{gridColumn: 6}}>
+          <PileWaste pile={game.waste} onClick={wasteClickHandler} />
+        </div>
+        <div style={{gridColumn: 7}}>
+          <PileStock
+            onClick={onStockClick}
+            pile={game.stock}
+            reRunDeck={reRunDeck}
+          />
+        </div>
+        {tableauPilesKeys.map((pileKey, i) => {
+          const pile = game[pileKey];
+          return (
+            <GridItem row={2} column={i + 1} key={pileKey}>
+              <PileTableau
+                key={pileKey}
+                pile={pile}
+                pileKey={pileKey}
+                onDrop={onDropTableau}
+                onClick={onClickTableau}
+              />
+            </GridItem>
+          )
+        })}
+      </Grid>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import Dashboard from 'Components/Dashboard';
 import ContentSection, { GameTop } from 'Components/StyledComponents/ContentSection';
 import { PileFoundationDropppable } from 'Components/PileFoundation';
 import PileTableau from 'Components/PileTableau';
-import {PileGroup} from 'Components/StyledComponents/Pile';
+import {PileGroup} from 'Components/Pile';
 
 function Yukon(props) {
   const {
@@ -59,20 +59,22 @@ function Yukon(props) {
           })}
         </PileGroup>
       </GameTop>
-      <PileGroup>
-        {tableauPilesKeys.map((pileKey) => {
-          const pile = game[pileKey];
-          return (
-            <PileTableau
-              key={pileKey}
-              pile={pile}
-              pileKey={pileKey}
-              onDrop={onDropTableau}
-              onClick={onClickTableau}
-            />
-          )
-        })}
-      </PileGroup>
+      <GameTop>
+        <PileGroup>
+          {tableauPilesKeys.map((pileKey) => {
+            const pile = game[pileKey];
+            return (
+              <PileTableau
+                key={pileKey}
+                pile={pile}
+                pileKey={pileKey}
+                onDrop={onDropTableau}
+                onClick={onClickTableau}
+              />
+            )
+          })}
+        </PileGroup>
+      </GameTop>
     </React.Fragment>
   );
 }

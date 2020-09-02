@@ -15,6 +15,7 @@ export const GameTop = styled.section`
   margin: 1em 0;
   width: 100%;
   display: flex;
+
   & > div {
     flex: 1 1 0;
   }
