@@ -1,13 +1,19 @@
 import React from 'react';
+import styled from 'styled-components/macro';
 
 import {Pile} from 'Components/Pile'
 import {
-  CardFan,
   CardDroppable,
   CardDraggable,
   CardToggleFaceUp,
   CardEmpty,
 } from 'Components/Card';
+
+const SubPile = styled.div`
+  position: absolute;
+  width: 100%;
+  top: ${(props) => props.cardIndex === 0 ? 0 : props.topHeightOffset}vw;
+`;
 
 const renderPile = (list, cardIndex, pileKey, onDrop, onClick) => {
   if (list.length === 0) {
@@ -16,10 +22,10 @@ const renderPile = (list, cardIndex, pileKey, onDrop, onClick) => {
 
   const [card, ...rest] = list;
   const dragAndDropData = { card, cardIndexInPile: cardIndex, sourcePile: pileKey };
-
+  const topHeightOffset = 3;
   const cardList = rest.length > 0 ? renderPile(rest, cardIndex + 1, pileKey, onDrop, onClick) : null;
   return (
-    <CardFan cardIndex={cardIndex}>
+    <SubPile cardIndex={cardIndex} topHeightOffset={topHeightOffset}>
       <CardDraggable
         data={dragAndDropData}
         draggable={!!card.isFaceUp}
@@ -27,7 +33,7 @@ const renderPile = (list, cardIndex, pileKey, onDrop, onClick) => {
         <CardToggleFaceUp {...card} onClick={() => onClick(dragAndDropData)} />
         {cardList}
       </CardDraggable>
-    </CardFan>
+    </SubPile>
   );
 }
 

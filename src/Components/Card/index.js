@@ -2,12 +2,6 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import PileContext from '../../Contexts/PileProvider';
 
-const CardFan = styled.div`
-  position: absolute;
-  width: 100%;
-  top: ${(props) => props.cardIndex === 0 ? 0 : 2}vw;
-`;
-
 const CardFilling = styled.div`
   position: absolute;
   color: ${({ color }) => color};
@@ -182,7 +176,6 @@ export {
   CardFaceUp,
   CardFaceDown,
   CardEmpty,
-  CardFan,
   CardDroppable,
   CardDraggable,
   CardToggleFaceUp
