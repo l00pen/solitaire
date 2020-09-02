@@ -17,6 +17,12 @@ export const PileGroup = styled.div`
   }
 `;
 
+const PileWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+`
+
 export const Pile = ({ pile, children }) => {
   const parentRef   = useRef(null);
   const [height, setHeight] = useState(0);
@@ -31,9 +37,9 @@ export const Pile = ({ pile, children }) => {
 
   return(
     <PileContext.Provider value={{...pile, width, height}}>
-      <div style={{ position: 'relative', width:'100%', height: '100%'}} ref={parentRef}>
+      <PileWrapper ref={parentRef}>
         {children}
-      </div>
+      </PileWrapper>
     </PileContext.Provider>
   );
 }

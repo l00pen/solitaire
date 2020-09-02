@@ -47,7 +47,7 @@ export function Spider(props) {
   }
 
   const smBP = Object.keys(breakpoints).find(key => breakpoints[key]);
-  const nrOfColumns = Math.max(tableauPilesKeys.length, foundationPilesKeys.length);
+  const nrOfPiles = Math.max(tableauPilesKeys.length, foundationPilesKeys.length);
 
   let gapSize = '8px';
   if (smBP === 'xs') {
@@ -62,7 +62,7 @@ export function Spider(props) {
         </section>
       </Cell>
       <Cell>
-        <Grid columns={nrOfColumns} gap={gapSize}>
+        <Grid columns={nrOfPiles} gap={gapSize}>
           {foundationPilesKeys.map((pileKey) => {
             const pile = game[pileKey];
             return (
@@ -76,7 +76,7 @@ export function Spider(props) {
         </Grid>
       </Cell>
       <Cell>
-        <Grid columns={nrOfColumns} gap={gapSize}>
+        <Grid columns={nrOfPiles} gap={gapSize}>
           <PileStock
             onClick={onStockClick}
             pile={game.stock}
@@ -84,7 +84,7 @@ export function Spider(props) {
         </Grid>
       </Cell>
       <Cell>
-        <Grid columns={nrOfColumns} gap={gapSize}>
+        <Grid columns={nrOfPiles} gap={gapSize}>
           {tableauPilesKeys.map((pileKey) => {
             const pile = game[pileKey];
             return (
