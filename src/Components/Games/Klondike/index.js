@@ -25,14 +25,6 @@ function Klondike(props) {
   } = props;
   const { tableauPilesKeys, foundationPilesKeys } = game;
 
-  if (game.hasWon) {
-    return (
-      <ContentSection>
-        CONGRATULATION YOU HAVE WON THE GAME
-      </ContentSection>
-    );
-  }
-
   const onDropTableau = (dropData, dragData) => {
     tableauDropHandler({ dropData, dragData });
   }
@@ -54,7 +46,12 @@ function Klondike(props) {
   return (
     <div>
       <section>
-        <Dashboard undo={undo} redeal={redeal} />
+        <Dashboard undo={game.hasWon ? null : undo} redeal={redeal} />
+        {game.hasWon &&
+          <ContentSection>
+            CONGRATULATION YOU HAVE WON THE GAME
+          </ContentSection>
+        }
       </section>
       <Grid columns={nrOfPiles}>
         {foundationPilesKeys.map((pileKey, i) => {

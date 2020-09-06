@@ -37,19 +37,16 @@ export function Spider(props) {
     tableauClickHandler(clickData)
   }
 
-  if (game.hasWon) {
-    return (
-      <ContentSection>
-        CONGRATULATION YOU HAVE WON THE GAME
-      </ContentSection>
-    );
-  }
-
   const nrOfPiles = 10;
   return (
     <div>
       <section>
-        <Dashboard undo={undo} redeal={redeal} />
+        <Dashboard undo={game.hasWon ? null : undo} redeal={redeal} />
+        {game.hasWon &&
+          <ContentSection>
+            CONGRATULATION YOU HAVE WON THE GAME
+          </ContentSection>
+        }
       </section>
       <Grid columns={nrOfPiles}>
         {foundationPilesKeys.map((pileKey, i) => {

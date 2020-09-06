@@ -25,7 +25,7 @@ const Dashboard = ({undo, redeal}) => {
   return (
     <DashboardStyled>
       <ButtonList>
-        <ButtonSecondaryAction onClick={undo}>Undo</ButtonSecondaryAction>
+        <ButtonSecondaryAction onClick={undo} disabled={!undo}>Undo</ButtonSecondaryAction>
         <ButtonPrimaryAction onClick={redeal}>New Deal</ButtonPrimaryAction>
       </ButtonList>
     </DashboardStyled>
