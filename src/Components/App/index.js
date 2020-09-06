@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import { connect } from 'react-redux'
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components/macro';
 
+import {theme} from '../../Themes';
+
 import {BreakpointProvider} from 'Contexts/BreakpointProvider'
 
 import Spider from 'Components/Games/Spider';
@@ -9,14 +11,6 @@ import Klondike from 'Components/Games/Klondike';
 import Yukon from 'Components/Games/Yukon';
 import Yatzy from 'Components/Games/Yatzy';
 import { Select, Option } from 'Components/StyledComponents/Select';
-
-const queries = {
-  xs: '(max-width: 320px)',
-  sm: '(max-width: 720px)',
-  md: '(max-width: 1024px)',
-  l: '(min-width: 1024px)',
-  or: '(orientation: portrait)', // we can check orientation also
-}
 
 const GAMES = {
   YUKON: 'yukon',
@@ -40,35 +34,14 @@ const getSelectedGameComponent = (game) => {
   }
 }
 
-const theme = {
-  secondaryColor: "#fefefe",
-  primaryColor: "#40b4de",
-  primaryTextColor: '#0a3458',
-  borderRadius: 0.125,
-  baseSize: 1.75,
-  padding: 0.5,
-  breakpoints: queries,
-};
-
 const GlobalStyle = createGlobalStyle`
   html {
-    font-size: 16px;
+    font-size: ${props => props.theme.spacing.medium};
   }
   body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-      "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-      sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    font-family: ${props => props.theme.typography.fontFamily};
     background-color: #282c34;
-  }
-  code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-      monospace;
-  }
-  svg {
-    width: 100%;
   }
 `;
 
@@ -79,17 +52,17 @@ const Game = styled.div`
 
 const Dashboard = styled.div`
   display: flex;
-  margin: 1em 0.25em;
+  margin: ${(props) => props.theme.spacing.medium} ${(props) => props.theme.spacing.xxsmall};
 
   @media ${(props) => props.theme.breakpoints.l} {
     width: 50%;
-    margin: 1em auto;
+    margin: ${(props) => props.theme.spacing.medium} auto;
     align-items: center;
   }
 `
 const GameSection = styled.div`
   display: inline-block;
-  margin: 0 0.25em;
+  margin: 0 ${(props) => props.theme.spacing.xxsmall};
   width: 100%;
   @media ${(props) => props.theme.breakpoints.l} {
     width: 50%;
@@ -103,7 +76,7 @@ function App(props) {
   const selectedGameComponent = getSelectedGameComponent(selectedGame);
 
   return (
-    <BreakpointProvider queries={queries}>
+    <BreakpointProvider queries={theme.breakpoints}>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <Game>

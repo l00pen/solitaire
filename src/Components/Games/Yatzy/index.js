@@ -23,12 +23,12 @@ const Dice = styled.div`
 
 const Wrapper = styled.div`
   flex: 2;
-  margin-left: 1em;
+  margin-left: ${(props) => props.theme.spacing.medium};
 `;
 
 const Container = styled.div`
-  font-size: 1em;
-  padding: 1em;
+  font-size: ${(props) => props.theme.spacing.medium};
+  padding: ${(props) => props.theme.spacing.medium};
   background-color: white;
   margin: 0 auto;
   display: flex;
@@ -44,14 +44,14 @@ const Protocol = styled.div`
 
 const ProtocolKey = styled.div`
   border: 1px solid aliceblue;
-  padding: 0.5em;
+  padding: ${({ theme }) => theme.spacing.xsmall};
   grid-column-start: 1;
   align-self: center;
   text-transform: capitalize;
 `;
 
 const ProtocolValue = styled.div`
-  padding: 0.5em;
+  padding: ${({ theme }) => theme.spacing.xsmall};
   border: 1px solid aliceblue;
   grid-column-start: 2;
   text-align: end;

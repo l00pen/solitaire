@@ -9,7 +9,7 @@ export const PileGroup = styled.div`
   width: 100%;
   
   & > * {
-    margin: 0 0.5em 0 0;
+    margin: 0 ${({ theme }) => theme.spacing.xsmall} 0 0;
   }
 
   & > *:last-child {

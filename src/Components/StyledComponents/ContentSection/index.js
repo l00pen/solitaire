@@ -8,11 +8,11 @@ const ContentSection = styled.section`
   justify-content: center;
   align-items: center;
   flex: 1 0 auto;
-  padding: 1em;
+  padding: ${(props) => props.theme.spacing.medium};
 `;
 
 export const GameTop = styled.section`
-  margin: 1em 0;
+  margin: ${(props) => props.theme.spacing.medium} 0;
   width: 100%;
   display: flex;
 

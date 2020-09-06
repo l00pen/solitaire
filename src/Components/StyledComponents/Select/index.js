@@ -15,8 +15,8 @@ const Select = styled.select`
 
 
   background-color: transparent;
-  padding: ${props => props.theme.padding}rem;
-  border-radius: ${props => props.theme.borderRadius || 1}rem;
+  padding: ${props => props.theme.spacing.xsmall};
+  border-radius: ${props => props.theme.shape.borderRadius};
   width: inherit;
   transition: width 1s ease-in 0.3s;
   cursor: pointer;
@@ -26,12 +26,12 @@ const Select = styled.select`
   text-transform: uppercase;
   text-align: center;
 
-  border: 0.06rem solid ${props => props.theme.secondaryColor};
-  color: ${props => props.theme.secondaryColor};
+  border: 0.06rem solid ${props => props.theme.palette.primary.light};
+  color: ${props => props.theme.palette.primary.light};
 
   &:hover {
-    border-color: ${props => props.theme.primaryColor};
-    color: ${props => props.theme.primaryColor};
+    border-color: ${props => props.theme.palette.primary.main};
+    color: ${props => props.theme.palette.primary.main};
   }
 
   &:focus {
@@ -41,8 +41,8 @@ const Select = styled.select`
     color: #222;
     outline: none;
 
-    border-color: ${props => props.theme.primaryColor};
-    color: ${props => props.theme.primaryColor};
+    border-color: ${props => props.theme.palette.primary.main};
+    color: ${props => props.theme.palette.primary.main};
   }
   
   & > option {

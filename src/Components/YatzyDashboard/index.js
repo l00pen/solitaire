@@ -10,8 +10,8 @@ import {
 
 const Dashboard = styled.div`
   background: gold;
-  padding: 1em;
-  margin-bottom: 1em;
+  padding: ${(props) => props.theme.spacing.medium};
+  margin-bottom: ${(props) => props.theme.spacing.medium};
 
   display: flex;
   justify-content: space-between;

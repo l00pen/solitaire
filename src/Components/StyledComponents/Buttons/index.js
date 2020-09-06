@@ -12,10 +12,10 @@ const ButtonStylesWhenSuccessful = css`
 
 const Button = styled.button`
   border: none;
-  background-color: ${props => props.theme.primaryColor};
-  color: ${props => props.theme.primaryTextColor};
-  padding: ${props => props.theme.padding}rem;
-  border-radius: ${props => props.theme.borderRadius || 1}rem;
+  background-color: ${props => props.theme.palette.primary.main};
+  color: ${props => props.theme.palette.primary.contrastText};
+  padding: ${props => props.theme.spacing.xsmall};
+  border-radius: ${props => props.theme.shape.borderRadius};
   width: inherit;
   transition: width 1s ease-in 0.3s;
   cursor: pointer;
@@ -31,7 +31,7 @@ const Button = styled.button`
 `;
 
 const ButtonStyled = styled(Button)`
-  background-color: ${(props) => (props.hover ? props.theme.primaryEnhancer : props.theme.primaryColor)};
+  background-color: ${(props) => (props.hover ? props.theme.primaryEnhancer : props.theme.palette.primary.main)};
 
   ${props => props.error ? ButtonStylesWhenError : ''}
   ${props => props.success ? ButtonStylesWhenSuccessful : ''}
@@ -49,12 +49,12 @@ const ButtonPrimaryAction = styled(Button)`
 
 const ButtonSecondaryAction = styled(Button)`
   background-color: transparent;
-  border: 0.06rem solid ${props => props.theme.secondaryColor};
-  color: ${props => props.theme.secondaryColor};
+  border: 0.06rem solid ${props => props.theme.palette.primary.light};
+  color: ${props => props.theme.palette.primary.light};
 
   &:hover {
-    border-color: ${props => props.theme.primaryColor};
-    color: ${props => props.theme.primaryColor};
+    border-color: ${props => props.theme.palette.primary.main};
+    color: ${props => props.theme.palette.primary.main};
   }
 `;
 
@@ -62,14 +62,14 @@ const ButtonTertiaryAction = styled(Button)`
   background: none;
   padding: 0;
   text-align: left;
-  color: ${props => props.theme.primaryColor};
+  color: ${props => props.theme.palette.primary.main};
 `;
 
 const ButtonList = styled.div`
   display: flex;
   
   & > ${Button} {
-    margin: 0 0.125em 0 0;
+    margin: 0 ${({ theme }) => theme.spacing.xxsmall} 0 0;
   }
 
   & > ${Button}:last-child {
@@ -78,7 +78,7 @@ const ButtonList = styled.div`
 
   @media ${(props) => props.theme.breakpoints.l} {
     & > ${Button} {
-      margin: 0 0.5em 0 0;
+      margin: 0 ${({ theme }) => theme.spacing.xsmall} 0 0;
     }
   }
 `;

@@ -19,7 +19,7 @@ const Value = styled(CardFillingSmall)`
 `;
 
 const SuiteSmall = styled(CardFillingSmall)`
-  right: 0.125em;
+  right: ${({ theme }) => theme.spacing.xxsmall};
 `;
 
 const SuiteLarge = styled(CardFilling)`
@@ -49,7 +49,7 @@ export const Image = styled.div`
 `
 const CardInner = styled(Image)`
   border: 1px solid papayawhip;
-  border-radius: 3px;
+  border-radius: ${props => props.theme.shape.borderRadius};
   background-color: white;
 `;
 
@@ -141,7 +141,6 @@ const CardDroppable = ({ children, data, dropHandler, ...moreProps }) => {
 };
 
 const CardDraggable = ({ children, data, ...moreProps }) => {
-  console.log(moreProps)
   const props = {
     onDragStart: (ev) => {
       ev.dataTransfer.setData("pip", JSON.stringify(data));
