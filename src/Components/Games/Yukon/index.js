@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux'
+import styled from 'styled-components/macro';
 
+import { Grid, GridItem } from 'Components/StyledComponents/Grid';
 import Dashboard from 'Components/Dashboard';
 import ContentSection, { GameTop } from 'Components/StyledComponents/ContentSection';
 import { PileFoundationDropppable } from 'Components/PileFoundation';
@@ -31,6 +33,7 @@ function Yukon(props) {
     tableauClickHandler(clickData)
   }
 
+  const nrOfPiles = 7;
   if (game.hasWon) {
     return (
       <ContentSection>
@@ -44,37 +47,33 @@ function Yukon(props) {
       <section>
         <Dashboard undo={undo} redeal={redeal} />
       </section>
-      <GameTop>
-        <PileGroup>
-          {foundationPilesKeys.map((pileKey) => {
-            const pile = game[pileKey];
-            return (
+      <Grid columns={nrOfPiles}>
+        {foundationPilesKeys.map((pileKey, i) => {
+          const pile = game[pileKey];
+          return (
+            <GridItem column={i + 1} key={pileKey}>
               <PileFoundationDropppable
-                key={pileKey}
                 pile={pile}
                 pileId={pileKey}
                 onDrop={onDropFoundation}
               />
-            )
-          })}
-        </PileGroup>
-      </GameTop>
-      <GameTop>
-        <PileGroup>
-          {tableauPilesKeys.map((pileKey) => {
-            const pile = game[pileKey];
-            return (
+            </GridItem>
+          )
+        })}
+        {tableauPilesKeys.map((pileKey, i) => {
+          const pile = game[pileKey];
+          return (
+            <GridItem row={2} column={i + 1} key={pileKey}>
               <PileTableau
-                key={pileKey}
                 pile={pile}
                 pileKey={pileKey}
                 onDrop={onDropTableau}
                 onClick={onClickTableau}
               />
-            )
-          })}
-        </PileGroup>
-      </GameTop>
+            </GridItem>
+          )
+        })}
+      </Grid>
     </React.Fragment>
   );
 }

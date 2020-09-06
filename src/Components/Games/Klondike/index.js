@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import styled from 'styled-components/macro';
+
+import { Grid, GridItem } from 'Components/StyledComponents/Grid';
 import Dashboard from 'Components/Dashboard';
 import ContentSection, { GameTop } from 'Components/StyledComponents/ContentSection';
 import PileWaste from 'Components/PileWaste';
@@ -8,28 +10,6 @@ import PileStock from 'Components/PileStock';
 import { PileFoundationDropppable } from 'Components/PileFoundation';
 import PileTableau from 'Components/PileTableau';
 import { PileGroup } from 'Components/Pile';
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(${({nrOfColumns}) => nrOfColumns}, 1fr)};
-  grid-gap: 2vw;
-  margin: 1vh 0;
-  grid-template-rows: 2;
-`
-const GridFoundation = styled.div`
-  grid-column: 1 / 4;
-  grid-row: 1;
-`
-
-const GridStockAndWaste = styled.div`
-  grid-column: 5 / 7;
-  grid-row: 1;
-`
-
-const GridItem = styled.div`
-  grid-column: ${({ column }) => column};
-  grid-row: ${({ row }) => row};
-`
 
 function Klondike(props) {
   const {
@@ -70,13 +50,13 @@ function Klondike(props) {
   }
 
   const stockAndWaste = 2;
-  const nrOfPiles = Math.max(tableauPilesKeys.length, foundationPilesKeys.length + stockAndWaste);
+  const nrOfPiles = 7;
   return (
     <div>
       <section>
         <Dashboard undo={undo} redeal={redeal} />
       </section>
-      <Grid nrOfColumns={nrOfPiles}>
+      <Grid columns={nrOfPiles}>
         {foundationPilesKeys.map((pileKey, i) => {
           const pile = game[pileKey];
           return (
@@ -89,16 +69,16 @@ function Klondike(props) {
             </GridItem>
           )
         })}
-        <div style={{gridColumn: 6}}>
+        <GridItem column={6}>
           <PileWaste pile={game.waste} onClick={wasteClickHandler} />
-        </div>
-        <div style={{gridColumn: 7}}>
+        </GridItem>
+        <GridItem column={7}>
           <PileStock
             onClick={onStockClick}
             pile={game.stock}
             reRunDeck={reRunDeck}
           />
-        </div>
+        </GridItem>
         {tableauPilesKeys.map((pileKey, i) => {
           const pile = game[pileKey];
           return (

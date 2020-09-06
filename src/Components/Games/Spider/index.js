@@ -1,16 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Grid, Cell } from 'styled-css-grid';
+import styled from 'styled-components/macro';
 
 import { useBreakpoint } from 'Contexts/BreakpointProvider'
 
 import Dashboard from 'Components/Dashboard';
 import ContentSection from 'Components/StyledComponents/ContentSection';
+import { Grid, GridItem } from 'Components/StyledComponents/Grid';
 import PileStock from 'Components/PileStock';
 import PileFoundation from 'Components/PileFoundation';
 import PileTableau from 'Components/PileTableau';
-
-import './styles.css';
 
 export function Spider(props) {
   const {
@@ -46,60 +45,45 @@ export function Spider(props) {
     );
   }
 
-  const smBP = Object.keys(breakpoints).find(key => breakpoints[key]);
-  const nrOfPiles = Math.max(tableauPilesKeys.length, foundationPilesKeys.length);
-
-  let gapSize = '8px';
-  if (smBP === 'xs') {
-    gapSize = '2px';
-  }
-
+  const nrOfPiles = 10;
   return (
-    <Grid columns={1}>
-      <Cell>
-        <section>
-          <Dashboard undo={undo} redeal={redeal} />
-        </section>
-      </Cell>
-      <Cell>
-        <Grid columns={nrOfPiles} gap={gapSize}>
-          {foundationPilesKeys.map((pileKey) => {
-            const pile = game[pileKey];
-            return (
+    <div>
+      <section>
+        <Dashboard undo={undo} redeal={redeal} />
+      </section>
+      <Grid columns={nrOfPiles}>
+        {foundationPilesKeys.map((pileKey, i) => {
+          const pile = game[pileKey];
+          return (
+            <GridItem column={i + 1} key={pileKey}>
               <PileFoundation
-                key={pileKey}
                 pile={pile}
                 pileId={pileKey}
               />
-            )
-          })}
-        </Grid>
-      </Cell>
-      <Cell>
-        <Grid columns={nrOfPiles} gap={gapSize}>
+            </GridItem>
+          )
+        })}
+        <GridItem column={10}>
           <PileStock
             onClick={onStockClick}
             pile={game.stock}
           />
-        </Grid>
-      </Cell>
-      <Cell>
-        <Grid columns={nrOfPiles} gap={gapSize}>
-          {tableauPilesKeys.map((pileKey) => {
-            const pile = game[pileKey];
-            return (
+        </GridItem>
+        {tableauPilesKeys.map((pileKey, i) => {
+          const pile = game[pileKey];
+          return (
+            <GridItem row={2} column={i + 1} key={pileKey}>
               <PileTableau
-                key={pileKey}
                 pile={pile}
                 pileKey={pileKey}
                 onDrop={onDropTableau}
                 onClick={onClickTableau}
               />
-            )
-          })}
-        </Grid>
-      </Cell>
-    </Grid>
+            </GridItem>
+          )
+        })}
+      </Grid>
+    </div>
   );
 }
 
