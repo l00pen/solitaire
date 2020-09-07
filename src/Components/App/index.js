@@ -46,7 +46,6 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const Game = styled.div`
-  text-align: center;
   height: 100vh;
 `;
 
@@ -61,7 +60,6 @@ const Dashboard = styled.div`
   }
 `
 const GameSection = styled.div`
-  display: inline-block;
   margin: 0 ${(props) => props.theme.spacing.xxsmall};
   width: 100%;
   @media ${(props) => props.theme.breakpoints.l} {
@@ -71,7 +69,7 @@ const GameSection = styled.div`
 `
 
 function App(props) {
-  const [selectedGame, setSelectedGame] = useState(GAMES.KLONDIKE);
+  const [selectedGame, setSelectedGame] = useState(GAMES.YATZY);
 
   const selectedGameComponent = getSelectedGameComponent(selectedGame);
 

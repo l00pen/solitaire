@@ -1,13 +1,15 @@
 import { spacing, breakpoints } from './units';
 
 // const white = '#fff';
-// const black = '#111';
+const black = '#111';
 
 const palette = {
-  // common: {
-  //   black,
-  //   white,
-  // },
+  common: {
+    black,
+    pink: 'pink',
+    papayawhip: 'papayawhip',
+    // white,
+  },
   primary: {
     main: '#40b4de',
     light: '#fefefe',

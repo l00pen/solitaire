@@ -19,7 +19,7 @@ const getCurrentRoundCombination = createSelector(
   }
 );
 
-const getBonus = createSelector([getProtocol], (protocol, state) => {
+const getBonus = createSelector([getProtocol], (protocol) => {
   let total = 0;
   let isUsed = false;
   const UPPER_SECTION = [
@@ -35,16 +35,12 @@ const getBonus = createSelector([getProtocol], (protocol, state) => {
     return mem + protocol[key].total;
   }, 0);
 
-  const allUpperHaveBeenUsed = UPPER_SECTION.reduce((mem, key) => {
+  isUsed = UPPER_SECTION.reduce((mem, key) => {
     return mem && protocol[key].isUsed;
   }, true);
 
   if (currentTotal >= 63 ) {
     total = 50;
-  }
-
-  if (allUpperHaveBeenUsed) {
-    isUsed = true;
   }
 
   return {
@@ -56,13 +52,29 @@ const getBonus = createSelector([getProtocol], (protocol, state) => {
   };
 })
 
+const getYatzyBonus = createSelector([getProtocol], (protocol) => {
+  console.log(protocol)
+  const hasYatzy = protocol.yatzy.total > 0;
 
-const getCurrentProtocol = createSelector([getCurrentRoundCombination, getBonus, getProtocol], (combintationHelper, bonus, state) => {
-  return Object.keys(state).map(key => {
+  return {
+    label: 'bonus',
+    isUsed: hasYatzy,
+    isValid: false,
+    total: hasYatzy ? 50 : 0,
+    currentSum: 0,
+  };
+});
+
+
+const getCurrentProtocol = createSelector([getCurrentRoundCombination, getBonus, getYatzyBonus, getProtocol], (combintationHelper, bonus, yatzyBonus, protocol) => {
+  return Object.keys(protocol).map(key => {
     if (key === 'bonus') {
       return bonus;
     };
-    const item = state[key];
+    if (key === 'yatzyBonus') {
+      return yatzyBonus;
+    };
+    const item = protocol[key];
     if (!item.used) {
       return {
         ...item,

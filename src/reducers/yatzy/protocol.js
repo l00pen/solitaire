@@ -216,12 +216,17 @@ const initialState = () => {
   };
 
   const bonusForUpper = {
-    bonus: {
-      total: 0,
-      isUsed: false,
-      valid: () => false,
-      sum: () => 0,
-    },
+    total: 0,
+    isUsed: false,
+    valid: () => false,
+    sum: () => 0,
+  }
+
+  const yatzyBonus = {
+    total: 0,
+    isUsed: false,
+    valid: () => false,
+    sum: () => 0,
   }
 
   const lowerSection = {
@@ -246,7 +251,7 @@ const initialState = () => {
     },
     yatzy: new XOfAKindClass(5),
   };
-  return { ...upperSection, ...bonusForUpper, ...lowerSection }
+  return { ...upperSection, bonus: bonusForUpper, ...lowerSection, yatzyBonus }
 };
 
 const protocol = (state = initialState(), action) => {

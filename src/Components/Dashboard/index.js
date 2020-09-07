@@ -21,7 +21,14 @@ const DashboardStyled = styled.section`
   }
 `;
 
-const Dashboard = ({undo, redeal}) => {
+const Dashboard = ({undo, redeal, children}) => {
+  if (!!children) {
+    return (
+      <DashboardStyled>
+        {children}
+      </DashboardStyled>
+    )
+  }
   return (
     <DashboardStyled>
       <ButtonList>
