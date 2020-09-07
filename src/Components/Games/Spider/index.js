@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import styled from 'styled-components/macro';
 
 import { useBreakpoint } from 'Contexts/BreakpointProvider'
 
@@ -23,7 +22,7 @@ export function Spider(props) {
     tableauPilesKeys,
   } = props;
 
-  const breakpoints = useBreakpoint();
+  useBreakpoint();
 
   const onDropTableau = (dropData, dragData) => {
     tableauDropHandler({ dropData, dragData })

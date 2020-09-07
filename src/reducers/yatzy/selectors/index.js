@@ -44,6 +44,7 @@ const getBonus = createSelector([getProtocol], (protocol) => {
   }
 
   return {
+    key: 'bonus',
     label: 'bonus',
     isUsed,
     isValid: false,
@@ -53,10 +54,10 @@ const getBonus = createSelector([getProtocol], (protocol) => {
 })
 
 const getYatzyBonus = createSelector([getProtocol], (protocol) => {
-  console.log(protocol)
   const hasYatzy = protocol.yatzy.total > 0;
 
   return {
+    key: 'yatzyBonus',
     label: 'bonus',
     isUsed: hasYatzy,
     isValid: false,
@@ -79,6 +80,7 @@ const getCurrentProtocol = createSelector([getCurrentRoundCombination, getBonus,
       return {
         ...item,
         label: key,
+        key,
         isValid: item.valid(combintationHelper),
         currentSum: item.sum(combintationHelper),
       };
@@ -86,6 +88,7 @@ const getCurrentProtocol = createSelector([getCurrentRoundCombination, getBonus,
     return {
       ...item,
       label: key,
+      key,
     };
   })
 });

@@ -1,13 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import styled from 'styled-components/macro';
 
 import { Grid, GridItem } from 'Components/StyledComponents/Grid';
 import Dashboard from 'Components/Dashboard';
-import ContentSection, { GameTop } from 'Components/StyledComponents/ContentSection';
+import ContentSection from 'Components/StyledComponents/ContentSection';
 import { PileFoundationDropppable } from 'Components/PileFoundation';
 import PileTableau from 'Components/PileTableau';
-import {PileGroup} from 'Components/Pile';
 
 function Yukon(props) {
   const {

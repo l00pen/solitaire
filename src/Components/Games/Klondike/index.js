@@ -1,15 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import styled from 'styled-components/macro';
 
 import { Grid, GridItem } from 'Components/StyledComponents/Grid';
 import Dashboard from 'Components/Dashboard';
-import ContentSection, { GameTop } from 'Components/StyledComponents/ContentSection';
+import ContentSection from 'Components/StyledComponents/ContentSection';
 import PileWaste from 'Components/PileWaste';
 import PileStock from 'Components/PileStock';
 import { PileFoundationDropppable } from 'Components/PileFoundation';
 import PileTableau from 'Components/PileTableau';
-import { PileGroup } from 'Components/Pile';
 
 function Klondike(props) {
   const {
@@ -41,7 +39,6 @@ function Klondike(props) {
     tableauClickHandler(clickData);
   }
 
-  const stockAndWaste = 2;
   const nrOfPiles = 7;
   return (
     <div>

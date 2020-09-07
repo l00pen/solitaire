@@ -96,7 +96,7 @@ const Yatzy = ({
         <Protocol>
           { protocol.map((obj) => {
             return (
-              <React.Fragment key={obj.label}>
+              <React.Fragment key={obj.key}>
                 <ProtocolKey isUsed={obj.isUsed}>{`${obj.label}: `}</ProtocolKey>
                 <ProtocolValue
                   onClick={onProtocolValueClick.bind(this, obj)}
@@ -116,11 +116,13 @@ const Yatzy = ({
               { !highScore.length &&
                 `Current highscore: 0`
               }
-              {highScore.length &&
-                `Current highscore: `,
-                highScore.map(({ score, userName }, i) => (
-                  <div key={`${userName}${i}`}>{`${userName}: ${score}`}</div>
-                ))
+              {!!highScore.length &&
+                <div>
+                  {`Current highscore: `}
+                  {highScore.map(({ score, userName }, i) => (
+                    <div key={`${userName}${i}`}>{`${userName}: ${score}`}</div>
+                  ))}
+                </div>
               }
             </div>
             <ButtonSecondaryAction onClick={newGameHandler}>New game</ButtonSecondaryAction>
