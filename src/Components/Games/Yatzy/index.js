@@ -2,17 +2,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components/macro'
 
-import Dashboard from 'Components/Dashboard';
+import {DashboardStyled} from 'Components/Dashboard';
 import ContentSection from 'Components/StyledComponents/ContentSection';
 import { Button, ButtonSecondaryAction } from 'Components/StyledComponents/Buttons';
 
 import {
-  getCurrentRoundCombination,
   getCurrentProtocol,
   getTotal,
   getIsGameFinished,
 } from 'reducers/yatzy/selectors';
 
+const YatzyDashboard = styled(DashboardStyled)`
+  margin-bottom: ${({ theme }) => theme.spacing.small};
+`
 const DiceBoard = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -27,43 +29,41 @@ const Dice = styled.div`
 `;
 
 const Wrapper = styled.div`
-  flex: 2;
-  margin-left: ${(props) => props.theme.spacing.medium};
+  width: 100%;
 `;
 
 const Container = styled.div`
   margin: 0 auto;
   color: ${props => props.theme.palette.primary.light};
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: ${({ theme }) => theme.spacing.xxsmall};
 `;
-
-const Game = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
 
 const Protocol = styled.div`
   display: grid;
-  grid-template-columns: auto ${({ theme }) => theme.spacing.xlarge};
+  grid-template-columns: 2fr 1fr;
   grid-gap: 1px;
   background-color: ${({ theme }) => theme.palette.primary.light};
   color: ${({ theme }) => theme.palette.common.black};
 `;
 
 const ProtocolKey = styled.div`
-  padding: ${({ theme }) => theme.spacing.xsmall};
+  padding: ${({ theme }) => theme.spacing.xxsmall};
   grid-column-start: 1;
   align-self: center;
   text-transform: capitalize;
-  background: ${props => props.isUsed ? 'aliceblue' : props.isValid ? props.theme.palette.common.papayawhip : props.theme.palette.common.white };
+  background: ${props => props.isUsed ? 'aliceblue' : props.isValid ? props.theme.palette.common.pink : props.theme.palette.common.white };
 `;
 
 const ProtocolValue = styled.div`
-  padding: ${({ theme }) => theme.spacing.xsmall};
+  padding: ${({ theme }) => theme.spacing.xxsmall};
   grid-column-start: 2;
   text-align: end;
   align-self: center;
   cursor: ${props => props.isUsed ? 'auto' : 'pointer' };
-  background: ${props => props.isUsed ? 'aliceblue' : props.isValid ? props.theme.palette.common.papayawhip : props.theme.palette.common.white };
+  background: ${props => props.isUsed ? 'aliceblue' : props.isValid ? props.theme.palette.common.pink : props.theme.palette.common.white };
+  text-align: center;
 `;
 
 const Yatzy = ({
@@ -75,7 +75,6 @@ const Yatzy = ({
     rollDices,
     availableRolls,
     toggleDice,
-    combintationHelper,
     setProtocolItemSum,
     protocol,
     highScore,
@@ -91,8 +90,12 @@ const Yatzy = ({
   }
 
   return (
-    <Container>
-      <Game>        
+    <React.Fragment>
+      <YatzyDashboard>
+        <ButtonSecondaryAction onClick={newGameHandler}>New game</ButtonSecondaryAction>
+        <ButtonSecondaryAction onClick={() => {}}>Undo</ButtonSecondaryAction>
+      </YatzyDashboard>
+      <Container>   
         <Protocol>
           { protocol.map((obj) => {
             return (
@@ -111,22 +114,6 @@ const Yatzy = ({
           })}
         </Protocol>
         <Wrapper>
-          <Dashboard>
-            <div>
-              { !highScore.length &&
-                `Current highscore: 0`
-              }
-              {!!highScore.length &&
-                <div>
-                  {`Current highscore: `}
-                  {highScore.map(({ score, userName }, i) => (
-                    <div key={`${userName}${i}`}>{`${userName}: ${score}`}</div>
-                  ))}
-                </div>
-              }
-            </div>
-            <ButtonSecondaryAction onClick={newGameHandler}>New game</ButtonSecondaryAction>
-          </Dashboard>
           {gameFinished &&
             <ContentSection>
               {`CONGRATULATION YOU HAVE WON THE GAME WITH A TOTAL OF: ${total}`}
@@ -134,7 +121,7 @@ const Yatzy = ({
           }
           {!gameFinished &&
             <div>
-              <p>{`Total: ${total}`}</p>
+              <p>{`Score: ${total}`}</p>
               <p>Rolls left: {availableRolls}</p>
               <DiceBoard>
                 <Button onClick={rollDices} disabled={availableRolls === 0}>Roll Dices</Button>
@@ -150,8 +137,8 @@ const Yatzy = ({
             </div>
           }
         </Wrapper>
-      </Game>
-    </Container>
+      </Container>
+    </React.Fragment>
   );
 }
 
@@ -160,7 +147,6 @@ const mapStateToProps = ({ yatzyReducer: state}) => {
     ...state,
     ...state.yatzy,
     ...state.highScore,
-    combintationHelper: getCurrentRoundCombination(state),
     protocol: getCurrentProtocol(state),
     total: getTotal(state),
     gameFinished: getIsGameFinished(state),

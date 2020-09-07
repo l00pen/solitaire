@@ -61,10 +61,19 @@ const Dashboard = styled.div`
 `
 const GameSection = styled.div`
   margin: 0 ${(props) => props.theme.spacing.xxsmall};
-  width: 100%;
+
   @media ${(props) => props.theme.breakpoints.l} {
     width: 50%;
     margin: 0 auto;
+  }
+`
+
+const AppSelect = styled(Select)`
+  flex: 1 1 100%;
+
+  @media ${(props) => props.theme.breakpoints.l} {
+    flex: 0;
+    width: fit-content;
   }
 `
 
@@ -79,7 +88,7 @@ function App(props) {
         <GlobalStyle />
         <Game>
           <Dashboard>
-            <Select
+            <AppSelect
               value={selectedGame}
               onChange={e => setSelectedGame(e.target.value)}
             >
@@ -88,7 +97,7 @@ function App(props) {
                   {game}
                 </Option>
               ))}
-            </Select>
+            </AppSelect>
           </Dashboard>
           <GameSection>
             {selectedGameComponent}

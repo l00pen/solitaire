@@ -7,28 +7,27 @@ import {
   ButtonList,
 } from 'Components/StyledComponents/Buttons';
 
-const DashboardStyled = styled.section`
+export const DashboardStyled = styled.section`
   display: flex;
   width: 100%;
   justify-content: space-between;
 
+  & > * {
+    margin: 0 ${({ theme }) => theme.spacing.xxsmall};
+  }
+
   & > *:first-child {
     flex: 2;
+    margin-left: 0;
   } 
 
   & > *:last-child {
     flex: 1;
+    margin-right: 0;
   }
 `;
 
-const Dashboard = ({undo, redeal, children}) => {
-  if (!!children) {
-    return (
-      <DashboardStyled>
-        {children}
-      </DashboardStyled>
-    )
-  }
+const Dashboard = ({undo, redeal}) => {
   return (
     <DashboardStyled>
       <ButtonList>

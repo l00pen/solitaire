@@ -59,7 +59,7 @@ const getYatzyBonus = createSelector([getProtocol], (protocol) => {
   return {
     key: 'yatzyBonus',
     label: 'bonus',
-    isUsed: hasYatzy,
+    isUsed: protocol.yatzy.isUsed,
     isValid: false,
     total: hasYatzy ? 50 : 0,
     currentSum: 0,
