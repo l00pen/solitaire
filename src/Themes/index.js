@@ -1,6 +1,6 @@
 import { spacing, breakpoints } from './units';
 
-// const white = '#fff';
+const white = '#fff';
 const black = '#111';
 
 const palette = {
@@ -8,11 +8,11 @@ const palette = {
     black,
     pink: 'pink',
     papayawhip: 'papayawhip',
-    // white,
+    white,
   },
   primary: {
     main: '#40b4de',
-    light: '#fefefe',
+    light: '#efefef',
     contrastText: '#0a3458',
   },
   // error: {

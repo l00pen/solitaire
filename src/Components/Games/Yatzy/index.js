@@ -19,13 +19,22 @@ const DiceBoard = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 100%;
+  flex-direction: column;
+  @media ${(props) => props.theme.breakpoints.l} {
+    flex-direction: row;
+  }
 `;
 
 const Dice = styled.div`
-  font-size: 5rem;
+  font-size: 15vw;
   cursor: pointer;
   color: ${({ theme, selected }) => selected ? theme.palette.common.pink : 'inherit'};
   flex: 1 1 0;
+  line-height: 0.8;
+
+  @media ${(props) => props.theme.breakpoints.l} {
+    font-size: 8vw;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -53,7 +62,7 @@ const ProtocolKey = styled.div`
   grid-column-start: 1;
   align-self: center;
   text-transform: capitalize;
-  background: ${props => props.isUsed ? 'aliceblue' : props.isValid ? props.theme.palette.common.pink : props.theme.palette.common.white };
+  background: ${props => props.isUsed ? 'aliceblue' : props.isChoosable ? props.theme.palette.common.pink : 'inherit' };
 `;
 
 const ProtocolValue = styled.div`
@@ -62,7 +71,7 @@ const ProtocolValue = styled.div`
   text-align: end;
   align-self: center;
   cursor: ${props => props.isUsed ? 'auto' : 'pointer' };
-  background: ${props => props.isUsed ? 'aliceblue' : props.isValid ? props.theme.palette.common.pink : props.theme.palette.common.white };
+  background: ${props => props.isUsed ? 'aliceblue' : props.isChoosable ? props.theme.palette.common.pink : 'inherit' };
   text-align: center;
 `;
 

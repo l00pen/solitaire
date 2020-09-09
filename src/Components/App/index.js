@@ -49,14 +49,12 @@ const Game = styled.div`
   height: 100vh;
 `;
 
-const Dashboard = styled.div`
-  display: flex;
+const Row = styled.div`
   margin: ${(props) => props.theme.spacing.medium} ${(props) => props.theme.spacing.xxsmall};
 
   @media ${(props) => props.theme.breakpoints.l} {
     width: 50%;
     margin: ${(props) => props.theme.spacing.medium} auto;
-    align-items: center;
   }
 `
 const GameSection = styled.div`
@@ -69,11 +67,10 @@ const GameSection = styled.div`
 `
 
 const AppSelect = styled(Select)`
-  flex: 1 1 100%;
+  width: 100%;
 
   @media ${(props) => props.theme.breakpoints.l} {
-    flex: 0;
-    width: fit-content;
+    width: inherit;
   }
 `
 
@@ -87,7 +84,7 @@ function App(props) {
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <Game>
-          <Dashboard>
+          <Row>
             <AppSelect
               value={selectedGame}
               onChange={e => setSelectedGame(e.target.value)}
@@ -98,7 +95,7 @@ function App(props) {
                 </Option>
               ))}
             </AppSelect>
-          </Dashboard>
+          </Row>
           <GameSection>
             {selectedGameComponent}
           </GameSection>
