@@ -49,9 +49,9 @@ const ProtocolItem = ({
 
   if (!selectable) {
     return (
-      <React.Fragment key={id}>
-        <ProtocolKey hasBeenSelected={hasBeenSelected}>{label}</ProtocolKey>
-        <ProtocolValue hasBeenSelected={hasBeenSelected}>
+      <React.Fragment>
+        <ProtocolKey>{label}</ProtocolKey>
+        <ProtocolValue>
           {score}
         </ProtocolValue>
       </React.Fragment>
@@ -59,7 +59,7 @@ const ProtocolItem = ({
   }
 
   return (
-    <React.Fragment key={id}>
+    <React.Fragment>
       <ProtocolKeySelectable hasBeenSelected={hasBeenSelected}>{label}</ProtocolKeySelectable>
       <ProtocolValueSelectable
         onClick={onProtocolValueClick}
@@ -76,7 +76,7 @@ const mapStateToProps = ({ yatzyReducer: state}, item) => {
   const dices = getCurrentRoundCombination(state);
   return {
     ...item,
-    currentSum: item.valid(dices) ? item.sum(dices) : 0,
+    currentSum: item.selectable ? item.sum(dices) : 0,
   };
 }
 

@@ -8,7 +8,8 @@ import { Button, ButtonSecondaryAction } from 'Components/StyledComponents/Butto
 import ProtocolItem from './ProtocolItem';
 
 import {
-  getCurrentProtocol,
+  getProtocol,
+  getTotal,
   getIsGameFinished,
 } from 'reducers/yatzy/selectors';
 
@@ -89,6 +90,12 @@ const Yatzy = ({
               <ProtocolItem key={item.id} {...item} />
             );
           })}
+          <ProtocolItem
+            key={'total'}
+            label={'Total'}
+            total={total}
+            selectable={false}
+          />
         </Protocol>
         <Wrapper>
           {gameFinished &&
@@ -119,13 +126,13 @@ const Yatzy = ({
 }
 
 const mapStateToProps = ({ yatzyReducer: state}) => {
-  const protocol = getCurrentProtocol(state);
+  const protocol = getProtocol(state);
   return {
     ...state,
     ...state.yatzy,
     ...state.highScore,
     protocol,
-    total: protocol.total.total,
+    total: getTotal(state),
     gameFinished: getIsGameFinished(state),
   };
 }

@@ -5,7 +5,6 @@ const getProtocolItem = (id, label) => {
     total: 0,
     isUsed: false,
     selectable: false,
-    valid: () => false,
     sum: () => 0,
   }
 }
@@ -15,15 +14,6 @@ const getTwoPairs = (id, label) => {
   return {
     ...protocolItem,
     selectable: true,
-    valid(dices) {
-      const overTwo = dices.reduce((mem, obj) => {
-        if (obj >= 2) {
-          mem = mem + 1;
-        }
-        return mem;
-      }, 0);
-      return overTwo >= 2;
-    },
     sum(dices) {   
       let pairOfSame = false;
       const pairArray = dices.reduce((mem, obj, idx) => {
@@ -48,6 +38,7 @@ const getTwoPairs = (id, label) => {
 
         return (idx1 * 2) + (idx2 * 2);
       }
+      return 0;
     }
   }
 }
@@ -57,17 +48,13 @@ const getSmallStraight = (id, label) => {
   return {
     ...protocolItem,
     selectable: true,
-    valid(combos) {
-      const at = combos.slice(0, combos.length - 1);
-      const tmp = at.filter(n => n !== 1);
-      return tmp.length === 0;
-    },
     sum(combos) {
       const at = combos.slice(0, combos.length - 1);
       const tmp = at.filter(n => n !== 1);
       if (tmp.length === 0) {        
         return 15;
       }
+      return 0;
     }
   }
 }
@@ -77,18 +64,13 @@ const getLargeStraight = (id, label) => {
   return {
     ...protocolItem,
     selectable: true,
-    valid(dices) {
-      const at = dices.slice(1);
-      const tmp = at.filter(n => n !== 1);
-      return tmp.length === 0;
-    },
-
     sum(dices) {
       const at = dices.slice(1);
       const tmp = at.filter(n => n !== 1);
       if (tmp.length === 0) {        
         return 20;
       }
+      return 0;
     }
   }
 }
@@ -98,19 +80,6 @@ const getFullHouse = (id, label) => {
   return {
     ...protocolItem,
     selectable: true,
-    valid: (dices) => {
-      let hasFoundThree = false;
-      let hasFoundTwo = false
-      return dices.reduceRight((isValid, diceCount) => {
-        if (!hasFoundThree) {
-          hasFoundThree = (diceCount >= 3);
-        }
-        if (!hasFoundTwo) {
-          hasFoundTwo = (diceCount >= 2);
-        }
-        return hasFoundTwo && hasFoundThree;
-      }, false);
-    },
     sum(dices) {
       let hasFoundThree = false;
       let hasFoundTwo = false;
@@ -138,9 +107,6 @@ const getXOfAKind = (id, label, nrOfKind) => {
   return {
     ...protocolItem,
     selectable: true,
-    valid: (dices) => {
-      return !!dices.findIndex((nr) => nr >= nrOfKind);
-    },
     sum: (dices) => {
       const faceValueIndex = [...dices].reverse().findIndex((nr) => nr >= nrOfKind);
       if (faceValueIndex >= 0) {
@@ -160,9 +126,6 @@ const getUpperSection = (faceValue, id, label) => {
     selectable: true,
     diceIndex,
     faceValue,
-    valid: (dices) => {
-      return dices[diceIndex] >= 0;
-    },
     sum: function(dices) {
       return dices[this.diceIndex] * this.faceValue
     },
@@ -170,22 +133,11 @@ const getUpperSection = (faceValue, id, label) => {
 }
 
 const initialState = () => {
-  const upperSection = {
-    ones: getUpperSection(1, 'ones','Ones'),
-    twos: getUpperSection(2, 'twos','Twos'),
-    threes: getUpperSection(3, 'threes','Threes'),
-    fours: getUpperSection(4, 'fours','Fours'),
-    fives: getUpperSection(5, 'fives','Fives'),
-    sixes: getUpperSection(6, 'sixes','Sixes'),
-  };
-
   const bonusForUpper = getProtocolItem('bonus', 'Bonus');
   const yatzyBonus = getProtocolItem('yatzyBonus', 'Bonus')
-  const total = getProtocolItem('total', 'Total')
   const chance = {
     ...getProtocolItem('chance', 'Chance'),
     selectable: true,
-    valid: () => true,
     sum: (combos) => {
       return combos.reduce((mem, nr, faceValue) => {
         return mem + (nr * (faceValue + 1));
@@ -194,7 +146,12 @@ const initialState = () => {
   }
 
   return {
-    ...upperSection,
+    ones: getUpperSection(1, 'ones','Ones'),
+    twos: getUpperSection(2, 'twos','Twos'),
+    threes: getUpperSection(3, 'threes','Threes'),
+    fours: getUpperSection(4, 'fours','Fours'),
+    fives: getUpperSection(5, 'fives','Fives'),
+    sixes: getUpperSection(6, 'sixes','Sixes'),
     bonusForUpper,
     onePair: getXOfAKind('onePair', 'One pair', 2),
     twoPairs: getTwoPairs('twoPairs', 'Two pairs'),
@@ -206,9 +163,49 @@ const initialState = () => {
     chance,
     yatzy: getXOfAKind('yatzy', 'Yatzy', 5),
     yatzyBonus,
-    total,
   }
 };
+
+const UPPER_SECTION = ['ones', 'twos', 'threes', 'fours', 'fives', 'sixes'];
+
+const getBonus = (state) => {
+  let total = 0;
+  let isUsed = false;
+
+  const currentTotal = Object.values(state).reduce((mem, item) => {
+    if (UPPER_SECTION.includes(item.id)) {
+      return mem + item.total;
+    }
+    return mem;
+  }, 0);
+
+  isUsed =  Object.values(state).reduce((mem, item) => {
+    if (UPPER_SECTION.includes(item.id)) {
+      return mem && item.isUsed;
+    }
+    return mem;
+  }, true);
+
+  if (currentTotal >= 63 ) {
+    total = 50;
+  }
+
+  return {
+    ...state.bonusForUpper,
+    isUsed,
+    total,
+  };
+}
+
+const getYatzyBonus = (protocol) => {
+  const hasYatzy = protocol.yatzy.total > 0;
+  return {
+    ...protocol.yatzyBonus,
+    isUsed: protocol.yatzy.isUsed,
+    total: hasYatzy ? 50 : 0,
+  };
+};
+
 
 const protocol = (state = initialState(), action) => {
   switch(action.type) {
@@ -217,17 +214,19 @@ const protocol = (state = initialState(), action) => {
       return initialState();
     case 'YATZY_SET_PROTOCOL_ITEM_SUM':
       const { id, newScore } = action.data;
-      return {
+      const newState = {
         ...state,
         [id]: {
           ...state[id],
           total: newScore,
           isUsed: true,
-        },
-        total: {
-          ...state.total,
-          total: state.total.total + newScore,
         }
+      }
+      const bonusForUpper = getBonus(newState);
+      return {
+        ...newState,
+        bonusForUpper,
+        yatzyBonus: getYatzyBonus(newState),
       }
     default:
       return state

@@ -13,16 +13,15 @@ export const DashboardStyled = styled.section`
   justify-content: space-between;
 
   & > * {
+    flex: 1;
     margin: 0 ${({ theme }) => theme.spacing.xxsmall};
   }
 
   & > *:first-child {
-    flex: 2;
     margin-left: 0;
   } 
 
   & > *:last-child {
-    flex: 1;
     margin-right: 0;
   }
 `;
