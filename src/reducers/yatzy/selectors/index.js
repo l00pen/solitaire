@@ -19,24 +19,24 @@ const getCurrentRoundCombination = createSelector(
   }
 );
 
+const UPPER_SECTION = ['ones', 'twos', 'threes', 'fours', 'fives', 'sixes'];
+
 const getBonus = createSelector([getProtocol], (protocol) => {
   let total = 0;
   let isUsed = false;
-  const UPPER_SECTION = [
-    'ones',
-    'twos',
-    'threes',
-    'fours',
-    'fives',
-    'sixes',
-  ];
 
-  const currentTotal = UPPER_SECTION.reduce((mem, key) => {
-    return mem + protocol[key].total;
+  const currentTotal = Object.values(protocol).reduce((mem, item) => {
+    if (UPPER_SECTION.includes(item.id)) {
+      return mem + item.total;
+    }
+    return mem;
   }, 0);
 
-  isUsed = UPPER_SECTION.reduce((mem, key) => {
-    return mem && protocol[key].isUsed;
+  isUsed =  Object.values(protocol).reduce((mem, item) => {
+    if (UPPER_SECTION.includes(item.id)) {
+      return mem && item.isUsed;
+    }
+    return mem;
   }, true);
 
   if (currentTotal >= 63 ) {
@@ -44,71 +44,41 @@ const getBonus = createSelector([getProtocol], (protocol) => {
   }
 
   return {
-    key: 'bonus',
-    label: 'bonus',
+    ...protocol.bonusForUpper,
     isUsed,
-    isValid: false,
     total,
-    currentSum: 0,
   };
 })
 
 const getYatzyBonus = createSelector([getProtocol], (protocol) => {
   const hasYatzy = protocol.yatzy.total > 0;
-
   return {
-    key: 'yatzyBonus',
-    label: 'bonus',
+    ...protocol.yatzyBonus,
     isUsed: protocol.yatzy.isUsed,
-    isValid: false,
     total: hasYatzy ? 50 : 0,
-    currentSum: 0,
   };
 });
 
 
-const getCurrentProtocol = createSelector([getCurrentRoundCombination, getBonus, getYatzyBonus, getProtocol], (combintationHelper, bonus, yatzyBonus, protocol) => {
-  return Object.keys(protocol).map(key => {
-    if (key === 'bonus') {
-      return bonus;
-    };
-    if (key === 'yatzyBonus') {
-      return yatzyBonus;
-    };
-    const item = protocol[key];
-    if (!item.used) {
-      return {
-        ...item,
-        label: key,
-        key,
-        isValid: item.valid(combintationHelper),
-        currentSum: item.sum(combintationHelper),
-      };
-    }
-    return {
-      ...item,
-      label: key,
-      key,
-    };
-  })
-});
-
-const getTotal = createSelector([getCurrentProtocol], (state) => {
-  return state.reduce((sum, currentItem) => {
-    return sum + currentItem.total;
-  }, 0);
+const getCurrentProtocol = createSelector([getProtocol, getBonus, getYatzyBonus], (protocol, bonus, yatzyBonus) => {
+  return {
+    ...protocol,
+    bonusForUpper: bonus,
+    yatzyBonus,
+  }
 });
 
 const getIsGameFinished = createSelector([getCurrentProtocol], (protocol) => {
-  return protocol.reduce((mem, { isUsed }) => {
+  const { total, ...protocolRest} = protocol;
+  return Object.values(protocolRest).reduce((mem, { id, isUsed }) => {
     return mem && isUsed;
   }, true);
 });
 
 export {
-  getCurrentRoundCombination,
+  getProtocol,
   getCurrentProtocol,
-  getTotal,
+  getCurrentRoundCombination,
   getBonus,
   getIsGameFinished,
 }

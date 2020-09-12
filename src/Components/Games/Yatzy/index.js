@@ -5,10 +5,10 @@ import styled from 'styled-components/macro'
 import {DashboardStyled} from 'Components/Dashboard';
 import ContentSection from 'Components/StyledComponents/ContentSection';
 import { Button, ButtonSecondaryAction } from 'Components/StyledComponents/Buttons';
+import ProtocolItem from './ProtocolItem';
 
 import {
   getCurrentProtocol,
-  getTotal,
   getIsGameFinished,
 } from 'reducers/yatzy/selectors';
 
@@ -34,6 +34,7 @@ const Dice = styled.div`
 
   @media ${(props) => props.theme.breakpoints.l} {
     font-size: 8vw;
+    margin-top: 20px;
   }
 `;
 
@@ -57,30 +58,12 @@ const Protocol = styled.div`
   color: ${({ theme }) => theme.palette.common.black};
 `;
 
-const ProtocolKey = styled.div`
-  padding: ${({ theme }) => theme.spacing.xxsmall};
-  grid-column-start: 1;
-  align-self: center;
-  text-transform: capitalize;
-  background: ${props => props.isUsed ? 'aliceblue' : props.isChoosable ? props.theme.palette.common.pink : 'inherit' };
-`;
-
-const ProtocolValue = styled.div`
-  padding: ${({ theme }) => theme.spacing.xxsmall};
-  grid-column-start: 2;
-  text-align: end;
-  align-self: center;
-  cursor: ${props => props.isUsed ? 'auto' : 'pointer' };
-  background: ${props => props.isUsed ? 'aliceblue' : props.isChoosable ? props.theme.palette.common.pink : 'inherit' };
-  text-align: center;
-`;
-
 const Yatzy = ({
     undo,
     redeal,
     game,
-    total,
     dices,
+    total,
     rollDices,
     availableRolls,
     toggleDice,
@@ -92,11 +75,6 @@ const Yatzy = ({
   }) => {  
 
   const diceClickHandler = (id) => toggleDice(id);
-  const onProtocolValueClick = (obj) => {
-    if (obj.label !== 'bonus') {
-      setProtocolItemSum(obj);
-    }
-  }
 
   return (
     <React.Fragment>
@@ -106,19 +84,9 @@ const Yatzy = ({
       </YatzyDashboard>
       <Container>   
         <Protocol>
-          { protocol.map((obj) => {
+          { Object.values(protocol).map((item) => {
             return (
-              <React.Fragment key={obj.key}>
-                <ProtocolKey isUsed={obj.isUsed}>{`${obj.label}: `}</ProtocolKey>
-                <ProtocolValue
-                  onClick={onProtocolValueClick.bind(this, obj)}
-                  isUsed={obj.isUsed}
-                  isValid={obj.currentSum > 0}
-                  disabled={obj.label === 'bonus'}
-                >
-                  {obj.isUsed ? `${obj.total}` : `${obj.currentSum}`}
-                </ProtocolValue>
-              </React.Fragment>
+              <ProtocolItem key={item.id} {...item} />
             );
           })}
         </Protocol>
@@ -130,7 +98,6 @@ const Yatzy = ({
           }
           {!gameFinished &&
             <div>
-              <p>{`Score: ${total}`}</p>
               <p>Rolls left: {availableRolls}</p>
               <DiceBoard>
                 <Button onClick={rollDices} disabled={availableRolls === 0}>Roll Dices</Button>
@@ -152,12 +119,13 @@ const Yatzy = ({
 }
 
 const mapStateToProps = ({ yatzyReducer: state}) => {
+  const protocol = getCurrentProtocol(state);
   return {
     ...state,
     ...state.yatzy,
     ...state.highScore,
-    protocol: getCurrentProtocol(state),
-    total: getTotal(state),
+    protocol,
+    total: protocol.total.total,
     gameFinished: getIsGameFinished(state),
   };
 }
@@ -168,7 +136,6 @@ const mapDispatchToProps = dispatch => {
     redeal: () => dispatch({ type: 'RE_DEAL' }),
     rollDices: () => dispatch({ type: 'YATZY_ROLL_DICES' }),
     toggleDice: (id) => dispatch({ type: 'YATZY_TOGGLE_DICE', data: { id } }),
-    setProtocolItemSum: (protocolItem) => dispatch({ type: 'YATZY_SET_PROTOCOL_ITEM_SUM', data: { ...protocolItem }}),
     newGameHandler: () => dispatch({ type: 'YATZY_NEW_GAME' }),
   }
 }

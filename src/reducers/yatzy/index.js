@@ -26,9 +26,7 @@ const yatzy = (state = initialState, action) => {
         availableRolls: initialState.availableRolls,
       }
     case 'YATZY_GAME_FINISHED':
-      return {
-
-      }
+      return state;
     default:
       return state;
   }
