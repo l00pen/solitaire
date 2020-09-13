@@ -19,96 +19,21 @@ const getCurrentRoundCombination = createSelector(
   }
 );
 
-const getBonus = createSelector([getProtocol], (protocol) => {
-  let total = 0;
-  let isUsed = false;
-  const UPPER_SECTION = [
-    'ones',
-    'twos',
-    'threes',
-    'fours',
-    'fives',
-    'sixes',
-  ];
-
-  const currentTotal = UPPER_SECTION.reduce((mem, key) => {
-    return mem + protocol[key].total;
-  }, 0);
-
-  isUsed = UPPER_SECTION.reduce((mem, key) => {
-    return mem && protocol[key].isUsed;
-  }, true);
-
-  if (currentTotal >= 63 ) {
-    total = 50;
-  }
-
-  return {
-    key: 'bonus',
-    label: 'bonus',
-    isUsed,
-    isValid: false,
-    total,
-    currentSum: 0,
-  };
-})
-
-const getYatzyBonus = createSelector([getProtocol], (protocol) => {
-  const hasYatzy = protocol.yatzy.total > 0;
-
-  return {
-    key: 'yatzyBonus',
-    label: 'bonus',
-    isUsed: protocol.yatzy.isUsed,
-    isValid: false,
-    total: hasYatzy ? 50 : 0,
-    currentSum: 0,
-  };
-});
-
-
-const getCurrentProtocol = createSelector([getCurrentRoundCombination, getBonus, getYatzyBonus, getProtocol], (combintationHelper, bonus, yatzyBonus, protocol) => {
-  return Object.keys(protocol).map(key => {
-    if (key === 'bonus') {
-      return bonus;
-    };
-    if (key === 'yatzyBonus') {
-      return yatzyBonus;
-    };
-    const item = protocol[key];
-    if (!item.used) {
-      return {
-        ...item,
-        label: key,
-        key,
-        isValid: item.valid(combintationHelper),
-        currentSum: item.sum(combintationHelper),
-      };
-    }
-    return {
-      ...item,
-      label: key,
-      key,
-    };
-  })
-});
-
-const getTotal = createSelector([getCurrentProtocol], (state) => {
-  return state.reduce((sum, currentItem) => {
-    return sum + currentItem.total;
+const getTotal = createSelector([getProtocol], (protocol) => {
+  return Object.values(protocol).reduce((mem, { total }) => {
+    return mem + total;
   }, 0);
 });
 
-const getIsGameFinished = createSelector([getCurrentProtocol], (protocol) => {
-  return protocol.reduce((mem, { isUsed }) => {
+const getIsGameFinished = createSelector([getProtocol], (protocol) => {
+  return Object.values(protocol).reduce((mem, { id, isUsed }) => {
     return mem && isUsed;
   }, true);
 });
 
 export {
+  getProtocol,
   getCurrentRoundCombination,
-  getCurrentProtocol,
   getTotal,
-  getBonus,
   getIsGameFinished,
 }
