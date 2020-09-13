@@ -85,7 +85,7 @@ const Yatzy = ({
       </YatzyDashboard>
       <Container>   
         <Protocol>
-          { Object.values(protocol).map((item) => {
+          { protocol.map((item) => {
             return (
               <ProtocolItem key={item.id} {...item} />
             );

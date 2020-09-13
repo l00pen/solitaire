@@ -5,7 +5,7 @@ const getDices = (state) => {
 };
 
 const getProtocol = (state) => {
-  return state.protocol
+  return Object.values(state.protocol);
 };
 
 const getCurrentRoundCombination = createSelector(
@@ -20,13 +20,13 @@ const getCurrentRoundCombination = createSelector(
 );
 
 const getTotal = createSelector([getProtocol], (protocol) => {
-  return Object.values(protocol).reduce((mem, { total }) => {
+  return protocol.reduce((mem, { total }) => {
     return mem + total;
   }, 0);
 });
 
 const getIsGameFinished = createSelector([getProtocol], (protocol) => {
-  return Object.values(protocol).reduce((mem, { id, isUsed }) => {
+  return protocol.reduce((mem, { id, isUsed }) => {
     return mem && isUsed;
   }, true);
 });
