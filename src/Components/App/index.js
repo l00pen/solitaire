@@ -35,13 +35,20 @@ const getSelectedGameComponent = (game) => {
 }
 
 const GlobalStyle = createGlobalStyle`
+  * {
+    box-sizing: border-box;
+  }
+
   html {
     font-size: ${props => props.theme.spacing.medium};
+    touch-action: manipulation;
   }
+
   body {
     margin: 0;
     font-family: ${props => props.theme.typography.fontFamily};
     background-color: #282c34;
+    overflow: hidden;
   }
 `;
 
@@ -50,7 +57,7 @@ const Game = styled.div`
 `;
 
 const Row = styled.div`
-  margin: ${(props) => props.theme.spacing.medium} ${(props) => props.theme.spacing.xxsmall};
+  margin: ${(props) => props.theme.spacing.xxsmall};
 
   @media ${(props) => props.theme.breakpoints.l} {
     width: 50%;
