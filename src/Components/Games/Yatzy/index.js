@@ -14,7 +14,7 @@ import {
 } from 'reducers/yatzy/selectors';
 
 const YatzyDashboard = styled(DashboardStyled)`
-  margin-bottom: ${({ theme }) => theme.spacing.small};
+  margin-bottom: ${({ theme }) => theme.spacing.xxsmall};
 `
 const DiceBoard = styled.div`
   display: flex;

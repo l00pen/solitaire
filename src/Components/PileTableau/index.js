@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 
 import {Pile} from 'Components/Pile'
+import PileContext from '../../Contexts/PileProvider';
 import {
   CardDroppable,
   CardDraggable,
@@ -12,7 +13,7 @@ import {
 const SubPile = styled.div`
   position: absolute;
   width: 100%;
-  top: ${(props) => props.cardIndex === 0 ? 0 : props.topHeightOffset}vw;
+  top: ${(props) => props.cardIndex === 0 ? 0 : props.containerWidth * 0.54}px;
 `;
 
 const renderPile = (list, cardIndex, pileKey, onDrop, onClick) => {
@@ -22,18 +23,21 @@ const renderPile = (list, cardIndex, pileKey, onDrop, onClick) => {
 
   const [card, ...rest] = list;
   const dragAndDropData = { card, cardIndexInPile: cardIndex, sourcePile: pileKey };
-  const topHeightOffset = 3;
   const cardList = rest.length > 0 ? renderPile(rest, cardIndex + 1, pileKey, onDrop, onClick) : null;
   return (
-    <SubPile cardIndex={cardIndex} topHeightOffset={topHeightOffset}>
-      <CardDraggable
-        data={dragAndDropData}
-        draggable={!!card.isFaceUp}
-      >
-        <CardToggleFaceUp {...card} onClick={() => onClick(dragAndDropData)} />
-        {cardList}
-      </CardDraggable>
-    </SubPile>
+    <PileContext.Consumer>
+      { value => (
+        <SubPile cardIndex={cardIndex} containerWidth={value.width}>
+          <CardDraggable
+            data={dragAndDropData}
+            draggable={!!card.isFaceUp}
+          >
+            <CardToggleFaceUp {...card} onClick={() => onClick(dragAndDropData)} />
+            {cardList}
+          </CardDraggable>
+        </SubPile>)
+      }
+    </PileContext.Consumer>
   );
 }
 
