@@ -1,3 +1,25 @@
+const PROTOCOL = {
+  ONES: 'ones',
+  TWOS: 'twos',
+  THREES: 'threes',
+  FOURS: 'fours',
+  FIVES: 'fives',
+  SIXES: 'sixes',
+  BONUS: 'bonus',
+  ONE_PAIR: 'onePair',
+  TWO_PAIRS: 'twoPairs',
+  THREE_OF_A_KIND: 'threeOfAKind',
+  FOUR_OF_A_KIND: 'fourOfAKind',
+  SMALL_STRAIGHT: 'smallStraight',
+  LARGE_STRAIGHT: 'largeStraight',
+  FULL_HOUSE: 'fullHouse',
+  CHANCE: 'chance',
+  YATZY: 'yatzy',
+  YATZY_BONUS: 'yatzyBonus',
+}
+
+const UPPER_SECTION = [PROTOCOL.ONES, PROTOCOL.TWOS, PROTOCOL.THREES, PROTOCOL.FOURS, PROTOCOL.FIVES, PROTOCOL.SIXES];
+
 const getProtocolItem = (id, label) => {
   return {
     id,
@@ -133,77 +155,73 @@ const getUpperSection = (faceValue, id, label) => {
 }
 
 const initialState = () => {
-  const bonusForUpper = getProtocolItem('bonus', 'Bonus');
-  const yatzyBonus = getProtocolItem('yatzyBonus', 'Bonus')
-  const chance = {
-    ...getProtocolItem('chance', 'Chance'),
-    selectable: true,
-    sum: (combos) => {
-      return combos.reduce((mem, nr, faceValue) => {
-        return mem + (nr * (faceValue + 1));
-      }, 0)
-    }
-  }
-
-  return {
-    ones: getUpperSection(1, 'ones','Ones'),
-    twos: getUpperSection(2, 'twos','Twos'),
-    threes: getUpperSection(3, 'threes','Threes'),
-    fours: getUpperSection(4, 'fours','Fours'),
-    fives: getUpperSection(5, 'fives','Fives'),
-    sixes: getUpperSection(6, 'sixes','Sixes'),
-    bonusForUpper,
-    onePair: getXOfAKind('onePair', 'One pair', 2),
-    twoPairs: getTwoPairs('twoPairs', 'Two pairs'),
-    threeOfAKind: getXOfAKind('threeOfAKind', 'Three of a kind', 3),
-    fourOfAKind: getXOfAKind('fourOfAKind', 'Four of a kind', 4),
-    smallStraight: getSmallStraight('smallStraight', 'Small straight'),
-    largeStraight: getLargeStraight('largeStraight', 'Large straight'),
-    fullHouse: getFullHouse('fullHouse', 'FullHouse'),
-    chance,
-    yatzy: getXOfAKind('yatzy', 'Yatzy', 5),
-    yatzyBonus,
-  }
+  return [
+    getUpperSection(1, PROTOCOL.ONES,'Ones'),
+    getUpperSection(2, PROTOCOL.TWOS,'Twos'),
+    getUpperSection(3, PROTOCOL.THREES,'Threes'),
+    getUpperSection(4, PROTOCOL.FOURS,'Fours'),
+    getUpperSection(5, PROTOCOL.FIVES,'Fives'),
+    getUpperSection(6, PROTOCOL.SIXES,'Sixes'),
+    getProtocolItem(PROTOCOL.BONUS, 'Bonus'),
+    getXOfAKind(PROTOCOL.ONE_PAIR, 'One pair', 2),
+    getTwoPairs(PROTOCOL.TWO_PAIRS, 'Two pairs'),
+    getXOfAKind(PROTOCOL.THREE_OF_A_KIND, 'Three of a kind', 3),
+    getXOfAKind(PROTOCOL.FOUR_OF_A_KIND, 'Four of a kind', 4),
+    getSmallStraight(PROTOCOL.SMALL_STRAIGHT, 'Small straight'),
+    getLargeStraight(PROTOCOL.LARGE_STRAIGHT, 'Large straight'),
+    getFullHouse(PROTOCOL.FULL_HOUSE, 'FullHouse'),
+    {
+      ...getProtocolItem(PROTOCOL.CHANCE, 'Chance'),
+      selectable: true,
+      sum: (combos) => {
+        return combos.reduce((mem, nr, faceValue) => {
+          return mem + (nr * (faceValue + 1));
+        }, 0)
+      }
+    },
+    getXOfAKind(PROTOCOL.YATZY, 'Yatzy', 5),
+    getProtocolItem(PROTOCOL.YATZY_BONUS, 'Bonus'),
+  ]
 };
 
-const UPPER_SECTION = ['ones', 'twos', 'threes', 'fours', 'fives', 'sixes'];
 
-const getBonus = (state) => {
-  let total = 0;
-  let isUsed = false;
+const getBonus = (protocolItem, _, protocol) => {
+  if(protocolItem.id === PROTOCOL.BONUS) {
+    let total = 0;
+    let isUsed = false;
+    debugger;
+    const currentTotal = protocol.reduce((mem, item) => {
+      if (UPPER_SECTION.includes(item.id)) {
+        isUsed = mem.isUsed && item.isUsed;
+        return mem + item.total;
+      }
+      return mem;
+    }, 0);
 
-  const currentTotal = Object.values(state).reduce((mem, item) => {
-    if (UPPER_SECTION.includes(item.id)) {
-      return mem + item.total;
+    if (currentTotal >= 63 ) {
+      total = 50;
     }
-    return mem;
-  }, 0);
-
-  isUsed =  Object.values(state).reduce((mem, item) => {
-    if (UPPER_SECTION.includes(item.id)) {
-      return mem && item.isUsed;
+    return {
+      ...protocolItem,
+      isUsed,
+      total,
     }
-    return mem;
-  }, true);
-
-  if (currentTotal >= 63 ) {
-    total = 50;
   }
 
-  return {
-    ...state.bonusForUpper,
-    isUsed,
-    total,
-  };
+  return protocolItem;
 }
 
-const getYatzyBonus = (protocol) => {
-  const hasYatzy = protocol.yatzy.total > 0;
-  return {
-    ...protocol.yatzyBonus,
-    isUsed: protocol.yatzy.isUsed,
-    total: hasYatzy ? 50 : 0,
-  };
+const getYatzyBonus = (protocolItem, _, protocol) => {
+  if(protocolItem.id === PROTOCOL.YATZY_BONUS) {
+    const yatzy = protocol.find(({id}) => id === PROTOCOL.YATZY);
+    const hasYatzy = yatzy.total > 0;
+    return {
+      ...protocolItem,
+      isUsed: yatzy.isUsed,
+      total: hasYatzy ? 50 : 0,
+    }
+  }
+  return protocolItem;
 };
 
 
@@ -214,20 +232,19 @@ const protocol = (state = initialState(), action) => {
       return initialState();
     case 'YATZY_SET_PROTOCOL_ITEM_SUM':
       const { id, newScore } = action.data;
-      const newState = {
-        ...state,
-        [id]: {
-          ...state[id],
-          total: newScore,
-          isUsed: true,
-        }
-      }
-      const bonusForUpper = getBonus(newState);
-      return {
-        ...newState,
-        bonusForUpper,
-        yatzyBonus: getYatzyBonus(newState),
-      }
+      return state
+        .map((protocolItem) => {
+          if (protocolItem.id === id) {
+            return {
+              ...protocolItem,
+              total: newScore,
+              isUsed: true,
+            }
+          }
+          return protocolItem;
+        })
+        .map(getBonus)
+        .map(getYatzyBonus);
     default:
       return state
   }

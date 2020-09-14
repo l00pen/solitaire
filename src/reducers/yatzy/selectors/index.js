@@ -5,7 +5,7 @@ const getDices = (state) => {
 };
 
 const getProtocol = (state) => {
-  return Object.values(state.protocol);
+  return state.protocol;
 };
 
 const getCurrentRoundCombination = createSelector(
