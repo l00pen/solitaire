@@ -7,6 +7,7 @@ const palette = {
   common: {
     black,
     pink: 'pink',
+    blue: '#b2c5d5',
     papayawhip: 'papayawhip',
     white,
   },

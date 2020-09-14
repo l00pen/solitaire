@@ -1,8 +1,16 @@
-import styled from 'styled-components/macro';
+import styled, {css} from 'styled-components/macro';
 
-const ContentSection = styled.section`
-  background-color: rgba(255,255,255,0.7);
-  color: rgba(3,2,20,0.7);
+export const sectionTopDistance = css`
+  margin-top: ${(props) => props.theme.spacing.xxsmall};
+`;
+
+export const Section = styled.section`
+  ${sectionTopDistance}
+`;
+
+const ContentSection = styled(Section)`
+  background-color: ${({ theme }) => theme.palette.primary.light};
+  color: ${({theme}) => theme.palette.common.black};
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -10,15 +18,5 @@ const ContentSection = styled.section`
   flex: 1 0 auto;
   padding: ${(props) => props.theme.spacing.medium};
 `;
-
-export const GameTop = styled.section`
-  margin: ${(props) => props.theme.spacing.medium} 0;
-  width: 100%;
-  display: flex;
-
-  & > div {
-    flex: 1 1 0;
-  }
-`
 
 export default ContentSection;

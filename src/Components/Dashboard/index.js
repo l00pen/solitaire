@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 
+import {sectionTopDistance} from 'Components/StyledComponents/ContentSection';
 import {
   ButtonPrimaryAction,
   ButtonSecondaryAction,
@@ -11,7 +12,8 @@ export const DashboardStyled = styled.section`
   display: flex;
   width: 100%;
   justify-content: space-between;
-
+  ${sectionTopDistance}
+  
   & > * {
     flex: 1;
     margin: 0 ${({ theme }) => theme.spacing.xxsmall};

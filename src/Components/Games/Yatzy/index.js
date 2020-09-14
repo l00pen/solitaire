@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components/macro'
 
 import {DashboardStyled} from 'Components/Dashboard';
-import ContentSection from 'Components/StyledComponents/ContentSection';
+import ContentSection, {sectionTopDistance} from 'Components/StyledComponents/ContentSection';
 import { Button, ButtonSecondaryAction } from 'Components/StyledComponents/Buttons';
 import ProtocolItem from './ProtocolItem';
 
@@ -14,8 +14,9 @@ import {
 } from 'reducers/yatzy/selectors';
 
 const YatzyDashboard = styled(DashboardStyled)`
-  margin-bottom: ${({ theme }) => theme.spacing.xxsmall};
-`
+  ${sectionTopDistance}
+`;
+
 const DiceBoard = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -49,6 +50,7 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: ${({ theme }) => theme.spacing.xxsmall};
+  ${sectionTopDistance}
 `;
 
 const Protocol = styled.div`

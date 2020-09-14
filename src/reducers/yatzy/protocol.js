@@ -186,16 +186,20 @@ const initialState = () => {
 
 
 const getBonus = (protocolItem, _, protocol) => {
-  if(protocolItem.id === PROTOCOL.BONUS) {
+  if(protocolItem.id === PROTOCOL.BONUS && !protocolItem.isUsed) {
     let total = 0;
-    let isUsed = false;
-    debugger;
-    const currentTotal = protocol.reduce((mem, item) => {
+    const isUsed = protocol.reduce((isUsedAcc, item) => {
       if (UPPER_SECTION.includes(item.id)) {
-        isUsed = mem.isUsed && item.isUsed;
-        return mem + item.total;
+        return isUsedAcc && item.isUsed;
       }
-      return mem;
+      return isUsedAcc;
+    }, true);
+
+    const currentTotal = protocol.reduce((sum, item) => {
+      if (UPPER_SECTION.includes(item.id)) {
+        return sum + item.total;
+      }
+      return sum;
     }, 0);
 
     if (currentTotal >= 63 ) {

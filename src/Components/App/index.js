@@ -5,6 +5,7 @@ import styled, { ThemeProvider, createGlobalStyle } from 'styled-components/macr
 import {theme} from '../../Themes';
 
 import {BreakpointProvider} from 'Contexts/BreakpointProvider'
+import {sectionTopDistance} from 'Components/StyledComponents/ContentSection';
 
 import Spider from 'Components/Games/Spider';
 import Klondike from 'Components/Games/Klondike';
@@ -57,11 +58,11 @@ const Game = styled.div`
 `;
 
 const Row = styled.div`
-  margin: ${(props) => props.theme.spacing.xxsmall};
+  margin: 0 ${(props) => props.theme.spacing.xxsmall};
 
   @media ${(props) => props.theme.breakpoints.l} {
     width: 50%;
-    margin: ${(props) => props.theme.spacing.medium} auto;
+    margin: 0 auto;
   }
 `
 const GameSection = styled.div`
@@ -75,6 +76,7 @@ const GameSection = styled.div`
 
 const AppSelect = styled(Select)`
   width: 100%;
+  ${sectionTopDistance};
 
   @media ${(props) => props.theme.breakpoints.l} {
     width: inherit;

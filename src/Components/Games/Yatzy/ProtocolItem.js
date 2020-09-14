@@ -21,12 +21,20 @@ const ProtocolValue = styled.div`
 `
 
 const ProtocolKeySelectable = styled(ProtocolKey)`
-  background: ${props => props.hasBeenSelected ? 'aliceblue' : props.isChoosable ? props.theme.palette.common.pink : 'inherit' };
+  background: ${({hasBeenSelected, theme, isChoosable}) => 
+    hasBeenSelected ?
+      theme.palette.common.blue : isChoosable ?
+        theme.palette.common.pink : 'inherit'
+  };
 `;
 
 const ProtocolValueSelectable = styled(ProtocolValue)`
   cursor: ${props => props.hasBeenSelected ? 'auto' : 'pointer' };
-  background: ${props => props.hasBeenSelected ? 'aliceblue' : props.isChoosable ? props.theme.palette.common.pink : 'inherit' };
+  background: ${({hasBeenSelected, theme, isChoosable}) => 
+    hasBeenSelected ?
+      theme.palette.common.blue : isChoosable ?
+        theme.palette.common.pink : 'inherit'
+  };
 `;
 
 const ProtocolItem = ({
