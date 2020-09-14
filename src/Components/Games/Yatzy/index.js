@@ -32,13 +32,20 @@ const Dice = styled.div`
   cursor: pointer;
   color: ${({ theme, selected }) => selected ? theme.palette.common.pink : 'inherit'};
   flex: 1 1 0;
-  line-height: 0.8;
+  line-height: 0.6;
+  padding-bottom: 3vh; // compensate line-height
+  text-align: center;
 
   @media ${(props) => props.theme.breakpoints.l} {
     font-size: 8vw;
     margin-top: 20px;
   }
 `;
+
+const RollDiceButton = styled(Button)`
+  width: 100%;
+  ${sectionTopDistance}
+`
 
 const Wrapper = styled.div`
   width: 100%;
@@ -58,7 +65,7 @@ const Protocol = styled.div`
   grid-template-columns: 2fr 1fr;
   grid-gap: 1px;
   background-color: ${({ theme }) => theme.palette.primary.light};
-  color: ${({ theme }) => theme.palette.common.black};
+  color: ${({ theme }) => theme.palette.primary.contrastText};
 `;
 
 const Yatzy = ({
@@ -108,8 +115,8 @@ const Yatzy = ({
           {!gameFinished &&
             <div>
               <p>Rolls left: {availableRolls}</p>
+              <RollDiceButton onClick={rollDices} disabled={availableRolls === 0}>Roll Dices</RollDiceButton>
               <DiceBoard>
-                <Button onClick={rollDices} disabled={availableRolls === 0}>Roll Dices</Button>
                 { dices.map(({ id, value, shouldReRoll }, i) => (
                   <Dice
                     selected={!shouldReRoll}

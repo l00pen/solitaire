@@ -10,7 +10,7 @@ export const Section = styled.section`
 
 const ContentSection = styled(Section)`
   background-color: ${({ theme }) => theme.palette.primary.light};
-  color: ${({theme}) => theme.palette.common.black};
+  color: ${({theme}) => theme.palette.primary.contrastText};
   display: flex;
   flex-direction: column;
   justify-content: center;

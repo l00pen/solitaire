@@ -38,6 +38,7 @@ const getSelectedGameComponent = (game) => {
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
+    margin: 0;
   }
 
   html {
@@ -46,7 +47,6 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    margin: 0;
     font-family: ${props => props.theme.typography.fontFamily};
     background-color: #282c34;
     overflow: hidden;

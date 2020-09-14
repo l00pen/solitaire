@@ -14,7 +14,7 @@ const palette = {
   primary: {
     main: '#40b4de',
     light: '#efefef',
-    contrastText: '#0a3458',
+    contrastText: '#1e252c',
   },
   // error: {
   //   main: '#A51C30',
