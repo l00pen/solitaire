@@ -5,10 +5,10 @@ import {sectionTopDistance} from 'Components/StyledComponents/ContentSection';
 export const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(${({columns}) => columns}, 1fr)};
-  grid-gap: 1vw;
+  grid-template-rows: repeat(${({rows = 2}) => rows}, 1fr)};
+  grid-gap: ${({theme}) => theme.spacing.xxsmall};
   ${sectionTopDistance}
   grid-row-gap: ${({theme}) => theme.spacing.xxsmall};
-  grid-rows: 2;
 `
 
 export const GridItem = styled.div`

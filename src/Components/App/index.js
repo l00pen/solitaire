@@ -11,6 +11,7 @@ import Spider from 'Components/Games/Spider';
 import Klondike from 'Components/Games/Klondike';
 import Yukon from 'Components/Games/Yukon';
 import Yatzy from 'Components/Games/Yatzy';
+import Napoleon from 'Components/Games/Napoleon';
 import { Select, Option } from 'Components/StyledComponents/Select';
 
 const GAMES = {
@@ -18,6 +19,7 @@ const GAMES = {
   KLONDIKE: 'klondike',
   SPIDER: 'spider',
   YATZY: 'yatzy',
+  NAPOLEON: 'napoleon',
 }
 
 const getSelectedGameComponent = (game) => {
@@ -30,6 +32,8 @@ const getSelectedGameComponent = (game) => {
       return <Yukon />;
     case GAMES.YATZY:
       return <Yatzy />;
+    case GAMES.NAPOLEON:
+      return <Napoleon />;
     default:
       return <div>No valid game selected</div>;
   }
@@ -84,7 +88,7 @@ const AppSelect = styled(Select)`
 `
 
 function App(props) {
-  const [selectedGame, setSelectedGame] = useState(GAMES.YATZY);
+  const [selectedGame, setSelectedGame] = useState(GAMES.NAPOLEON);
 
   const selectedGameComponent = getSelectedGameComponent(selectedGame);
 
