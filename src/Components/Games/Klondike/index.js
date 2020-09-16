@@ -33,9 +33,10 @@ function Klondike(props) {
     foundationDropHandler,
     tableauDropHandler,
     tableauClickHandler,
-    wasteClickHandler
+    wasteClickHandler,
+    settingsOnChangeHandler,
   } = props;
-  const { tableauPilesKeys, foundationPilesKeys } = game;
+  const { tableauPilesKeys, foundationPilesKeys, gameConditions: settings } = game;
 
   const onDropTableau = (dropData, dragData) => {
     tableauDropHandler({ dropData, dragData });
@@ -55,8 +56,15 @@ function Klondike(props) {
 
   const[isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-  const settingsClickHandler = () => {
+  const onToggleOpenSettings = () => {
     setIsSettingsOpen(!isSettingsOpen);
+  }
+
+  const onChangeSettings = (event) => {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    settingsOnChangeHandler({ name, value });
   }
 
   const nrOfPiles = 7;
@@ -68,7 +76,7 @@ function Klondike(props) {
             <ButtonSecondaryAction onClick={redeal}>New game</ButtonSecondaryAction>
             <ButtonSecondaryAction onClick={game.hasWon ? null : undo}>Undo</ButtonSecondaryAction>
           </ButtonList>
-          <SettingsButton onClick={settingsClickHandler}>
+          <SettingsButton onClick={onToggleOpenSettings}>
             <SettingsIcon />
           </SettingsButton>
         </Dashboard>
@@ -79,7 +87,14 @@ function Klondike(props) {
         }
         {isSettingsOpen &&
           <ContentSection>
-            Settings form
+            <form>
+              <input type="radio" id='one' name="stockTakes" checked={settings.stockTakes === '1'} value={'1'} onChange={onChangeSettings}/>
+              <label htmlFor='one'>1</label>
+              <input type="radio" id='three' name="stockTakes" checked={settings.stockTakes === '3'} value={'3'} onChange={onChangeSettings}/>
+              <label htmlFor='three'>3</label>
+              <label htmlFor={'tableauEmptyAny'}>tableau Empty Any</label>
+              <input type='checkbox' id={'tableauEmptyAny'} name={'tableauEmptyAny'} checked={settings.tableauEmptyAny} onChange={onChangeSettings} />
+            </form>
           </ContentSection>
         }
       </section>
@@ -138,6 +153,7 @@ const mapDispatchToProps = dispatch => ({
   wasteClickHandler: (payload) => dispatch({ type: 'CLICK_WASTE', payload }),
   foundationDropHandler: (payload) => dispatch({ type: 'DROP_FOUNDATION', payload }),
   tableauDropHandler: (payload) => dispatch({ type: 'DROP_TABLEAU', payload }),
+  settingsOnChangeHandler: (payload) => dispatch({ type: 'SETTINGS_ON_CHANGE', payload})
 })
 
 export default connect(

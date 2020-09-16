@@ -38,8 +38,8 @@ const createTableauPilesFromDeck = (deck, pileKeys) => {
 }
 
 const initSettings = {
-  stockTakes: 3,
-  tableauEmptyAny: false,
+  stockTakes: '3',
+  tableauEmptyAny: true,
   reRunDeck: false,
 }
 
@@ -63,7 +63,7 @@ const init = () => {
 
 const stockClickHandler = (state, { card }) => {
   return moveCardsBetweenPilesInState(state, {
-    cardIndexAtSource: state.stock.length - state.gameConditions.stockTakes,
+    cardIndexAtSource: state.stock.length - parseInt(state.gameConditions.stockTakes),
     sourcePileKey: 'stock',
     destPileKey: 'waste',
   });
@@ -179,8 +179,16 @@ const klondikeReducer = (state = initialState, action) => {
       return checkHasWon(foundationDropHandler(state, action.payload.dropData, action.payload.dragData))
     case 'DROP_TABLEAU':
       return tableauDropHandler(state, action.payload.dropData, action.payload.dragData)
-    case 'SETTINGS_CLICK':
-      return state;
+    case 'SETTINGS_ON_CHANGE':
+      const { name, value } =action.payload;
+      console.log({name, value})
+      return {
+        ...state,
+        gameConditions: {
+          ...state.gameConditions,
+          [name]: value,
+        }
+      };
     default:
       return state;
   }
