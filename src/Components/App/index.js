@@ -88,7 +88,7 @@ const AppSelect = styled(Select)`
 `
 
 function App(props) {
-  const [selectedGame, setSelectedGame] = useState(GAMES.NAPOLEON);
+  const [selectedGame, setSelectedGame] = useState(GAMES.KLONDIKE);
 
   const selectedGameComponent = getSelectedGameComponent(selectedGame);
 

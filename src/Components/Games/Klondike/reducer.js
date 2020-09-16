@@ -1,4 +1,4 @@
-import undoable from './undoable';
+import undoable from 'reducers/undoable';
 import {
   shuffleArray,
   setLastIsFaceUp,

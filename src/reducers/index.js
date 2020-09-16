@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux'
-import klondikeReducer from './klondikeReducer';
+import klondikeReducer from 'Components/Games/Klondike/reducer.js';
 import spiderReducer from './spiderReducer';
 import yukonReducer from './yukonReducer';
 import yatzy from './yatzy/';
 import napoleon from 'Components/Games/Napoleon/reducer.js';
 
-const solitaireApp = combineReducers({
+const app = combineReducers({
   klondike: klondikeReducer,
   spider: spiderReducer,
   yukon: yukonReducer,
@@ -13,4 +13,4 @@ const solitaireApp = combineReducers({
   napoleon,
 });
 
-export default solitaireApp
+export default app
