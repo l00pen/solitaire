@@ -1,13 +1,27 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { connect } from 'react-redux'
+import styled from 'styled-components/macro'
 
 import { Grid, GridItem } from 'Components/StyledComponents/Grid';
-import Dashboard from 'Components/Dashboard';
+import {DashboardStyled} from 'Components/Dashboard';
 import ContentSection from 'Components/StyledComponents/ContentSection';
 import PileWaste from 'Components/PileWaste';
 import PileStock from 'Components/PileStock';
 import { PileFoundationDropppable } from 'Components/PileFoundation';
 import PileTableau from 'Components/PileTableau';
+import { ButtonList, ButtonSecondaryAction, ButtonNormalized, SettingsIcon } from 'Components/StyledComponents/Buttons';
+
+const Dashboard = styled(DashboardStyled)``;
+const SettingsButton = styled(ButtonNormalized)`
+  align-self: center;
+  flex: 0 0 auto;
+  width: ${({theme}) => theme.spacing.xlarge};
+  height: auto;
+
+  & > svg {
+    fill: ${({theme}) => theme.palette.primary.light};
+  }
+`;
 
 function Klondike(props) {
   const {
@@ -39,14 +53,33 @@ function Klondike(props) {
     tableauClickHandler(clickData);
   }
 
+  const[isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  const settingsClickHandler = () => {
+    setIsSettingsOpen(!isSettingsOpen);
+  }
+
   const nrOfPiles = 7;
   return (
     <div>
       <section>
-        <Dashboard undo={game.hasWon ? null : undo} redeal={redeal} />
+        <Dashboard>
+          <ButtonList>
+            <ButtonSecondaryAction onClick={redeal}>New game</ButtonSecondaryAction>
+            <ButtonSecondaryAction onClick={game.hasWon ? null : undo}>Undo</ButtonSecondaryAction>
+          </ButtonList>
+          <SettingsButton onClick={settingsClickHandler}>
+            <SettingsIcon />
+          </SettingsButton>
+        </Dashboard>
         {game.hasWon &&
           <ContentSection>
             CONGRATULATION YOU HAVE WON THE GAME
+          </ContentSection>
+        }
+        {isSettingsOpen &&
+          <ContentSection>
+            Settings form
           </ContentSection>
         }
       </section>

@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components/macro';
+import SettingsIcon from './settings-solid';
 
 const ButtonStylesWhenError = css`
   background-color: red;
@@ -10,24 +11,28 @@ const ButtonStylesWhenSuccessful = css`
   transition: all 0.5s ease-in;
 `;
 
-const Button = styled.button`
+const ButtonNormalized = styled.button`
   border: none;
+  cursor: pointer;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+
+  &:focus {
+    outline: none;
+  }
+`
+
+const Button = styled(ButtonNormalized)`
   background-color: ${props => props.theme.palette.primary.main};
   color: ${props => props.theme.palette.primary.contrastText};
   padding: ${props => props.theme.spacing.xsmall};
   border-radius: ${props => props.theme.shape.borderRadius};
   width: inherit;
   transition: width 1s ease-in 0.3s;
-  cursor: pointer;
-  box-sizing: border-box;
-  font-size: inherit;
   line-height: 1;
   text-transform: uppercase;
   text-align: center;
-  
-  &:focus {
-    outline: none;
-  }
 `;
 
 const ButtonStyled = styled(Button)`
@@ -91,4 +96,7 @@ export {
   ButtonSecondaryAction,
   ButtonTertiaryAction,
   ButtonList,
+  ButtonNormalized,
+
+  SettingsIcon,
 }

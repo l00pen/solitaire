@@ -37,6 +37,12 @@ const createTableauPilesFromDeck = (deck, pileKeys) => {
   return arrayToObject(pileKeys, pilesWithCards);
 }
 
+const initSettings = {
+  stockTakes: 3,
+  tableauEmptyAny: false,
+  reRunDeck: false,
+}
+
 const init = () => {
   let deck = shuffleArray(createDeck());
   const foundation = createFoundationPiles(foundationPilesKeys);
@@ -50,12 +56,14 @@ const init = () => {
 
     tableauPilesKeys,
     foundationPilesKeys,
+
+    gameConditions: initSettings,
   };
 }
 
-const stockClickHandler = (game, { card }) => {
-  return moveCardsBetweenPilesInState(game, {
-    cardIndexAtSource: game.stock.length - 1,
+const stockClickHandler = (state, { card }) => {
+  return moveCardsBetweenPilesInState(state, {
+    cardIndexAtSource: state.stock.length - state.gameConditions.stockTakes,
     sourcePileKey: 'stock',
     destPileKey: 'waste',
   });
@@ -78,7 +86,7 @@ const tableauClickHandler = (state, { card, cardIndexInPile, sourcePile }) => {
   }) : [];
 
   const allowedTableauPiles = state.tableauPilesKeys.filter((pile) => {
-    return allowDropTableau([card], state[pile]);
+    return allowDropTableau([card], state[pile], state.gameConditions);
   })
 
   const allowedPiles = allowedFoundationPiles.concat(allowedTableauPiles);
@@ -122,14 +130,15 @@ const allowFoundationDrop = (cardsToBeMoved, destPile) => {
 }
 
 
-const allowDropTableau = (cardsToBeMoved, destinationPile) => {
+const allowDropTableau = (cardsToBeMoved, destinationPile, conditions) => {
+  const firstCardToBeMoved = cardsToBeMoved[0];
+
   if (destinationPile.length === 0) {
-    return true;
+    return conditions.tableauEmptyAny || firstCardToBeMoved.value === 13;
   }
 
   const lastCardInPile = getLastCardInPile(destinationPile);
 
-  const firstCardToBeMoved = cardsToBeMoved[0];
   const isOppositeColor = lastCardInPile.color !== firstCardToBeMoved.color;
   const isRightValue = lastCardInPile.value === firstCardToBeMoved.value + 1;
 
@@ -140,8 +149,8 @@ const foundationDropHandler = (game, dropData, dragData) => {
   return cardDropHandler(game, dropData, dragData, allowFoundationDrop);
 }
 
-const tableauDropHandler = (game, dropData, dragData) => {
-  return cardDropHandler(game, dropData, dragData, allowDropTableau);
+const tableauDropHandler = (state, dropData, dragData) => {
+  return cardDropHandler(state, dropData, dragData, allowDropTableau, state.gameConditions);
 }
 
 const initialState = init();
@@ -151,12 +160,15 @@ const klondikeReducer = (state = initialState, action) => {
     case 'RE_DEAL':
       return init();
     case 'RE_RUN_DECK':
-      const newStock = [...state.waste].reverse();
-      return {
-        ...state,
-        waste: [],
-        stock: newStock,
+      if (state.gameConditions.reRunDeck) {
+        const newStock = [...state.waste].reverse();
+        return {
+          ...state,
+          waste: [],
+          stock: newStock,
+        }
       }
+      return state;
     case 'CLICK_STOCK':
       return stockClickHandler(state, action.payload)
     case 'CLICK_TABLEAU':
@@ -167,6 +179,8 @@ const klondikeReducer = (state = initialState, action) => {
       return checkHasWon(foundationDropHandler(state, action.payload.dropData, action.payload.dragData))
     case 'DROP_TABLEAU':
       return tableauDropHandler(state, action.payload.dropData, action.payload.dragData)
+    case 'SETTINGS_CLICK':
+      return state;
     default:
       return state;
   }

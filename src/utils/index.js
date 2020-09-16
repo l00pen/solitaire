@@ -77,9 +77,9 @@ const moveCardsBetweenPilesInState = (state, { cardIndexAtSource, sourcePileKey,
   }
 }
 
-const cardDropHandler = (state, {destinationPile}, {cardIndexInPile, sourcePile}, allowDropHandler) => {
+const cardDropHandler = (state, {destinationPile}, {cardIndexInPile, sourcePile}, allowDropHandler, dropConditions = {}) => {
   const { moved, remain } = moveFromPile(cardIndexInPile, state[sourcePile])
-  if (allowDropHandler(moved, state[destinationPile])) {
+  if (allowDropHandler(moved, state[destinationPile], dropConditions)) {
     return {
       ...state,
       [sourcePile]: remain,
