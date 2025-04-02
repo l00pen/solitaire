@@ -73,7 +73,7 @@ const SpiderGame = () => {
       if (!valid) return;
     }
 
-    let newSourceCards = sourceColumn.cards.slice(0, draggedIndex);
+    const newSourceCards = sourceColumn.cards.slice(0, draggedIndex);
 
     // 🔁 Flip the new top card in source column if it's face-down
     if (newSourceCards.length > 0) {
@@ -139,7 +139,7 @@ const SpiderGame = () => {
 
       if (validMove) {
         // 👇 same logic as drag move
-        let newSourceCards = sourceColumn.cards.slice(0, draggedIndex);
+        const newSourceCards = sourceColumn.cards.slice(0, draggedIndex);
         if (newSourceCards.length > 0) {
           const topCard = newSourceCards[newSourceCards.length - 1];
           if (!topCard.faceUp) topCard.faceUp = true;
@@ -406,11 +406,6 @@ function Column({
             <DraggableCard
               key={card.id}
               card={card}
-              stack={
-                isSourceColumn
-                  ? column.cards.slice(index, draggedIndex)
-                  : column.cards.slice(index)
-              }
               style={{
                 top: `${index * CARD_OFFSET_PERCENT}%`,
               }}
@@ -427,14 +422,10 @@ import { useRef } from "react";
 
 function DraggableCard({
   card,
-  stack,
-
   style,
   onClick,
 }: {
   card: Card;
-  stack: Card[];
-
   style: any;
   onClick?: () => void;
 }) {
